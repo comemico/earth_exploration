@@ -379,6 +379,12 @@ public class GrypsController : MonoBehaviour
         isBrake = true;
     }
 
+    public void Brake()
+    {
+        //WheelBlade();
+        //BrakeEffect();
+    }
+
     public void Boost(int gearNum, int key)
     {
         effectManager.JetEffect();

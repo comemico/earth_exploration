@@ -25,7 +25,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     [Header("1メモリのスワイプ量(wide=1.0)")]
     public float distancePerMemory;
 
-    public bool isInterval;
 
     float distanceFactor;
     float dragLength; //( 0.0～1.0 )
@@ -85,7 +84,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             grypsCrl.Boost(gearNum, key);
             stageCrl.ChangeToRestrictedControl();
-            //isInterval = true;
             gearNum = 0;
             if (isDebugMode)
             {
@@ -124,11 +122,10 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
         if (oldKey != key)
         {
-            //isInterval = false;
             stageCrl.ChangeToControl();
-            speedPowerMg.GetReadyCharge(key);
             cinemachineCrl.ChangeDirection(key);
             grypsCrl.Turn(key);
+            speedPowerMg.GetReadyCharge(key);
             oldKey = key;//更新
         }
 

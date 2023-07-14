@@ -4,11 +4,17 @@ using UnityEngine.Rendering.Universal;
 public class WheelManager : MonoBehaviour
 {
 
+    [Header("回転力")]
+    [NamedArrayAttribute(new string[] { "1段階", "2段階", "3段階", "4段階", "5段階", })]
+    [Range(600, 2000)] public int[] fac;
+
     [Header("タイヤをバーンナウトさせるか")] public bool isBurnOut;
+
     [Header("タイヤの直径")] public float radius; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
-    [Header("回転力")] public float fac;
+
     private GrypsController player;
     private Rigidbody2D rb;
+
     private float factor;
     //public Light2D light2d;
 
@@ -40,8 +46,9 @@ public class WheelManager : MonoBehaviour
 
     private void BurnOutWheel(int boostMemory)
     {
-        float intensity = boostMemory * fac;
-        transform.Rotate(0f, 0f, -1 * intensity * Time.deltaTime);
+        //float intensity = boostMemory * fac;
+        transform.Rotate(0f, 0f, -1 * fac[boostMemory] * Time.deltaTime);
+
         //light
     }
 
