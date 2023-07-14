@@ -29,9 +29,13 @@ public class WheelManager : MonoBehaviour
         }
         else if (Mathf.Abs(rb.velocity.x) >= 1f)
         {
-            BoostWheel();
         }
          */
+        if (Mathf.Abs(rb.velocity.x) >= 1f)
+        {
+            BoostWheel();
+        }
+
     }
 
     private void BurnOutWheel(int boostMemory)
