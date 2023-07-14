@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Floor00
+  - Floor01
+  - DeadArea
+  - ClearArea
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 2039801767
+    locked: 0
+  - name: UI_Panel
+    uniqueID: 3323430753
+    locked: 0
+  - name: Ground
+    uniqueID: 644151655
+    locked: 0
+  - name: Effect_Back
+    uniqueID: 1538357511
+    locked: 0
+  - name: Object_Back
+    uniqueID: 1532981893
+    locked: 0
+  - name: Jet
+    uniqueID: 1766489485
+    locked: 0
+  - name: Wheel
+    uniqueID: 3477387617
+    locked: 0
+  - name: Body_Back
+    uniqueID: 2492844991
+    locked: 0
+  - name: Body_Front
+    uniqueID: 790923827
+    locked: 0
+  - name: Player
+    uniqueID: 801511075
+    locked: 0
+  - name: Effect_Front
+    uniqueID: 1587155207
+    locked: 0
+  - name: Object_Front
+    uniqueID: 2953893783
+    locked: 0
+  - name: UI_Player
+    uniqueID: 816626473
+    locked: 0
+  - name: EmptyLayer
+    uniqueID: 2134898537
+    locked: 0
+  - name: FadeCanvas
+    uniqueID: 3309555037
+    locked: 0
