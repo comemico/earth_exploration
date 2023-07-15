@@ -409,14 +409,19 @@ public class GrypsController : MonoBehaviour
 
         rb.AddForce(transform.localScale.x * transform.right * grypsParameter.dashPower[dashPower]);
         effectManager.JetEffect();
-        //SoundController.instance.PlayJetSe(jet[3]);
-        intervalTimer = 0.0f;
         stageCrl.ChangeToRestrictedControl();
+        //SoundController.instance.PlayJetSe(jet[3]);
         //isInterval = true;
+        //intervalTimer = 0.0f;
         //stageCrl => ‘€ìˆê•”•s”\‚Ö
     }
 
-
+    public void DashA(int key, int power)
+    {
+        //rb.velocity = Vector2.zero;
+        stageCrl.controlScreenMg.KeyChange(key);
+        rb.AddForce(transform.localScale.x * transform.right * grypsParameter.dashPower[power]);
+    }
 
 
     private void JetCount(int somersaultCount)

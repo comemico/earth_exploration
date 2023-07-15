@@ -10720,7 +10720,7 @@ GameObject:
   - component: {fileID: 242621852}
   - component: {fileID: 242621853}
   m_Layer: 0
-  m_Name: Sprite01
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21181,7 +21181,7 @@ GameObject:
   - component: {fileID: 412884435}
   - component: {fileID: 412884436}
   m_Layer: 0
-  m_Name: Sprite02
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27347,7 +27347,7 @@ GameObject:
   - component: {fileID: 627331488}
   - component: {fileID: 627331489}
   m_Layer: 0
-  m_Name: Sprite02
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32680,7 +32680,7 @@ GameObject:
   - component: {fileID: 712824485}
   - component: {fileID: 712824486}
   m_Layer: 0
-  m_Name: Sprite01
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37831,8 +37831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0ef1f674febe24d9750607c712ee89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashPower: 0
-  directionLimit: 0
+  key: 0
+  powerLevel: 0
 --- !u!61 &786641116
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -97388,8 +97388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0ef1f674febe24d9750607c712ee89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashPower: 0
-  directionLimit: 1
+  key: -1
+  powerLevel: 0
 --- !u!61 &2016578078
 BoxCollider2D:
   m_ObjectHideFlags: 0

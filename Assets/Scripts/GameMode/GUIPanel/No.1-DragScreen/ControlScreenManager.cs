@@ -123,10 +123,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         if (oldKey != key)
         {
             stageCrl.ChangeToControl();
-            cinemachineCrl.ChangeDirection(key);
-            grypsCrl.Turn(key);
-            speedPowerMg.GetReadyCharge(key);
-            oldKey = key;//更新
+            KeyChange(key);
         }
 
 
@@ -163,6 +160,16 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
         }
 
+    }
+
+    public void KeyChange(int key)
+    {
+        //stageCrl.ChangeToControl();
+        this.key = key;
+        speedPowerMg.GetReadyCharge(key);
+        cinemachineCrl.ChangeDirection(key);
+        grypsCrl.Turn(key);
+        oldKey = key;//更新
     }
 
 }
