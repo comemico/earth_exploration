@@ -10,9 +10,17 @@ public class DashAreaManager : MonoBehaviour
         [InspectorName("左")] left = -1,
     }
 
-    [Header("パワー")] [Range(0, 3)] public int powerLevel;
+    //[Header("パワー")] [Range(0, 3)] public int powerLevel;
+    [Header("パワー")] public DashLevel dashPower;
+    public enum DashLevel
+    {
+        [InspectorName("小")] zero = 0,
+        [InspectorName("中")] one,
+        [InspectorName("大")] two
+    }
 
     GameObject right, left;
+    int KeyNum;
 
     private void Start()
     {
@@ -35,7 +43,6 @@ public class DashAreaManager : MonoBehaviour
                 break;
         }
     }
-    int test;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
@@ -44,18 +51,18 @@ public class DashAreaManager : MonoBehaviour
             {
                 if ((int)collision.gameObject.transform.localScale.x >= 1)
                 {
-                    test = 1;
+                    KeyNum = 1;
                 }
                 else if ((int)collision.gameObject.transform.localScale.x <= -1)
                 {
-                    test = -1;
+                    KeyNum = -1;
                 }
             }
             else if (key == KEY.left || key == KEY.right)
             {
-                test = (int)key;
+                KeyNum = (int)key;
             }
-            collision.gameObject.GetComponent<GrypsController>().DashA(test, powerLevel);
+            collision.gameObject.GetComponent<GrypsController>().DashA(KeyNum, (int)dashPower);
             //collision.gameObject.GetComponent<GrypsController>().Dash((int)dashPower, directionLimit, (int)transform.localScale.x);
         }
     }

@@ -7,7 +7,7 @@ public class GrypsParameter : MonoBehaviour
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK", "4’iŠK", "5’iŠK", })]
     [Range(5000, 30000)] public int[] boostPower;
 
-    [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
+    [NamedArrayAttribute(new string[] { "¬", "’†", "‘å" })]
     [Range(10000, 30000)] public int[] dashPower;
 
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]

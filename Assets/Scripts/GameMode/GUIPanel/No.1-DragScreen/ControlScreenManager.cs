@@ -32,7 +32,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     Vector2 startPosition;
 
     int maxGage;
-    int gearNum;
+    public int gearNum;
     int oldGearNum;
 
     private int key = 1;//向き
@@ -61,7 +61,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     public void ChangeControlLimit(bool isRaycast)//, bool isInterval)空中時、ワープ中、etc...
     {
         crlImage.raycastTarget = isRaycast;
-        //this.isInterval = isInterval;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -80,26 +79,35 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (gearNum >= 1)
+        if (stageCrl.controlStatus == StageCtrl.ControlStatus.control)
         {
-            grypsCrl.Boost(gearNum, key);
-            stageCrl.ChangeToRestrictedControl();
-            gearNum = 0;
-            if (isDebugMode)
+
+            if (gearNum >= 1)
             {
-                return;
-            }
-            else
-            {
-                memoryGageMg.memoryGage -= gearNum;
-                if (memoryGageMg.memoryGage <= 0)
+                grypsCrl.Boost(gearNum, key);
+                stageCrl.ChangeToRestrictedControl();
+                gearNum = 0;
+                if (isDebugMode)
                 {
-                    memoryGageMg.memoryGage = 0;
-                    //grypsCrl.rb.velocity = new Vector2(3f, 0f);
-                    //stageCtrl.Lack();
-                    //不足状態→まだスピードが落ちていない、回転によってメモリが回復する
+                    return;
+                }
+                else
+                {
+                    memoryGageMg.memoryGage -= gearNum;
+                    if (memoryGageMg.memoryGage <= 0)
+                    {
+                        memoryGageMg.memoryGage = 0;
+                        //grypsCrl.rb.velocity = new Vector2(3f, 0f);
+                        //stageCtrl.Lack();
+                        //不足状態→まだスピードが落ちていない、回転によってメモリが回復する
+                    }
                 }
             }
+        }
+        else
+        {
+            gearNum = 0;
+            return;
         }
 
 
@@ -123,7 +131,9 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         if (oldKey != key)
         {
             stageCrl.ChangeToControl();
+            grypsCrl.Turn(key, true);
             KeyChange(key);
+
         }
 
 
@@ -149,7 +159,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
             speedPowerMg.ChargeGear(gearNum, medianValue);
 
-            //Debug.Log("メモリ数:" + gearNum + "中間値:" + medianValue);
 
             if (oldGearNum != gearNum)//メモリが変わった時だけ、メモリ表示の処理を行なってもらう
             {
@@ -157,18 +166,15 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
                 oldGearNum = gearNum;
             }
-
         }
 
     }
 
     public void KeyChange(int key)
     {
-        //stageCrl.ChangeToControl();
         this.key = key;
         speedPowerMg.GetReadyCharge(key);
         cinemachineCrl.ChangeDirection(key);
-        grypsCrl.Turn(key);
         oldKey = key;//更新
     }
 

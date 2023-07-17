@@ -8,7 +8,7 @@ using SoundSystem;
 public class GrypsController : MonoBehaviour
 {
     public GrypsParameter grypsParameter;
-
+    public WheelManager wheelMg;
     #region//インスペクターで設定する
 
     [Header("デバックモード切替ボタン")] public bool isDebugMode;
@@ -371,16 +371,21 @@ public class GrypsController : MonoBehaviour
         }
     }
      */
-    public void Turn(int key)
+    public void Turn(int key, bool isBrake)
     {
         transform.localScale = new Vector3(key, transform.localScale.y, transform.localScale.z);
-
-        effectManager.Brake(true);
-        isBrake = true;
+        if (isBrake)
+        {
+            Brake();
+        }
+        //effectManager.Brake(true);
+        //isBrake = true;
     }
 
     public void Brake()
     {
+        isBrake = true;
+        effectManager.Brake(true);
         //WheelBlade();
         //BrakeEffect();
     }
@@ -394,34 +399,44 @@ public class GrypsController : MonoBehaviour
         isBrake = false;//掛かっているブレーキを解除する念のため
     }
 
-    public void Dash(int dashPower, bool directionLimit = false, int DestinationLocalScaleX = 1)
-    {
-
-        if (directionLimit)//方向制限の有無...(AccelerationArea)側で操作
-        {
-            if (transform.localScale.x != DestinationLocalScaleX)//反対方向の場合...(Player)と(AccelerationArea)の向きを比べる
-            {
-                transform.localScale = new Vector3(DestinationLocalScaleX, transform.localScale.y, transform.localScale.z);
-                rb.velocity = new Vector2((0.2f * DestinationLocalScaleX), 0);//keyが変わり、velocityが0.25以下になるまでブレーキ(isBrake=true)が掛かり続けてしまう
-                isBrake = false;//掛かっているブレーキを解除する念のため
-            }
-        }
-
-        rb.AddForce(transform.localScale.x * transform.right * grypsParameter.dashPower[dashPower]);
-        effectManager.JetEffect();
-        stageCrl.ChangeToRestrictedControl();
-        //SoundController.instance.PlayJetSe(jet[3]);
-        //isInterval = true;
-        //intervalTimer = 0.0f;
-        //stageCrl => 操作一部不能へ
-    }
-
     public void DashA(int key, int power)
     {
-        //rb.velocity = Vector2.zero;
+        if (key != transform.localScale.x)
+        {
+            rb.velocity = Vector2.zero;
+            Turn(key, false);
+            //transform.localScale = new Vector3(key, transform.localScale.y, transform.localScale.z);
+        }
         stageCrl.controlScreenMg.KeyChange(key);
         rb.AddForce(transform.localScale.x * transform.right * grypsParameter.dashPower[power]);
     }
+
+    public void SuckedIn()
+    {
+        //対象の位置へ移動する
+        //操作不能にする
+    }
+
+    public void EjectFrom()
+    {
+        //向きを出口の方向に向かせる
+        //指定のForceを加える
+        //操作可能にする
+    }
+
+    public void EnterWarp(Transform transferDestination)
+    {
+        PausePlayer();
+        transform.position = transferDestination.position;
+        transform.localScale = new Vector3((int)transferDestination.localScale.x, transform.localScale.y, transform.localScale.z);
+    }
+
+    public void ExitWarp(int forceNum)
+    {
+        rb.velocity = new Vector2(3f, 0f);
+        // rb.AddForce(transform.localScale.x * transform.right * dashLevel[forceNum]);
+    }
+
 
 
     private void JetCount(int somersaultCount)
@@ -430,15 +445,15 @@ public class GrypsController : MonoBehaviour
 
         if (somersaultCount >= 5)
         {
-            Dash(2);
+            DashA((int)transform.localScale.x, 2);
         }
         else if (somersaultCount >= 3)
         {
-            Dash(1);
+            DashA((int)transform.localScale.x, 1);
         }
         else if (somersaultCount >= 1)
         {
-            Dash(0);
+            DashA((int)transform.localScale.x, 0);
         }
 
         if (jetMemory >= 6)
@@ -638,31 +653,6 @@ public class GrypsController : MonoBehaviour
         //transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);//回転リセット
     }
 
-    public void SuckedIn()
-    {
-        //対象の位置へ移動する
-        //操作不能にする
-    }
-
-    public void EjectFrom()
-    {
-        //向きを出口の方向に向かせる
-        //指定のForceを加える
-        //操作可能にする
-    }
-
-    public void EnterWarp(Transform transferDestination)
-    {
-        PausePlayer();
-        transform.position = transferDestination.position;
-        transform.localScale = new Vector3((int)transferDestination.localScale.x, transform.localScale.y, transform.localScale.z);
-    }
-
-    public void ExitWarp(int forceNum)
-    {
-        rb.velocity = new Vector2(3f, 0f);
-        // rb.AddForce(transform.localScale.x * transform.right * dashLevel[forceNum]);
-    }
 
     public void SomerSault(float angularChangeInDegrees)
     {

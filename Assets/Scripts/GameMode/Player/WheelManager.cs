@@ -5,8 +5,8 @@ public class WheelManager : MonoBehaviour
 {
 
     [Header("回転力")]
-    [NamedArrayAttribute(new string[] { "1段階", "2段階", "3段階", "4段階", "5段階", })]
-    [Range(600, 2000)] public int[] fac;
+    [NamedArrayAttribute(new string[] { "0段階", "1段階", "2段階", "3段階", "4段階", "5段階", })]
+    [Range(0, 2000)] public int[] burnPower;
 
     [Header("タイヤをバーンナウトさせるか")] public bool isBurnOut;
 
@@ -35,20 +35,23 @@ public class WheelManager : MonoBehaviour
         }
         else if (Mathf.Abs(rb.velocity.x) >= 1f)
         {
+
         }
          */
+        if (isBurnOut && Mathf.Abs(rb.velocity.x) <= 20f)
+        {
+            BurnOutWheel(player.stageCrl.controlScreenMg.gearNum);
+        }
         if (Mathf.Abs(rb.velocity.x) >= 1f)
         {
             BoostWheel();
         }
-
     }
 
-    private void BurnOutWheel(int boostMemory)
+    public void BurnOutWheel(int gearNum)
     {
         //float intensity = boostMemory * fac;
-        transform.Rotate(0f, 0f, -1 * fac[boostMemory] * Time.deltaTime);
-
+        transform.Rotate(0f, 0f, -1 * burnPower[gearNum] * Time.deltaTime);
         //light
     }
 
