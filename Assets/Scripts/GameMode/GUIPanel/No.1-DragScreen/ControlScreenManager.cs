@@ -119,22 +119,27 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
         movingMaskMg.OnDragMovingMask(currentPosition);
 
-        if (currentPosition.x + 0.005f < startPosition.x)
+        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
         {
-            key = 1;
-        }
-        else if (currentPosition.x - 0.005f > startPosition.x)
-        {
-            key = -1;
+            if (currentPosition.x + 0.005f < startPosition.x)
+            {
+                key = 1;
+            }
+            else if (currentPosition.x - 0.005f > startPosition.x)
+            {
+                key = -1;
+            }
+
+            if (oldKey != key)
+            {
+                stageCrl.ChangeToControl();
+                grypsCrl.Turn(key, true);
+                KeyChange(key);
+
+            }
         }
 
-        if (oldKey != key)
-        {
-            stageCrl.ChangeToControl();
-            grypsCrl.Turn(key, true);
-            KeyChange(key);
 
-        }
 
 
         if (memoryGageMg.memoryGage <= 4)

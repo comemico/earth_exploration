@@ -7,13 +7,17 @@ using DG.Tweening;
 public class WarpAreaManager : MonoBehaviour
 {
 
+    [Header("ワープの移動先")] public WarpAreaManager destination;
+
     [Header("入口向き")] public ENTRANCE_KEY key;
 
-    [Header("ワープの移動先")] public GameObject destination;
+    [Header("飛び出る力")] [Range(0, 2)] public int dashPower;
 
-    GameObject right, left;
+    SpriteMask right, left;
 
     GrypsController grypsCrl;
+
+    Collider2D warpCollider;
 
     public enum ENTRANCE_KEY
     {
@@ -23,52 +27,68 @@ public class WarpAreaManager : MonoBehaviour
 
     private void Start()
     {
-
-        right = transform.GetChild(0).gameObject;
-        left = transform.GetChild(1).gameObject;
+        warpCollider = GetComponent<Collider2D>();
+        right = transform.GetChild(0).GetComponent<SpriteMask>();
+        left = transform.GetChild(1).GetComponent<SpriteMask>();
 
         switch (key)
         {
             case ENTRANCE_KEY.left:
-                right.SetActive(true);
-                left.SetActive(false);
+                right.enabled = true;
+                left.enabled = false;
                 break;
             case ENTRANCE_KEY.right:
-                right.SetActive(false);
-                left.SetActive(true);
+                right.enabled = false;
+                left.enabled = true;
                 break;
         }
 
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
+            {
+                grypsCrl.stageCrl.ChangeToControl();
+            }
+        }
+
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
+
             if (grypsCrl == null)
             {
                 grypsCrl = collision.gameObject.GetComponent<GrypsController>();
             }
-
-            Debug.Log("Trigger");
-            //grypsCrl.isFreeze = true;
-            //grypsCrl.rb.velocity = Vector2.zero;
-            grypsCrl.stageCrl.ChangeToUncontrol();
-            /*
-            grypsCrl.transform.DOMoveX((int)key * 15f, 0.35f).SetRelative(true)
-                .OnComplete(() =>
-                {
-                    Debug.Log("DoneMove");
-
-                    //grypsCrl.EnterWarp(destination.transform);
-                    //int floorNum = GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent.gameObject);
-                    //Camera.main.GetComponent<CinemachineController>().ToFloorVcam(floorNum, destination.transform);
-                });
-             */
-            /*
-            StartCoroutine(DelayMethod(0.3f, () =>
+            if (grypsCrl.stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
             {
-            }));
+                warpCollider.enabled = false;
+                grypsCrl.stageCrl.ChangeToUncontrol();
+                grypsCrl.rb.velocity = Vector2.zero;
+                grypsCrl.transform.DOMoveX((int)key * 17, 0.35f).SetRelative(true)
+                       .OnComplete(() =>
+                       {
+                           grypsCrl.transform.position = new Vector3(destination.transform.position.x + (10 * (int)destination.key), destination.transform.position.y + 2.5f, destination.transform.position.z);
+                           grypsCrl.transform.localScale = new Vector3(-1 * (int)destination.key, transform.localScale.y, transform.localScale.z);
+                           int floorNum = GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent.parent.gameObject);
+                           Camera.main.GetComponent<CinemachineController>().dashPower = destination.dashPower;
+                           Camera.main.GetComponent<CinemachineController>().ToFloorVcam(floorNum, (int)destination.key * (-1));
+                       });
+
+            }
+
+
+            /*
+           StartCoroutine(DelayMethod(0.3f, () =>
+           { }));
              */
+
         }
     }
 

@@ -4,13 +4,13 @@ using UnityEngine;
 public class FloorManager : MonoBehaviour
 {
     [Header("フロア配列")] public GameObject[] floor;
-    [Header("すべてのCollider配列")] public Collider2D[] allCollider;
     [Header("開始フロア")] public GameObject startFloor;
+    //[Header("すべてのCollider配列")] public Collider2D[] allCollider;
 
     void Start()
     {
         floor = new GameObject[transform.childCount];
-        allCollider = GetComponentsInChildren<Collider2D>();
+        //allCollider = GetComponentsInChildren<Collider2D>();
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -25,9 +25,9 @@ public class FloorManager : MonoBehaviour
 
         int floorNumber = Array.IndexOf(floor, parentObject);
 
-        for (int i = 0; i < floor[floorNumber].transform.childCount; i++)
+        for (int i = 0; i < floor[floorNumber].transform.GetChild(0).childCount; i++)
         {
-            floor[floorNumber].transform.GetChild(i).GetComponent<Collider2D>().enabled = true;
+            floor[floorNumber].transform.GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
 
         return floorNumber;
@@ -35,9 +35,20 @@ public class FloorManager : MonoBehaviour
 
     public void AllUnenableCollider()
     {
+
+        for (int x = 0; x < floor.Length; x++)
+        {
+            for (int i = 0; i < floor[x].transform.GetChild(0).childCount; i++)
+            {
+                floor[x].transform.GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = false;
+            }
+        }
+
+        /*
         foreach (var col in allCollider)
         {
             col.enabled = false;
         }
+         */
     }
 }

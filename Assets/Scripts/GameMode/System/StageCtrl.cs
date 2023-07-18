@@ -112,7 +112,7 @@ public class StageCtrl : MonoBehaviour
         state = State.Play;
         ChangeToControl();
         //grypsCrl.isFreeze = false;
-        cinemachineCtrl.isRock = false;
+        //cinemachineCtrl.isRock = false;
     }
 
 

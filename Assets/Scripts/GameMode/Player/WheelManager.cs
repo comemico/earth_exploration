@@ -5,8 +5,8 @@ public class WheelManager : MonoBehaviour
 {
 
     [Header("回転力")]
-    [NamedArrayAttribute(new string[] { "0段階", "1段階", "2段階", "3段階", "4段階", "5段階", })]
-    [Range(0, 2000)] public int[] burnPower;
+    [NamedArrayAttribute(new string[] { "1段階", "2段階", "3段階", "4段階", "5段階", })]
+    [Range(500, 2000)] public int[] burnPower;
 
     [Header("タイヤをバーンナウトさせるか")] public bool isBurnOut;
 
@@ -16,36 +16,37 @@ public class WheelManager : MonoBehaviour
     private Rigidbody2D rb;
 
     private float factor;
+
+    public Transform[] wheelBlade;
+
     //public Light2D light2d;
 
     private void Start()
     {
         player = GetComponentInParent<GrypsController>();
         rb = player.GetComponent<Rigidbody2D>();
+
+        //wheelBlade = GetComponentsInChildren<Transform>();
+
         //light2d = GetComponentInChildren<Light2D>();
         factor = 1 / radius;
     }
 
     private void Update()
     {
-        /*
-        if (player.isRevup && isBurnOut && Mathf.Abs(rb.velocity.x) <= 20f)
-        {
-            BurnOutWheel(player.ConsumptionMemory());
-        }
-        else if (Mathf.Abs(rb.velocity.x) >= 1f)
-        {
-
-        }
-         */
-        if (isBurnOut && Mathf.Abs(rb.velocity.x) <= 20f)
-        {
-            BurnOutWheel(player.stageCrl.controlScreenMg.gearNum);
-        }
         if (Mathf.Abs(rb.velocity.x) >= 1f)
         {
-            BoostWheel();
+            SpinWheel();
         }
+
+        if (isBurnOut && Mathf.Abs(rb.velocity.x) <= 20f)
+        {
+            if (player.stageCrl.controlScreenMg.gearNum >= 1)
+            {
+                BurnOutWheel(player.stageCrl.controlScreenMg.gearNum - 1);
+            }
+        }
+
     }
 
     public void BurnOutWheel(int gearNum)
@@ -55,12 +56,17 @@ public class WheelManager : MonoBehaviour
         //light
     }
 
-    public void BoostWheel()
+    public void SpinWheel()
     {
         var translation = rb.velocity * Time.deltaTime; // 位置の変化量
         var distance = translation.magnitude; // 移動した距離
         var angle = distance * factor; // (distance / circleCollider.radius) 球が回転するべき量 
         transform.Rotate(0f, 0f, -1 * angle * Mathf.Rad2Deg);
+    }
+
+    public void WheelBlade(bool isOpen)
+    {
+
     }
 
 }

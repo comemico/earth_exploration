@@ -15,9 +15,10 @@ public class CinemachineController : MonoBehaviour
 
     private CinemachineBrain brain;
     private CinemachineFramingTransposer framingTransposer;
-    [HideInInspector] public bool isRock = true;
     CinemachineVirtualCamera activeVC;
     CinemachineVirtualCamera nearestVC;
+
+    [HideInInspector] public int dashPower;
 
     private void Awake()
     {
@@ -29,17 +30,13 @@ public class CinemachineController : MonoBehaviour
 
     public void ActivatedEvent()
     {
-        if (!isRock)
+        DOVirtual.DelayedCall(1.5f, () =>//ƒJƒƒ‰ˆÚ“®’†‘Ò‹@
         {
-            DOVirtual.DelayedCall(0.65f, () =>
-            {
-                player.ExitWarp(1);
-            }, false).OnComplete(() =>
-             {
-                 player.isFreeze = false;
-             });
-        }
+            player.DashA((int)player.transform.localScale.x, dashPower);
+        }, false);
+
     }
+
     /*
     void FixedUpdate()
     {
@@ -54,10 +51,10 @@ public class CinemachineController : MonoBehaviour
         framingTransposer = vcamFloor[floorNum].GetCinemachineComponent<CinemachineFramingTransposer>();
     }
 
-    public void ToFloorVcam(int floorNum, Transform destination)
+    public void ToFloorVcam(int floorNum, int destinationKey)
     {
         AttachFramingTransposer(floorNum);
-        framingTransposer.m_ScreenX = 0.5f - ((int)destination.localScale.x * screenX);
+        framingTransposer.m_ScreenX = 0.5f - (destinationKey * screenX);
 
         brain.ActiveVirtualCamera.Follow = null;
         brain.ActiveVirtualCamera.Priority = 0;

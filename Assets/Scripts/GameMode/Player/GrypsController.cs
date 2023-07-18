@@ -12,33 +12,33 @@ public class GrypsController : MonoBehaviour
     #region//インスペクターで設定する
 
     [Header("デバックモード切替ボタン")] public bool isDebugMode;
-    [Header("1メモリ当たりのスワイプ距離")] public float distancePerMemory;
-    //[Header("BoostLevel")] public int[] boostLevel;
-    //[Header("DashLevel")] public int[] dashLevel;
     [Header("JetLevel")] public int[] jetLevel;
-    // [Header("インターバル")] public float interval;
     [Header("サマーソルト終了時角度(何度傾けるか)")] public float targetAngle;
     [Header("力")] public float forceMagnitude;
     [Header("角度")] public float forceAngle;
+    //[Header("1メモリ当たりのスワイプ距離")] public float distancePerMemory;
+    //[Header("BoostLevel")] public int[] boostLevel;
+    //[Header("DashLevel")] public int[] dashLevel;
+    // [Header("インターバル")] public float interval;
 
 
-    //[Header("当たり範囲")] public float stepOnRate;
-    //[Header("最大力")] public int maxSpeed;
     [Header("エンジン音string")] public string[] engine;
     [Header("ジェット音string")] public string[] jet;
+    //[Header("当たり範囲")] public float stepOnRate;
+    //[Header("最大力")] public int maxSpeed;
     #endregion
 
     [Header("stageCtrl")] public StageCtrl stageCrl;
-    //[Header("JetButton")] public Image rocketImg;
     [Header("SomersaultButton")] public Button somersaultButton;
+    //[Header("JetButton")] public Image rocketImg;
 
     [Header("GroundCheck")] GroundCheck ground;
     [Header("Effect")] EffectManager effectManager;
     [Header("Cinemachine")] CinemachineController cinemachineCtrl;
 
-    //[Header("BoostArrow")] public SpeedArrowManager speedArrow;
     [Header("MemoryGage")] public MemoryGageManager memoryGageMg;
     [Header("JetMemory")] public JetMemoryManager jetMemoryMg;
+    //[Header("BoostArrow")] public SpeedArrowManager speedArrow;
 
     #region//プライベート変数
     private Vector2 startPos;
@@ -53,23 +53,24 @@ public class GrypsController : MonoBehaviour
     private bool isGround = false;
     private bool passedIsJet = false;
     private bool isJet = false;
-    //private bool isInterval;
     private string deadAreaTag = "DeadArea";
     private string clearAreaTag = "ClearArea";
-    private int oldGearNum = 0;
+
     /*
+    private bool isInterval;
     private int key = 1;//向き
     private int oldKey;//最後に変わった向き
+    private int jetcount = 0;
+    private int oldGearNum = 0;
+    private int gearNum;
+    private float intervalTimer = 0.0f;
+    private float factorDistance;
      */
 
     private int somersaultCount = 0;
     private int jetMemory = 0;
     private int oldJetMemory = 0;
 
-    //private int jetcount = 0;
-    private int gearNum;
-    private float intervalTimer = 0.0f;
-    private float factorDistance;
 
     private Quaternion prev;
     private float myAngle;
@@ -89,7 +90,7 @@ public class GrypsController : MonoBehaviour
         AllGetComponent();
 
         targetVector = Quaternion.Euler(0f, 0f, 360f) * Vector2.up;//ターゲットの角度→ベクター
-        factorDistance = 1 / distancePerMemory;
+        //factorDistance = 1 / distancePerMemory;
         //CalcForceDirection();
 
     }
@@ -411,6 +412,7 @@ public class GrypsController : MonoBehaviour
         rb.AddForce(transform.localScale.x * transform.right * grypsParameter.dashPower[power]);
     }
 
+    /*
     public void SuckedIn()
     {
         //対象の位置へ移動する
@@ -423,7 +425,6 @@ public class GrypsController : MonoBehaviour
         //指定のForceを加える
         //操作可能にする
     }
-
     public void EnterWarp(Transform transferDestination)
     {
         PausePlayer();
@@ -433,9 +434,11 @@ public class GrypsController : MonoBehaviour
 
     public void ExitWarp(int forceNum)
     {
-        rb.velocity = new Vector2(3f, 0f);
+        DashA((int)transform.localScale.x, 0);
+        //rb.velocity = new Vector2(3f, 0f);
         // rb.AddForce(transform.localScale.x * transform.right * dashLevel[forceNum]);
     }
+     */
 
 
 

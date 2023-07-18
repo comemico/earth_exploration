@@ -19,27 +19,27 @@ public class DashAreaManager : MonoBehaviour
         [InspectorName("Се")] two
     }
 
-    GameObject right, left;
+    SpriteRenderer right, left;
     int KeyNum;
 
     private void Start()
     {
-        right = transform.GetChild(0).gameObject;
-        left = transform.GetChild(1).gameObject;
+        right = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        left = transform.GetChild(1).GetComponent<SpriteRenderer>();
 
         switch (key)
         {
             case KEY.both:
-                right.SetActive(true);
-                left.SetActive(true);
+                right.enabled = true;
+                left.enabled = true;
                 break;
             case KEY.right:
-                right.SetActive(true);
-                left.SetActive(false);
+                right.enabled = true;
+                left.enabled = false;
                 break;
             case KEY.left:
-                right.SetActive(false);
-                left.SetActive(true);
+                right.enabled = false;
+                left.enabled = true;
                 break;
         }
     }
