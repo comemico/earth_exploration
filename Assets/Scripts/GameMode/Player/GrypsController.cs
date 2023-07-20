@@ -152,11 +152,9 @@ public class GrypsController : MonoBehaviour
         if (isBrake)
         {
             rb.velocity *= grypsParameter.breakPower;
-            //effectManager.Brake(true);
             if (Mathf.Abs(rb.velocity.x) <= 0.25f)
             {
-                effectManager.Brake(false);
-                isBrake = false;
+                Brake(false);
             }
         }
 
@@ -377,27 +375,25 @@ public class GrypsController : MonoBehaviour
         transform.localScale = new Vector3(key, transform.localScale.y, transform.localScale.z);
         if (isBrake)
         {
-            Brake();
+            Brake(true);
         }
         //effectManager.Brake(true);
         //isBrake = true;
     }
 
-    public void Brake()
+    public void Brake(bool isBrake)
     {
-        isBrake = true;
-        effectManager.Brake(true);
-        //WheelBlade();
+        this.isBrake = isBrake;
+        effectManager.Brake(isBrake);
+        wheelMg.WheelBlade(isBrake);
         //BrakeEffect();
     }
 
-    public void Boost(int gearNum, int key)
+    public void Boost(int gearNum)//, int key)
     {
+        Brake(false);//Š|‚©‚Á‚Ä‚¢‚éƒuƒŒ[ƒL‚ð‰ðœ‚·‚é”O‚Ì‚½‚ß
+        rb.AddForce(transform.localScale.x * transform.right * grypsParameter.boostPower[gearNum - 1]);
         effectManager.JetEffect();
-        rb.AddForce(key * transform.right * grypsParameter.boostPower[gearNum - 1]);
-
-        effectManager.Brake(false);
-        isBrake = false;//Š|‚©‚Á‚Ä‚¢‚éƒuƒŒ[ƒL‚ð‰ðœ‚·‚é”O‚Ì‚½‚ß
     }
 
     public void DashA(int key, int power)
