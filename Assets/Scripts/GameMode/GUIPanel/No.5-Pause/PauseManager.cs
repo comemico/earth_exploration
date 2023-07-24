@@ -82,8 +82,7 @@ public class PauseManager : MonoBehaviour
     public void ClosePausePanel(bool isComplete)
     {
         t.Kill(true);
-        if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;
-        isPause = false;
+        if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない
         pauseText.enabled = false;
         bloomImage.enabled = false;
         rect_Base.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.15f).SetEase(easeType_TimeScale);
