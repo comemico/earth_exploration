@@ -28,8 +28,8 @@ public class PauseManager : MonoBehaviour
 
     public Text pauseText;
     public Image bloomImage;
+    StageCtrl stageCrl;
     PopController popCtrl;
-
     void Start()
     {
         InitializeGetComponent();
@@ -39,10 +39,11 @@ public class PauseManager : MonoBehaviour
     private void InitializeGetComponent()
     {
         popCtrl = GetComponent<PopController>();
+        stageCrl = GetComponentInParent<StageCtrl>();
         isPause = false;
         pauseText.enabled = false;
         bloomImage.enabled = false;
-
+        push_Pause.interactable = false;
         /*
         pauseText = transform.GetChild(2).GetComponent<Text>();
         bloomImage = transform.GetChild(3).GetChild(1).GetComponent<Image>();
@@ -66,24 +67,27 @@ public class PauseManager : MonoBehaviour
             ClosePausePanel(false);
         }
     }
-
+    Tween t;
     public void OpenPausePanel()
     {
+        t.Kill(true);
         isPause = true;
         pauseText.enabled = true;
         bloomImage.enabled = true;
         rect_Base.DOLocalRotate(new Vector3(0f, 0f, -30f), 0.2f).SetEase(easeType_TimeScale);
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.2f).SetEase(easeType_TimeScale);
+        t = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.125f).SetEase(easeType_TimeScale).OnComplete(() => push_Pause.interactable = true);
         popCtrl.OpenPanel();
     }
 
     public void ClosePausePanel(bool isComplete)
     {
+        t.Kill(true);
+        if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;
         isPause = false;
         pauseText.enabled = false;
         bloomImage.enabled = false;
         rect_Base.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.15f).SetEase(easeType_TimeScale);
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.15f).SetEase(easeType_TimeScale);
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.125f).SetEase(easeType_TimeScale);
 
         if (isComplete)
         {

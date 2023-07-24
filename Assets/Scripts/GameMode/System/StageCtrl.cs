@@ -22,6 +22,7 @@ public class StageCtrl : MonoBehaviour
     [HideInInspector] public ControlScreenManager controlScreenMg;
     [HideInInspector] public MemoryGageManager memoryGageMg;
     [HideInInspector] public JetMemoryManager jetMemoryMg;
+    [HideInInspector] public PauseManager pauseMg;
     [HideInInspector] public ShutterController shutterMg;
     private SceneTransitionManager sceneTransitionManager;
     private CinemachineController cinemachineCtrl;
@@ -64,10 +65,7 @@ public class StageCtrl : MonoBehaviour
         jetMemoryMg = GetComponentInChildren<JetMemoryManager>();
         cinemachineCtrl = Camera.main.GetComponent<CinemachineController>();
         shutterMg = GetComponentInChildren<ShutterController>();
-        if (sceneTransitionManager == null || memoryGageMg == null || jetMemoryMg == null || cinemachineCtrl == null)
-        {
-            Debug.Log("StageCtrl.cs: warning : スクリプトが正しくアタッチされていません");
-        }
+        pauseMg = GetComponentInChildren<PauseManager>();
     }
 
     public void GameStartSequence()
@@ -81,13 +79,14 @@ public class StageCtrl : MonoBehaviour
         //sequenceStart.Append(shutterMg.ShutterOpen(FadeCanvasManager.instance.isFade));//シャッターが開く
         sequenceStart.AppendInterval(0.25f);//待つ delay
         sequenceStart.Append(gateMg.OpenHole());//鍵穴が開く 
-        sequenceStart.AppendInterval(0.3f);
+        sequenceStart.AppendInterval(0.45f);
         sequenceStart.AppendCallback(() =>
         {
             grypsCrl.rb.constraints = RigidbodyConstraints2D.None;
             grypsCrl.DashA((int)grypsCrl.transform.localScale.x, 0);
             sequenceStart.Kill();
         });
+
     }
 
     public void ChangeToUncontrol()

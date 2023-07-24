@@ -120,10 +120,12 @@ public class GrypsController : MonoBehaviour
             Debug.Log("GrypsManager.cs: warning : スクリプトが正しくアタッチされていません");
         }
     }
-
     private void FixedUpdate()
     {
         isGround = ground.IsGround();//着地判定
+        var tes = rb.velocity.normalized;
+        float ang = Vector2.Angle(rb.velocity, Vector2.right);
+        //transform.localRotation = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, Quaternion.Lerp(transform.localRotation, ang, 0.5f));
 
         /*
         if (isGround != isGroundPrev)
@@ -409,7 +411,6 @@ public class GrypsController : MonoBehaviour
         stageCrl.controlScreenMg.KeyChange(key);
 
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.dashPower[power];
-
         rb.AddForce(force);
 
     }

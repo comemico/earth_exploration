@@ -91,6 +91,7 @@ public class GateManager : MonoBehaviour
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
             {
                 gateCollider.enabled = false;
+                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
                 grypsCrl.stageCrl.ChangeToControl();//’…’nŒã‹N“®‚·‚é‚æ‚¤‚É‚·‚é
                 FalseMask(GATE_KEY.both);
                 CloseHole();
@@ -111,9 +112,10 @@ public class GateManager : MonoBehaviour
             {
                 FalseMask(gateKey);
                 gateCollider.enabled = false;
+                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
                 grypsCrl.stageCrl.ChangeToUncontrol();
                 grypsCrl.rb.velocity = Vector2.zero;
-                grypsCrl.transform.DOMoveX((int)gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetRelative(true).OnComplete(() => CloseHole());
+                grypsCrl.transform.DOMoveX((int)gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(false).SetRelative(true).OnComplete(() => CloseHole());
             }
         }
     }

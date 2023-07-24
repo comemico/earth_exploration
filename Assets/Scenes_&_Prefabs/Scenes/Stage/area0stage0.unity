@@ -10762,6 +10762,7 @@ Transform:
   m_Children:
   - {fileID: 1525665752}
   - {fileID: 1567979537}
+  - {fileID: 1597937675}
   m_Father: {fileID: 2074637632}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -76175,7 +76176,6 @@ Transform:
   - {fileID: 550575931}
   - {fileID: 7168139805932823011}
   - {fileID: 786641114}
-  - {fileID: 1597937675}
   m_Father: {fileID: 201327433}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -76614,7 +76614,7 @@ Transform:
   - {fileID: 1910167554}
   - {fileID: 1562978392}
   - {fileID: 842855226}
-  m_Father: {fileID: 1525665752}
+  m_Father: {fileID: 201327433}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1649045431
@@ -100176,6 +100176,7 @@ MonoBehaviour:
   controlScreenMg: {fileID: 0}
   memoryGageMg: {fileID: 0}
   jetMemoryMg: {fileID: 0}
+  pauseMg: {fileID: 0}
   shutterMg: {fileID: 0}
   controlStatus: 0
   state: 0

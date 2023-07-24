@@ -75,8 +75,9 @@ public class WarpAreaManager : MonoBehaviour
                 FalseMask(entranceKey);
                 warpCollider.enabled = false;
                 grypsCrl.rb.velocity = Vector2.zero;
+                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
                 grypsCrl.stageCrl.ChangeToUncontrol();
-                grypsCrl.transform.DOMoveX((int)entranceKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPower]).SetRelative(true)
+                grypsCrl.transform.DOMoveX((int)entranceKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPower]).SetRelative(true).SetUpdate(false)
                        .OnComplete(() =>
                        {
                            destination.FalseMask(destination.entranceKey);
@@ -105,6 +106,7 @@ public class WarpAreaManager : MonoBehaviour
 
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
             {
+                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
                 grypsCrl.stageCrl.ChangeToControl();
                 FalseMask(ENTRANCE_KEY.both);
             }
