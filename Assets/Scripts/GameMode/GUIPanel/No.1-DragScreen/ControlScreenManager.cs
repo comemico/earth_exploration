@@ -43,7 +43,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         GetComponent();
         screenFactor = new Vector2(1f / Screen.width, 1f / Screen.height);
         distanceFactor = 1f / distancePerMemory;
-
     }
 
     private void GetComponent()
@@ -61,7 +60,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         crlImage.raycastTarget = isRaycast;
 
-        if (!isRaycast)//Uncontroléû
+        if (!isRaycast)//UncontrolÇ…êÿë÷éû
         {
             speedPowerMg.Release();
             gearNum = 0;
@@ -92,7 +91,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
-    public void Produce(int produceNum)
+    public void ProduceMemory(int produceNum)
     {
         memoryGageMg.memoryGage += produceNum;
 

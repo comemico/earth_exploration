@@ -139,7 +139,9 @@ public class MemoryGageManager : MonoBehaviour
 
     public void DotweenRedGage(int nowMemory, int nextMemory, float time)
     {
+        //˜A‘±‚ÅŒÄ‚Î‚ê‚Ä‚à‚¢‚¢‚æ‚¤‚É‘O‰ñ‚ÌTween‚ðKill
         DOTween.Kill(decreaseTween);
+
         decreaseTween = DOTween.To(() => nowMemory, (val) =>
            {
                DisplayRedMemoryGage(val);

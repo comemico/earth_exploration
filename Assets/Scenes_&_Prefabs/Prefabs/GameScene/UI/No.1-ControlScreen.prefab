@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.22745098, g: 0.7529412, b: 0.59607846, a: 1}
+  m_Color: {r: 0, g: 0.90199995, b: 0.66854125, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -831,8 +831,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ab61c45757eae4298d5ef27bd443e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDebugMode: 0
   distancePerMemory: 0.03
-  isInterval: 0
+  gearNum: 0
 --- !u!222 &6985855596533741725
 CanvasRenderer:
   m_ObjectHideFlags: 0

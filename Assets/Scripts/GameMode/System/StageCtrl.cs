@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SoundSystem;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class StageCtrl : MonoBehaviour
 {
@@ -13,14 +14,15 @@ public class StageCtrl : MonoBehaviour
     [Header("このステージのメモリ数")] public int totalMemoryGage;
     #endregion
 
-    //[Header("プレイヤー情報とスタート")] public GrypsManager grypsMg;
     [Header("プレイヤー情報とスタート")] public GrypsController grypsCrl;
-    [Header("スタートポジション")] public GameObject startPosition;
-    [Header("タイムライン")] public TimelineManager timelineMg;
+    [Header("スタートポジション")] public GateManager gateMg;
+    //[Header("プレイヤー情報とスタート")] public GrypsManager grypsMg;
+    //[Header("タイムライン")] public TimelineManager timelineMg;
 
     [HideInInspector] public ControlScreenManager controlScreenMg;
     [HideInInspector] public MemoryGageManager memoryGageMg;
     [HideInInspector] public JetMemoryManager jetMemoryMg;
+    [HideInInspector] public ShutterController shutterMg;
     private SceneTransitionManager sceneTransitionManager;
     private CinemachineController cinemachineCtrl;
 
@@ -49,9 +51,8 @@ public class StageCtrl : MonoBehaviour
     }
     void Start()
     {
-        grypsCrl.transform.position = startPosition.transform.position;
-        ChangeToUncontrol();
-        //grypsCrl.isFreeze = true;
+        state = State.Play;
+        GameStartSequence();
         //Ready();
     }
 
@@ -62,11 +63,31 @@ public class StageCtrl : MonoBehaviour
         memoryGageMg = GetComponentInChildren<MemoryGageManager>();
         jetMemoryMg = GetComponentInChildren<JetMemoryManager>();
         cinemachineCtrl = Camera.main.GetComponent<CinemachineController>();
+        shutterMg = GetComponentInChildren<ShutterController>();
         if (sceneTransitionManager == null || memoryGageMg == null || jetMemoryMg == null || cinemachineCtrl == null)
         {
             Debug.Log("StageCtrl.cs: warning : スクリプトが正しくアタッチされていません");
         }
+    }
 
+    public void GameStartSequence()
+    {
+        gateMg.SetStartPosition(grypsCrl.gameObject); //スタート位置に移動　
+        ChangeToUncontrol();
+        //shutterMg.ShutterClose(true);
+
+        Sequence sequenceStart = DOTween.Sequence();
+
+        //sequenceStart.Append(shutterMg.ShutterOpen(FadeCanvasManager.instance.isFade));//シャッターが開く
+        sequenceStart.AppendInterval(0.25f);//待つ delay
+        sequenceStart.Append(gateMg.OpenHole());//鍵穴が開く 
+        sequenceStart.AppendInterval(0.3f);
+        sequenceStart.AppendCallback(() =>
+        {
+            grypsCrl.rb.constraints = RigidbodyConstraints2D.None;
+            grypsCrl.DashA((int)grypsCrl.transform.localScale.x, 0);
+            sequenceStart.Kill();
+        });
     }
 
     public void ChangeToUncontrol()
@@ -89,9 +110,7 @@ public class StageCtrl : MonoBehaviour
 
     public void Ready()
     {
-
         state = State.Ready;
-        //ChangeToUncontrol();
         /*
         if (GManager.instance.lifeNum > GManager.instance.maxLifeNum)
         {
@@ -100,10 +119,7 @@ public class StageCtrl : MonoBehaviour
         }
         memoryGageMg.memoryGage = GManager.instance.lifeNum;
         memoryGageMg.DisplayMemoryGage(GManager.instance.lifeNum);
-
-         */
-        //memoryGageMg.DotweenBlueGage(0, GManager.instance.lifeNum, 1.0f);
-        //UpdateStageNum();
+        */
     }
 
 
@@ -111,7 +127,6 @@ public class StageCtrl : MonoBehaviour
     {
         state = State.Play;
         ChangeToControl();
-        //grypsCrl.isFreeze = false;
         //cinemachineCtrl.isRock = false;
     }
 
@@ -131,8 +146,8 @@ public class StageCtrl : MonoBehaviour
     public void GameOver()
     {
         state = State.GameOver;
-        timelineMg.TapeChangeUI(2);
-        timelineMg.PlayTimeline();
+        //timelineMg.TapeChangeUI(2);
+        //timelineMg.PlayTimeline();
         //目を暗くする
     }
 
@@ -140,8 +155,8 @@ public class StageCtrl : MonoBehaviour
     public void StageClear()
     {
         state = State.Clear;
-        timelineMg.TapeChangeUI(1);
-        timelineMg.PlayTimeline();
+        //timelineMg.TapeChangeUI(1);
+        //timelineMg.PlayTimeline();
 
         //最大ステージ番号更新(エリアの最大到達番号と同じ)
         if (stageNum == GManager.instance.courseDate[areaNum])
@@ -198,7 +213,6 @@ public class StageCtrl : MonoBehaviour
     {
         FadeCanvasManager.instance.LoadFade("StageSelect");
     }
-
 
 
     /*

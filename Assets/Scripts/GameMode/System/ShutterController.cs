@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class GameStartController : MonoBehaviour
+public class ShutterController : MonoBehaviour
 {
     const float PreHeader = 20f;
 
@@ -32,12 +32,11 @@ public class GameStartController : MonoBehaviour
 
     void Start()
     {
-        ShutterClose(true);
-        ShutterOpen(FadeCanvasManager.instance.isFade);
+        //ShutterClose(true);
     }
 
 
-    public void ShutterOpen(bool isComplete)
+    public Sequence ShutterOpen(bool isComplete = false)
     {
         shutter.anchoredPosition = new Vector2(0f, closevalue_shutterY);
 
@@ -48,6 +47,7 @@ public class GameStartController : MonoBehaviour
         {
             seq_open.Complete();
         }
+        return seq_open;
     }
 
 

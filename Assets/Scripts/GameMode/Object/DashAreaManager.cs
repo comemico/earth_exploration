@@ -10,7 +10,6 @@ public class DashAreaManager : MonoBehaviour
         [InspectorName("左")] left = -1,
     }
 
-    //[Header("パワー")] [Range(0, 3)] public int powerLevel;
     [Header("パワー")] public DashLevel dashPower;
     public enum DashLevel
     {

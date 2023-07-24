@@ -4,7 +4,9 @@ using UnityEngine;
 public class FloorManager : MonoBehaviour
 {
     [Header("フロア配列")] public GameObject[] floor;
-    [Header("開始フロア")] public GameObject startFloor;
+
+    [Header("スタートゲートがあるフロア")] public GameObject startFloor;
+
     //[Header("すべてのCollider配列")] public Collider2D[] allCollider;
 
     void Start()

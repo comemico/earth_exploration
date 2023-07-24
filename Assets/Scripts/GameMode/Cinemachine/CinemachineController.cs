@@ -13,12 +13,11 @@ public class CinemachineController : MonoBehaviour
     [Header("fieldOfViewBox")] public int[] fieldOfViewBox;
     //[Header("field of view : デバック用")] public Text fieldOfView;
 
-    private CinemachineBrain brain;
+    public CinemachineBrain brain;
     private CinemachineFramingTransposer framingTransposer;
     CinemachineVirtualCamera activeVC;
     CinemachineVirtualCamera nearestVC;
 
-    [HideInInspector] public int dashPower;
 
     private void Awake()
     {
@@ -26,24 +25,11 @@ public class CinemachineController : MonoBehaviour
         vcamFloor = GetComponentsInChildren<CinemachineVirtualCamera>();
         framingTransposer = vcamFloor[1].GetCinemachineComponent<CinemachineFramingTransposer>();
         //activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-    }
 
-    public void ActivatedEvent()
-    {
-        DOVirtual.DelayedCall(1.5f, () =>//カメラ移動中待機
-        {
-            player.DashA((int)player.transform.localScale.x, dashPower);
-        }, false);
-
+        //CinemachineBlendDefinition def = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.EaseIn, duration);
+        //Camera.main.GetComponent<CinemachineBrain>().m_DefaultBlend = def;
+        //Camera.main.GetComponent<CinemachineBrain>().m_CustomBlends.m_CustomBlends[0].m_Blend.m_Time = 5;
     }
-
-    /*
-    void FixedUpdate()
-    {
-        fieldOfView.text = "field_of_view : " + (int)brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView;
-        //↑負荷が大きいので実装時は消す
-    }
-    */
 
     public void AttachFramingTransposer(int floorNum)//Timelineで開始カメラがLive状態の時に発火させる
     {
@@ -67,7 +53,7 @@ public class CinemachineController : MonoBehaviour
         DOTween.To(() => framingTransposer.m_ScreenX,
             x => framingTransposer.m_ScreenX = x,
             0.5f - (key * screenX), time)
-            .SetEase(easeType);
+            .SetEase(easeType).SetUpdate(false);
     }
 
     public void ZoomCamera(int boxNum = 0, float time = 1.0f, Ease type = 0)
@@ -84,5 +70,20 @@ public class CinemachineController : MonoBehaviour
         fieldOfViewBox[boxNum], time)
        .SetEase(type);
     }
+
+    /*
+    public void ActivatedEvent()
+    {
+        DOVirtual.DelayedCall(1.5f, () =>//カメラ移動中待機
+        {
+            player.DashA((int)player.transform.localScale.x, dashPower);
+        }, false);
+    }
+    void FixedUpdate()
+    {
+        fieldOfView.text = "field_of_view : " + (int)brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView;
+        //↑負荷が大きいので実装時は消す
+    }
+    */
 
 }

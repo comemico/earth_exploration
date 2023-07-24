@@ -124,6 +124,8 @@ public class GrypsController : MonoBehaviour
     private void FixedUpdate()
     {
         isGround = ground.IsGround();//着地判定
+
+        /*
         if (isGround != isGroundPrev)
         {
             if (isGround == true)
@@ -137,7 +139,6 @@ public class GrypsController : MonoBehaviour
                 isGroundPrev = false;
             }
         }
-        /*
         if (isForce)
         {
             if (gearNum > 1)
@@ -402,10 +403,15 @@ public class GrypsController : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             Turn(key, false);
+            Debug.Log("Turn");
             //transform.localScale = new Vector3(key, transform.localScale.y, transform.localScale.z);
         }
         stageCrl.controlScreenMg.KeyChange(key);
-        rb.AddForce(transform.localScale.x * transform.right * grypsParameter.dashPower[power]);
+
+        Vector2 force = transform.localScale.x * transform.right * grypsParameter.dashPower[power];
+
+        rb.AddForce(force);
+
     }
 
     /*
@@ -587,7 +593,7 @@ public class GrypsController : MonoBehaviour
 
     }
      */
-
+    /*
     private void Landing()
     {
         //カウントアップ
@@ -609,6 +615,7 @@ public class GrypsController : MonoBehaviour
             Debug.Log("Regeneration()");
         }
     }
+     */
 
     private void TakeOff()
     {

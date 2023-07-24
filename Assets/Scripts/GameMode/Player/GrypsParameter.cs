@@ -7,14 +7,14 @@ public class GrypsParameter : MonoBehaviour
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK", "4’iŠK", "5’iŠK", })]
     [Range(5000, 30000)] public int[] boostPower;
 
-    [NamedArrayAttribute(new string[] { "¬", "’†", "‘å" })]
-    [Range(10000, 30000)] public int[] dashPower;
+    [NamedArrayAttribute(new string[] { "ã", "’†", "‘å", "“Á‘å" })]
+    [Range(5000, 30000)] public int[] dashPower;
 
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
     [Range(50000, 100000)] public int[] jetPower;
 
-    [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
-    [Range(0.15f, 0.5f)] public float[] warpTime;
+    [NamedArrayAttribute(new string[] { "ã", "’†", "‹­" })]
+    [Range(0.5f, 0.15f)] public float[] suctionPower;
 
 
     [Range(0.5f, 1.0f)] public float breakPower;
