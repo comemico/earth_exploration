@@ -6,7 +6,7 @@ public class UpsideDownCheck : MonoBehaviour
 {
     [Header("ダウン判定時間")] public float downTimeRange;
     private float timer;
-    private GrypsManager gryps;
+    //private GrypsManager gryps;
 
     private string groundTag = "Ground"; //ただの床
     private string platformTag = "GroundPlatform";//すり抜ける床
@@ -22,8 +22,8 @@ public class UpsideDownCheck : MonoBehaviour
             Debug.Log("stay中");
             if (timer >= downTimeRange)
             {
-                gryps = GetComponentInParent<GrypsManager>();
-                gryps.Down();
+                //gryps = GetComponentInParent<GrypsManager>();
+                //gryps.Down();
 
                 timer = 0.0f;
             }

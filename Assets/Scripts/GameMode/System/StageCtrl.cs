@@ -16,8 +16,6 @@ public class StageCtrl : MonoBehaviour
 
     [Header("プレイヤー情報とスタート")] public GrypsController grypsCrl;
     [Header("スタートポジション")] public GateManager gateMg;
-    //[Header("プレイヤー情報とスタート")] public GrypsManager grypsMg;
-    //[Header("タイムライン")] public TimelineManager timelineMg;
 
     [HideInInspector] public ControlScreenManager controlScreenMg;
     [HideInInspector] public MemoryGageManager memoryGageMg;
@@ -45,16 +43,9 @@ public class StageCtrl : MonoBehaviour
         Clear
     }
 
-
     private void Awake()
     {
         GetAllComponent();
-    }
-    void Start()
-    {
-        state = State.Play;
-        GameStartSequence();
-        //Ready();
     }
 
     void GetAllComponent()
@@ -68,44 +59,44 @@ public class StageCtrl : MonoBehaviour
         pauseMg = GetComponentInChildren<PauseManager>();
     }
 
+    void Start()
+    {
+        Application.targetFrameRate = 50;
+        GameStart();
+    }
+
+    public void GameStart()
+    {
+        state = State.Play;
+        gateMg.SetStartPosition(grypsCrl.gameObject); //スタート位置に移動　
+    }
+
     public void GameStartSequence()
     {
-        gateMg.SetStartPosition(grypsCrl.gameObject); //スタート位置に移動　
-        ChangeToUncontrol();
-        //shutterMg.ShutterClose(true);
-
         Sequence sequenceStart = DOTween.Sequence();
 
-        //sequenceStart.Append(shutterMg.ShutterOpen(FadeCanvasManager.instance.isFade));//シャッターが開く
-        sequenceStart.AppendInterval(0.25f);//待つ delay
         sequenceStart.Append(gateMg.OpenHole());//鍵穴が開く 
-        sequenceStart.AppendInterval(0.45f);
         sequenceStart.AppendCallback(() =>
         {
             grypsCrl.rb.constraints = RigidbodyConstraints2D.None;
             grypsCrl.DashA((int)grypsCrl.transform.localScale.x, 0);
             sequenceStart.Kill();
         });
-
+        /*
+        //shutterMg.ShutterClose(true);
+        sequenceStart.AppendInterval(0.5f);
+        sequenceStart.Append(shutterMg.ShutterOpen(FadeCanvasManager.instance.isFade));//シャッターが開く
+        sequenceStart.AppendInterval(0.5f);//待つ delay
+        sequenceStart.AppendInterval(0.45f);
+         */
     }
 
-    public void ChangeToUncontrol()
+    public void ChangeControlStatus(ControlStatus status)
     {
-        controlStatus = ControlStatus.unControl;
-        controlScreenMg.ChangeControlLimit(false);
+        controlStatus = status;
+        controlScreenMg.ChangeControlLimit(controlStatus == ControlStatus.unControl);
     }
 
-    public void ChangeToControl()
-    {
-        controlStatus = ControlStatus.control;
-        controlScreenMg.ChangeControlLimit(true);
-    }
-
-    public void ChangeToRestrictedControl()
-    {
-        controlStatus = ControlStatus.restrictedControl;
-        controlScreenMg.ChangeControlLimit(true);
-    }
 
     public void Ready()
     {
@@ -120,15 +111,6 @@ public class StageCtrl : MonoBehaviour
         memoryGageMg.DisplayMemoryGage(GManager.instance.lifeNum);
         */
     }
-
-
-    public void GameStart()
-    {
-        state = State.Play;
-        ChangeToControl();
-        //cinemachineCtrl.isRock = false;
-    }
-
 
     public void Lack()
     {
@@ -193,7 +175,7 @@ public class StageCtrl : MonoBehaviour
 
     public void Retry() //ゲームオーバー時、ボタン入力可能
     {
-        SoundController.instance.PlayMenuSe("button02a");
+        //SoundController.instance.PlayMenuSe("button02a");
         FadeCanvasManager.instance.LoadFade(SceneManager.GetActiveScene().name);
         //        Time.timeScale = 1f;
         //        FadeCanvasManager.instance.LoadScene(SceneManager.GetActiveScene().name);

@@ -30,14 +30,15 @@ public class WheelManager : MonoBehaviour
     //public Light2D light2d;
 
     private List<Tween> tweenList = new List<Tween>();
-
-    private void Start()
+    private void Awake()
     {
         grypsCrl = GetComponentInParent<GrypsController>();
-
+        //light2d = GetComponentInChildren<Light2D>();        
+    }
+    private void Start()
+    {
         factorFront = 1 / radiusFront;
         factorRear = 1 / radiusRear;
-        //light2d = GetComponentInChildren<Light2D>();
     }
 
     private void Update()

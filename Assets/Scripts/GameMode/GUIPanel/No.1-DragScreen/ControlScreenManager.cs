@@ -58,15 +58,14 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ChangeControlLimit(bool isRaycast)//, bool isInterval)空中時、ワープ中、etc...
     {
-        crlImage.raycastTarget = isRaycast;
+        crlImage.raycastTarget = !isRaycast;
 
-        if (!isRaycast)//Uncontrolに切替時
+        if (isRaycast)//Uncontrol時に切替時
         {
             speedPowerMg.Release();
             gearNum = 0;
             startPosition.x = currentPosition.x;
         }
-
     }
 
     public void ConsumeMemory(int consumeNum)
@@ -125,7 +124,8 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             if (gearNum >= 1)
             {
                 grypsCrl.Boost(gearNum);
-                stageCrl.ChangeToRestrictedControl();
+                //stageCrl.ChangeToRestrictedControl();
+                stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
                 if (!isDebugMode)
                 {
                     ConsumeMemory(gearNum);
@@ -153,7 +153,8 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
             if (oldKey != key)
             {
-                stageCrl.ChangeToControl();
+                //stageCrl.ChangeToControl();
+                stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
                 grypsCrl.Turn(key, true);
                 KeyChange(key);
             }

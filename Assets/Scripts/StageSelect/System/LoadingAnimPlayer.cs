@@ -5,7 +5,7 @@ using DG.Tweening;
 public class LoadingAnimPlayer : MonoBehaviour
 {
     private const float DURATION = 0.4f;
-
+    private const float RADIUS = 50f;
     Image[] circles;
     CanvasGroup canvasGroup;
 
@@ -21,7 +21,7 @@ public class LoadingAnimPlayer : MonoBehaviour
         for (var i = 0; i < circles.Length; i++)
         {
             var angle = -2 * Mathf.PI * i / circles.Length;
-            circles[i].rectTransform.anchoredPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 50f;
+            circles[i].rectTransform.anchoredPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * RADIUS;
         }
         canvasGroup.alpha = 0f;
     }

@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class FadeCanvasManager : MonoBehaviour
 {
+
     #region//シングルトン
     public static FadeCanvasManager instance;
 
@@ -91,9 +92,6 @@ public class FadeCanvasManager : MonoBehaviour
         }
     }
 
-
-
-
     public void LoadFade(string sceneName)
     {
         isFade = true;
@@ -102,11 +100,11 @@ public class FadeCanvasManager : MonoBehaviour
 
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
-
         tween = backPanel.DOFade(1f, fadeOutTime).OnComplete(() =>
             {
                 StartCoroutine(CoroutineFade());
                 Time.timeScale = 0f;
+                tween.Kill();
             });
     }
 
@@ -133,6 +131,7 @@ public class FadeCanvasManager : MonoBehaviour
         {
             backPanel.blocksRaycasts = false;
             Time.timeScale = 1.0f;
+            tween.Kill();
         });
     }
 

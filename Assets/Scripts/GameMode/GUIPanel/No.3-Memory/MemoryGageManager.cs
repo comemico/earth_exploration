@@ -5,7 +5,7 @@ using DG.Tweening;
 public class MemoryGageManager : MonoBehaviour
 {
     public MemoryCountManager memoryCountMg;
-    public GetMemoryManager getMemoryMg;
+    //public GetMemoryManager getMemoryMg;
 
     [Header("ÉÅÉÇÉä")]
     public GameObject memoryBox;
@@ -35,17 +35,13 @@ public class MemoryGageManager : MonoBehaviour
     public int memoryGage = 0;
     private int oldMemory = 0;
     private Tween decreaseTween = null;
-    /*
+
     private void Awake()
     {
-        DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 500, sequencesCapacity: 50);
-    }
-     */
-
-    private void Start()
-    {
+        //DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 500, sequencesCapacity: 50);
         InitializeMemoryGage();
     }
+
 
     private void Update()
     {

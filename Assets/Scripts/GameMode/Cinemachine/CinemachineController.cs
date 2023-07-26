@@ -53,7 +53,7 @@ public class CinemachineController : MonoBehaviour
         DOTween.To(() => framingTransposer.m_ScreenX,
             x => framingTransposer.m_ScreenX = x,
             0.5f - (key * screenX), time)
-            .SetEase(easeType).SetUpdate(false);
+            .SetEase(easeType);//.SetUpdate(false);
     }
 
     public void ZoomCamera(int boxNum = 0, float time = 1.0f, Ease type = 0)

@@ -22,8 +22,8 @@ public class GrypsController : MonoBehaviour
     // [Header("インターバル")] public float interval;
 
 
-    [Header("エンジン音string")] public string[] engine;
-    [Header("ジェット音string")] public string[] jet;
+    //[Header("エンジン音string")] public string[] engine;
+    //[Header("ジェット音string")] public string[] jet;
     //[Header("当たり範囲")] public float stepOnRate;
     //[Header("最大力")] public int maxSpeed;
     #endregion
@@ -83,16 +83,14 @@ public class GrypsController : MonoBehaviour
 
     private void Awake()
     {
+        AllGetComponent();
     }
 
     void Start()
     {
-        AllGetComponent();
-
         targetVector = Quaternion.Euler(0f, 0f, 360f) * Vector2.up;//ターゲットの角度→ベクター
         //factorDistance = 1 / distancePerMemory;
         //CalcForceDirection();
-
     }
 
     void CalcForceDirection()
@@ -111,15 +109,10 @@ public class GrypsController : MonoBehaviour
         anim = GetComponent<Animator>();
         effectManager = GetComponent<EffectManager>();
         ground = GetComponentInChildren<GroundCheck>();
-        //speedArrow = stageCtrl.speedArrow.GetComponent<SpeedArrowManager>();
-        memoryGageMg = stageCrl.memoryGageMg.GetComponent<MemoryGageManager>();
+        //memoryGageMg = stageCrl.memoryGageMg.GetComponent<MemoryGageManager>();
         jetMemoryMg = stageCrl.jetMemoryMg.GetComponent<JetMemoryManager>();
-
-        if (cinemachineCtrl == null || effectManager == null || ground == null || memoryGageMg == null)
-        {
-            Debug.Log("GrypsManager.cs: warning : スクリプトが正しくアタッチされていません");
-        }
     }
+
     private void FixedUpdate()
     {
         isGround = ground.IsGround();//着地判定
@@ -177,7 +170,7 @@ public class GrypsController : MonoBehaviour
                 if (myAngle >= resultAngle)
                 {
                     somersaultCount++;
-                    memoryGageMg.getMemoryMg.DisplaySomerSaultCount(somersaultCount);
+                    //memoryGageMg.getMemoryMg.DisplaySomerSaultCount(somersaultCount);
                     //memoryGageMg.DotweenBlueGage(memoryGageMg.memoryGage, memoryGageMg.memoryGage + 1, 0.3f);
                     memoryGageMg.memoryGage++;
                     memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage);
@@ -669,7 +662,7 @@ public class GrypsController : MonoBehaviour
             Vector3 force = forceMagnitude * forceDirection;
             rb.AddForce(force, ForceMode2D.Impulse);
             //rb.AddForce(force, ForceMode2D.Force);
-            memoryGageMg.getMemoryMg.AppearPlusMark();
+            //memoryGageMg.getMemoryMg.AppearPlusMark();
             //transform.DOLocalRotate(new Vector3(0, 0, 360f), 0.25f, RotateMode.FastBeyond360);
             nowVector = transform.rotation * Vector2.up;//今の向きのベクター
             resultAngle = (int)Vector2.Angle(nowVector, targetVector);

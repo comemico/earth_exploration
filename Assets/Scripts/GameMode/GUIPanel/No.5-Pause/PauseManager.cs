@@ -30,7 +30,8 @@ public class PauseManager : MonoBehaviour
     public Image bloomImage;
     StageCtrl stageCrl;
     PopController popCtrl;
-    void Start()
+
+    private void Awake()
     {
         InitializeGetComponent();
         AddListener();
@@ -70,24 +71,26 @@ public class PauseManager : MonoBehaviour
     Tween t;
     public void OpenPausePanel()
     {
-        t.Kill(true);
+        //t.Kill(true);
         isPause = true;
         pauseText.enabled = true;
         bloomImage.enabled = true;
         rect_Base.DOLocalRotate(new Vector3(0f, 0f, -30f), 0.2f).SetEase(easeType_TimeScale);
-        t = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.125f).SetEase(easeType_TimeScale).OnComplete(() => push_Pause.interactable = true);
+        Time.timeScale = 0f;
+        //t = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.125f).SetEase(easeType_TimeScale).OnComplete(() => push_Pause.interactable = true);
         popCtrl.OpenPanel();
     }
 
     public void ClosePausePanel(bool isComplete)
     {
-        t.Kill(true);
-        if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない
+        //t.Kill(true);
+        isPause = false;
+        //if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない
         pauseText.enabled = false;
         bloomImage.enabled = false;
         rect_Base.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.15f).SetEase(easeType_TimeScale);
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.125f).SetEase(easeType_TimeScale);
-
+        //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.125f).SetEase(easeType_TimeScale);
+        Time.timeScale = 1f;
         if (isComplete)
         {
             popCtrl.ClosePanel(true);

@@ -40,8 +40,7 @@ public class GateManager : MonoBehaviour
     const int DISTANCE_SUCKEDIN = 15;
     const int DISTANCE_GATE = 10;
     const float APPEARENCE_HEIGHT = 1f;
-
-    private void Start()
+    private void Awake()
     {
         gateCollider = GetComponent<Collider2D>();
         right = transform.GetChild(0).GetComponent<SpriteMask>();
@@ -75,7 +74,7 @@ public class GateManager : MonoBehaviour
         Camera.main.GetComponent<CinemachineController>().ChangeDirection(-1 * (int)gateKey);
         rock.transform.localScale = Vector3.zero;
         gryps.transform.position = new Vector3(transform.position.x + (DISTANCE_GATE * (int)gateKey), transform.position.y - APPEARENCE_HEIGHT, transform.position.z);
-        gryps.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+        gryps.transform.localRotation = Quaternion.Euler(0f, 0f, -1 * (int)gateKey * angle);
         gryps.transform.localScale = new Vector3(-1 * (int)gateKey, transform.localScale.y, transform.localScale.z);
     }
 
@@ -92,7 +91,8 @@ public class GateManager : MonoBehaviour
             {
                 gateCollider.enabled = false;
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
-                grypsCrl.stageCrl.ChangeToControl();//着地後起動するようにする
+                //grypsCrl.stageCrl.ChangeToControl();
+                grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);//着地後起動するようにする
                 FalseMask(GATE_KEY.both);
                 CloseHole();
             }
@@ -113,7 +113,8 @@ public class GateManager : MonoBehaviour
                 FalseMask(gateKey);
                 gateCollider.enabled = false;
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
-                grypsCrl.stageCrl.ChangeToUncontrol();
+                //grypsCrl.stageCrl.ChangeToUncontrol();
+                grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
                 grypsCrl.rb.velocity = Vector2.zero;
                 grypsCrl.transform.DOMoveX((int)gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(false).SetRelative(true).OnComplete(() => CloseHole());
             }

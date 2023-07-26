@@ -9,117 +9,119 @@ namespace SoundSystem
 
     public class SoundController : MonoBehaviour
     {
-        public static SoundController instance;
+        /*
+            public static SoundController instance;
 
-        public List<AudioClip> menuSeAudioClipList = new List<AudioClip>();
-        private AudioSource menuSeAudioSource;
+            public List<AudioClip> menuSeAudioClipList = new List<AudioClip>();
+            private AudioSource menuSeAudioSource;
 
-        public List<AudioClip> bgmAudioClipList = new List<AudioClip>();
-        private AudioSource bgmAudioSource;
+            public List<AudioClip> bgmAudioClipList = new List<AudioClip>();
+            private AudioSource bgmAudioSource;
 
-        public List<AudioClip> engineSeAudioClipList = new List<AudioClip>();
-        private AudioSource engineSeAudioSource;
+            public List<AudioClip> engineSeAudioClipList = new List<AudioClip>();
+            private AudioSource engineSeAudioSource;
 
-        public List<AudioClip> jetSeAudioClipList = new List<AudioClip>();
-        private AudioSource jetSeAudioSource;
+            public List<AudioClip> jetSeAudioClipList = new List<AudioClip>();
+            private AudioSource jetSeAudioSource;
 
-        private List<IEnumerator> fadeCoroutines = new List<IEnumerator>();
+            private List<IEnumerator> fadeCoroutines = new List<IEnumerator>();
 
-        [SerializeField, HeaderAttribute("Audio Mixer")]
-        public AudioMixer audioMixer;
-        public AudioMixerGroup menuSeAMG, bgmAMG, engineSeAMG, jetSeAMG;
+            [SerializeField, HeaderAttribute("Audio Mixer")]
+            public AudioMixer audioMixer;
+            public AudioMixerGroup menuSeAMG, bgmAMG, engineSeAMG, jetSeAMG;
 
-        public AudioMixer effectAudioMixer;
+            public AudioMixer effectAudioMixer;
 
 
-        private void Awake()
-        {
-            if (instance == null)
+            private void Awake()
             {
-                instance = this;
-                DontDestroyOnLoad(this.gameObject);
-            }
-            else
-            {
-                Destroy(this.gameObject);
-                return;
-            }
+                if (instance == null)
+                {
+                    instance = this;
+                    DontDestroyOnLoad(this.gameObject);
+                }
+                else
+                {
+                    Destroy(this.gameObject);
+                    return;
+                }
 
-            menuSeAudioSource = InitializeAudioSource(this.gameObject, false, menuSeAMG);
-            bgmAudioSource = InitializeAudioSource(this.gameObject, true, bgmAMG);
-            engineSeAudioSource = InitializeAudioSource(this.gameObject, true, engineSeAMG);
-            jetSeAudioSource = InitializeAudioSource(this.gameObject, false, jetSeAMG);
-        }
-
-        private AudioSource InitializeAudioSource(GameObject parentGameObject, bool isLoop = false, AudioMixerGroup amg = null)
-        {
-            //このゲームオブジェクトにaudioSourceコンポーネントを追加し、audioSourceの箱を作り、操作できるようになった//
-            AudioSource audioSource = parentGameObject.AddComponent<AudioSource>();
-
-            audioSource.loop = isLoop;
-            audioSource.playOnAwake = false;
-
-            if (amg != null)
-            {
-                audioSource.outputAudioMixerGroup = amg;
+                menuSeAudioSource = InitializeAudioSource(this.gameObject, false, menuSeAMG);
+                bgmAudioSource = InitializeAudioSource(this.gameObject, true, bgmAMG);
+                engineSeAudioSource = InitializeAudioSource(this.gameObject, true, engineSeAMG);
+                jetSeAudioSource = InitializeAudioSource(this.gameObject, false, jetSeAMG);
             }
 
-            //各設定が施されたaudioSourceを返す
-            return audioSource;
-        }
-
-        public void PlayMenuSe(string clipName)
-        {
-            AudioClip audioClip = menuSeAudioClipList.FirstOrDefault(clip => clip.name == clipName);
-
-            if (audioClip == null)
+            private AudioSource InitializeAudioSource(GameObject parentGameObject, bool isLoop = false, AudioMixerGroup amg = null)
             {
-                Debug.Log(clipName + "は見つかりません");
-                return;
+                //このゲームオブジェクトにaudioSourceコンポーネントを追加し、audioSourceの箱を作り、操作できるようになった//
+                AudioSource audioSource = parentGameObject.AddComponent<AudioSource>();
+
+                audioSource.loop = isLoop;
+                audioSource.playOnAwake = false;
+
+                if (amg != null)
+                {
+                    audioSource.outputAudioMixerGroup = amg;
+                }
+
+                //各設定が施されたaudioSourceを返す
+                return audioSource;
             }
-            menuSeAudioSource.Play(audioClip);
-        }
 
-        public void PlayBGM(string clipName)
-        {
-            AudioClip audioClip = bgmAudioClipList.FirstOrDefault(clip => clip.name == clipName);
-
-            if (audioClip == null)
+            public void PlayMenuSe(string clipName)
             {
-                Debug.Log(clipName + "は見つかりません");
-                return;
+                AudioClip audioClip = menuSeAudioClipList.FirstOrDefault(clip => clip.name == clipName);
+
+                if (audioClip == null)
+                {
+                    Debug.Log(clipName + "は見つかりません");
+                    return;
+                }
+                menuSeAudioSource.Play(audioClip);
             }
-            bgmAudioSource.Play(audioClip);
-        }
 
-        public void PlayEngineSe(string clipName)
-        {
-            AudioClip audioClip = engineSeAudioClipList.FirstOrDefault(clip => clip.name == clipName);
-
-            if (audioClip == null)
+            public void PlayBGM(string clipName)
             {
-                Debug.Log(clipName + "は見つかりません");
-                return;
+                AudioClip audioClip = bgmAudioClipList.FirstOrDefault(clip => clip.name == clipName);
+
+                if (audioClip == null)
+                {
+                    Debug.Log(clipName + "は見つかりません");
+                    return;
+                }
+                bgmAudioSource.Play(audioClip);
             }
-            engineSeAudioSource.Play(audioClip);
-        }
 
-        public void PlayJetSe(string clipName)
-        {
-            AudioClip audioClip = jetSeAudioClipList.FirstOrDefault(clip => clip.name == clipName);
-
-            if (audioClip == null)
+            public void PlayEngineSe(string clipName)
             {
-                Debug.Log(clipName + "は見つかりません");
-                return;
-            }
-            jetSeAudioSource.Play(audioClip);
-        }
+                AudioClip audioClip = engineSeAudioClipList.FirstOrDefault(clip => clip.name == clipName);
 
-        public void StopEngine()
-        {
-            engineSeAudioSource.Stop();
-        }
+                if (audioClip == null)
+                {
+                    Debug.Log(clipName + "は見つかりません");
+                    return;
+                }
+                engineSeAudioSource.Play(audioClip);
+            }
+
+            public void PlayJetSe(string clipName)
+            {
+                AudioClip audioClip = jetSeAudioClipList.FirstOrDefault(clip => clip.name == clipName);
+
+                if (audioClip == null)
+                {
+                    Debug.Log(clipName + "は見つかりません");
+                    return;
+                }
+                jetSeAudioSource.Play(audioClip);
+            }
+
+            public void StopEngine()
+            {
+                engineSeAudioSource.Stop();
+            }
+        */
 
     }
 }

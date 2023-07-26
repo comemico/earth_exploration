@@ -30,12 +30,6 @@ public class ShutterController : MonoBehaviour
     }
 
 
-    void Start()
-    {
-        //ShutterClose(true);
-    }
-
-
     public Sequence ShutterOpen(bool isComplete = false)
     {
         shutter.anchoredPosition = new Vector2(0f, closevalue_shutterY);

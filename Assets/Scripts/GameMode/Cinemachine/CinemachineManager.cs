@@ -38,7 +38,7 @@ public class CinemachineManager : MonoBehaviour
             if (brain.ActiveBlend.BlendWeight >= 0.55f)
             {
                 ToFloorVcam(vcamNum);
-                player.GetComponent<GrypsManager>().ExitWarp(1);
+                //player.GetComponent<GrypsManager>().ExitWarp(1);
             }
         }
 

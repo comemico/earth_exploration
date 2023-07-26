@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SoundSystem;
 
-
+/*
 public class GrypsManager : MonoBehaviour
 {
     #region//インスペクターで設定する
@@ -349,7 +349,7 @@ public class GrypsManager : MonoBehaviour
         isInterval = true;
         effectManager.Brake(false);
         speedArrow.Release();
-        SoundController.instance.StopEngine();
+        //SoundController.instance.StopEngine();
         anim.SetFloat("boost", 0);
         anim.SetTrigger("boostRelease");
 
@@ -468,7 +468,7 @@ public class GrypsManager : MonoBehaviour
             anim.SetFloat("jet", 0);
             anim.SetTrigger("release");
 
-            SoundController.instance.PlayJetSe(jet[3]);
+            //SoundController.instance.PlayJetSe(jet[3]);
             jetMemory = 0;
             if (oldJetMemory != jetMemory)
             {
@@ -509,7 +509,7 @@ public class GrypsManager : MonoBehaviour
         }
 
         effectManager.JetEffect();
-        SoundController.instance.PlayJetSe(jet[3]);
+        //SoundController.instance.PlayJetSe(jet[3]);
         intervalTimer = 0.0f;
         isInterval = true;
 
@@ -629,3 +629,4 @@ public class GrypsManager : MonoBehaviour
     }
 
 }
+*/
