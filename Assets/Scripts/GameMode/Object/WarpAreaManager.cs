@@ -35,7 +35,7 @@ public class WarpAreaManager : MonoBehaviour
 
     const int DISTANCE_SUCKEDIN = 17;
     const int DISTANCE_WARP = 10;
-    private void Start()
+    private void Awake()
     {
         warpCollider = GetComponent<Collider2D>();
         right = transform.GetChild(0).GetComponent<SpriteMask>();
@@ -76,7 +76,6 @@ public class WarpAreaManager : MonoBehaviour
                 warpCollider.enabled = false;
                 grypsCrl.rb.velocity = Vector2.zero;
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
-                //grypsCrl.stageCrl.ChangeToUncontrol();
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
                 grypsCrl.transform.DOMoveX((int)entranceKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPower]).SetRelative(true).SetUpdate(false)
                        .OnComplete(() =>
@@ -84,9 +83,10 @@ public class WarpAreaManager : MonoBehaviour
                            destination.FalseMask(destination.entranceKey);
                            grypsCrl.transform.position = new Vector3(destination.transform.position.x + (DISTANCE_WARP * (int)destination.entranceKey), destination.transform.position.y + 2.5f, destination.transform.position.z);
                            grypsCrl.transform.localScale = new Vector3(-1 * (int)destination.entranceKey, transform.localScale.y, transform.localScale.z);
-                           int floorNum = GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent.parent.gameObject);
 
-                           Camera.main.GetComponent<CinemachineController>().ToFloorVcam(floorNum, (int)destination.entranceKey * (-1));
+                           GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent.parent.transform, -1 * (int)destination.entranceKey);
+                           //Camera.main.GetComponent<CinemachineController>().ToFloorVcam(floorNum, (int)destination.entranceKey * (-1));
+
                            DOVirtual.DelayedCall(Camera.main.GetComponent<CinemachineController>().brain.m_CustomBlends.m_CustomBlends[0].m_Blend.m_Time, () =>
                            {
                                grypsCrl.DashA((int)grypsCrl.transform.localScale.x, destination.dashPower);
@@ -108,7 +108,6 @@ public class WarpAreaManager : MonoBehaviour
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
             {
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
-                //grypsCrl.stageCrl.ChangeToControl();
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
                 FalseMask(ENTRANCE_KEY.both);
             }

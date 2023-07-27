@@ -43836,7 +43836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930834764}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5999994, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -76559,7 +76559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce5e947e5e136742b8ee10a3132effb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gateKey: 1
+  gateKey: -1
   suctionPow: 0
   angle: 20
   endValue: 5
@@ -76619,7 +76619,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597937672}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -30, y: 5, z: 0}
+  m_LocalPosition: {x: -13.05, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -76998,7 +76998,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680017953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.8999996, z: -13}
+  m_LocalPosition: {x: 0, y: 6.3999996, z: -13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -77069,7 +77069,7 @@ MonoBehaviour:
   m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 0
+    m_Style: 6
     m_Time: 3
     m_CustomCurve:
       serializedVersion: 2
@@ -77296,7 +77296,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.65
-  m_CameraDistance: 15
+  m_CameraDistance: 13
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -98168,7 +98168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floor: []
-  startFloor: {fileID: 201327432}
 --- !u!1 &2083593066
 GameObject:
   m_ObjectHideFlags: 0
@@ -100213,7 +100212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8393327615752564915}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -112430,7 +112429,6 @@ MonoBehaviour:
   grypsParameter: {fileID: 8393327615752564921}
   wheelMg: {fileID: 2474836900668659578}
   isDebugMode: 0
-  jetLevel: 
   targetAngle: 0
   forceMagnitude: 0
   forceAngle: 0

@@ -9,24 +9,23 @@ public class GrypsController : MonoBehaviour
 {
     public GrypsParameter grypsParameter;
     public WheelManager wheelMg;
-    #region//インスペクターで設定する
 
+    #region//インスペクターで設定する
     [Header("デバックモード切替ボタン")] public bool isDebugMode;
-    [Header("JetLevel")] public int[] jetLevel;
     [Header("サマーソルト終了時角度(何度傾けるか)")] public float targetAngle;
     [Header("力")] public float forceMagnitude;
     [Header("角度")] public float forceAngle;
+    #endregion
+
+    //[Header("JetLevel")] public int[] jetLevel;
     //[Header("1メモリ当たりのスワイプ距離")] public float distancePerMemory;
     //[Header("BoostLevel")] public int[] boostLevel;
     //[Header("DashLevel")] public int[] dashLevel;
     // [Header("インターバル")] public float interval;
-
-
     //[Header("エンジン音string")] public string[] engine;
     //[Header("ジェット音string")] public string[] jet;
     //[Header("当たり範囲")] public float stepOnRate;
     //[Header("最大力")] public int maxSpeed;
-    #endregion
 
     [Header("stageCtrl")] public StageCtrl stageCrl;
     [Header("SomersaultButton")] public Button somersaultButton;
@@ -41,7 +40,7 @@ public class GrypsController : MonoBehaviour
     //[Header("BoostArrow")] public SpeedArrowManager speedArrow;
 
     #region//プライベート変数
-    private Vector2 startPos;
+    //private Vector2 startPos;
     private Vector3 forceDirection = new Vector3(1f, 1f, 1f);
     public Rigidbody2D rb = null;
     private Animator anim = null;
@@ -110,7 +109,7 @@ public class GrypsController : MonoBehaviour
         effectManager = GetComponent<EffectManager>();
         ground = GetComponentInChildren<GroundCheck>();
         //memoryGageMg = stageCrl.memoryGageMg.GetComponent<MemoryGageManager>();
-        jetMemoryMg = stageCrl.jetMemoryMg.GetComponent<JetMemoryManager>();
+        //jetMemoryMg = stageCrl.jetMemoryMg.GetComponent<JetMemoryManager>();
     }
 
     private void FixedUpdate()
@@ -463,7 +462,7 @@ public class GrypsController : MonoBehaviour
 
         if (oldJetMemory != jetMemory)
         {
-            jetMemoryMg.DotweenJetMemory(oldJetMemory, jetMemory);
+            //jetMemoryMg.DotweenJetMemory(oldJetMemory, jetMemory);
             anim.SetFloat("jet", jetMemory);
             oldJetMemory = jetMemory;
         }

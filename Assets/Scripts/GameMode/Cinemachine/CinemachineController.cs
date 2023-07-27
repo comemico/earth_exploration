@@ -23,9 +23,9 @@ public class CinemachineController : MonoBehaviour
     {
         brain = GetComponent<CinemachineBrain>();
         vcamFloor = GetComponentsInChildren<CinemachineVirtualCamera>();
-        framingTransposer = vcamFloor[1].GetCinemachineComponent<CinemachineFramingTransposer>();
-        //activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
 
+        //framingTransposer = vcamFloor[1].GetCinemachineComponent<CinemachineFramingTransposer>();
+        //activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
         //CinemachineBlendDefinition def = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.EaseIn, duration);
         //Camera.main.GetComponent<CinemachineBrain>().m_DefaultBlend = def;
         //Camera.main.GetComponent<CinemachineBrain>().m_CustomBlends.m_CustomBlends[0].m_Blend.m_Time = 5;
@@ -42,10 +42,16 @@ public class CinemachineController : MonoBehaviour
         AttachFramingTransposer(floorNum);
         framingTransposer.m_ScreenX = 0.5f - (destinationKey * screenX);
 
-        brain.ActiveVirtualCamera.Follow = null;
-        brain.ActiveVirtualCamera.Priority = 0;
-        vcamFloor[floorNum].Follow = player.transform;
+
+        for (int i = 0; i < vcamFloor.Length; i++)
+        {
+            vcamFloor[i].Priority = 0;
+            vcamFloor[i].Follow = null;
+        }
+
         vcamFloor[floorNum].Priority = 10;
+        vcamFloor[floorNum].Follow = player.transform;
+
     }
 
     public void ChangeDirection(int key)

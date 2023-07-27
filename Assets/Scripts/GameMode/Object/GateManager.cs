@@ -19,6 +19,7 @@ public class GateManager : MonoBehaviour
     [Header("時間")]
     public float easeDuration;
 
+
     public enum GATE_KEY
     {
         [InspectorName("両方")] both = 0,
@@ -36,12 +37,14 @@ public class GateManager : MonoBehaviour
     Transform rock;
     GrypsController grypsCrl;
     Collider2D gateCollider;
+    FloorManager floorMg;
 
     const int DISTANCE_SUCKEDIN = 15;
     const int DISTANCE_GATE = 10;
     const float APPEARENCE_HEIGHT = 1f;
     private void Awake()
     {
+        floorMg = GetComponentInParent<FloorManager>();
         gateCollider = GetComponent<Collider2D>();
         right = transform.GetChild(0).GetComponent<SpriteMask>();
         left = transform.GetChild(1).GetComponent<SpriteMask>();
@@ -71,11 +74,12 @@ public class GateManager : MonoBehaviour
     public void SetStartPosition(GameObject gryps)
     {
         FalseMask(gateKey);
-        Camera.main.GetComponent<CinemachineController>().ChangeDirection(-1 * (int)gateKey);
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
         rock.transform.localScale = Vector3.zero;
         gryps.transform.position = new Vector3(transform.position.x + (DISTANCE_GATE * (int)gateKey), transform.position.y - APPEARENCE_HEIGHT, transform.position.z);
         gryps.transform.localRotation = Quaternion.Euler(0f, 0f, -1 * (int)gateKey * angle);
         gryps.transform.localScale = new Vector3(-1 * (int)gateKey, transform.localScale.y, transform.localScale.z);
+        floorMg.ActiveFloor(transform.parent.transform, -1 * (int)gateKey);
     }
 
     private void OnTriggerExit2D(Collider2D collision)//start用　
@@ -91,7 +95,6 @@ public class GateManager : MonoBehaviour
             {
                 gateCollider.enabled = false;
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
-                //grypsCrl.stageCrl.ChangeToControl();
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);//着地後起動するようにする
                 FalseMask(GATE_KEY.both);
                 CloseHole();
@@ -113,7 +116,6 @@ public class GateManager : MonoBehaviour
                 FalseMask(gateKey);
                 gateCollider.enabled = false;
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
-                //grypsCrl.stageCrl.ChangeToUncontrol();
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
                 grypsCrl.rb.velocity = Vector2.zero;
                 grypsCrl.transform.DOMoveX((int)gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(false).SetRelative(true).OnComplete(() => CloseHole());
