@@ -25,7 +25,7 @@ public class GrypsModel : MonoBehaviour
     [Header("Effect")] EffectManager effectManager;
     [Header("Cinemachine")] CinemachineController cinemachineCtrl;
     [Header("MemoryGage")] public MemoryGageManager memoryGageMg;
-    [Header("JetMemory")] public JetMemoryManager jetMemoryMg;
+    [Header("JetMemory")] public JetManager jetMemoryMg;
 
     #region//プライベート変数
     private Vector3 forceDirection = new Vector3(1f, 1f, 1f);

@@ -33,7 +33,7 @@ public class WarpAreaManager : MonoBehaviour
 
     Collider2D warpCollider;
 
-    const int DISTANCE_SUCKEDIN = 17;
+    const int DISTANCE_SUCKEDIN = 15;
     const int DISTANCE_WARP = 10;
     private void Awake()
     {
@@ -75,7 +75,7 @@ public class WarpAreaManager : MonoBehaviour
                 FalseMask(entranceKey);
                 warpCollider.enabled = false;
                 grypsCrl.rb.velocity = Vector2.zero;
-                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
+                //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
                 grypsCrl.transform.DOMoveX((int)entranceKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPower]).SetRelative(true).SetUpdate(false)
                        .OnComplete(() =>
@@ -89,7 +89,7 @@ public class WarpAreaManager : MonoBehaviour
 
                            DOVirtual.DelayedCall(Camera.main.GetComponent<CinemachineController>().brain.m_CustomBlends.m_CustomBlends[0].m_Blend.m_Time, () =>
                            {
-                               grypsCrl.DashA((int)grypsCrl.transform.localScale.x, destination.dashPower);
+                               grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, destination.dashPower);
                            }, false);
                        });
             }
@@ -107,7 +107,7 @@ public class WarpAreaManager : MonoBehaviour
 
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
             {
-                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
+                //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
                 FalseMask(ENTRANCE_KEY.both);
             }

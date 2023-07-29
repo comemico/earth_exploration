@@ -61,7 +61,7 @@ public class DashAreaManager : MonoBehaviour
             {
                 KeyNum = (int)key;
             }
-            collision.gameObject.GetComponent<GrypsController>().DashA(KeyNum, (int)dashPower);
+            collision.gameObject.GetComponent<GrypsController>().ForceDash(KeyNum, (int)dashPower);
             //collision.gameObject.GetComponent<GrypsController>().Dash((int)dashPower, directionLimit, (int)transform.localScale.x);
         }
     }

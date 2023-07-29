@@ -4,11 +4,9 @@ using UnityEngine;
 
 public static class List_Tween_Extension
 {
-    // リスト内のすべてのアニメーションを停止します
-    public static void KillAllAndClear(this List<Tween> self)
+    public static void KillAllAndClear(this List<Tween> self)// リスト内のすべてのアニメーションを停止します
     {
-        //Debug.Log(self.Count);
-        self.ForEach(tween => tween.Kill(true));
+        self.ForEach(tween => tween.Kill(true));//sequenceを入れている場合、1つのsequenceをKillしていることになる
         self.Clear();
     }
 }

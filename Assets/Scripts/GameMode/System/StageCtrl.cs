@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using SoundSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
@@ -17,15 +16,11 @@ public class StageCtrl : MonoBehaviour
     [Header("プレイヤー情報とスタート")] public GrypsController grypsCrl;
     [Header("スタートポジション")] public GateManager gateMg;
 
-    [HideInInspector] public ControlScreenManager controlScreenMg;
-    [HideInInspector] public MemoryGageManager memoryGageMg;
-    [HideInInspector] public JetMemoryManager jetMemoryMg;
-    [HideInInspector] public PauseManager pauseMg;
-    [HideInInspector] public ShutterController shutterMg;
-    private SceneTransitionManager sceneTransitionManager;
-    private CinemachineController cinemachineCtrl;
-
     public ControlStatus controlStatus;
+    public State state;
+
+    SceneTransitionManager sceneTransitionManager;
+
     public enum ControlStatus
     {
         [InspectorName("操作不能")] unControl,
@@ -33,7 +28,6 @@ public class StageCtrl : MonoBehaviour
         [InspectorName("操作一部可能")] restrictedControl
     }
 
-    public State state;
     public enum State
     {
         Ready,
@@ -43,6 +37,14 @@ public class StageCtrl : MonoBehaviour
         Clear
     }
 
+    [Header("No.1")] [HideInInspector] public ControlScreenManager controlScreenMg;
+
+    [Header("No.3")] [HideInInspector] public MemoryGageManager memoryGageMg;
+    [Header("No.4")] [HideInInspector] public JetManager jetMg;
+    [Header("No.5")] [HideInInspector] public PauseManager pauseMg;
+    [Header("No.6")] [HideInInspector] public ResultManager resultMg;
+    [Header("No.7")] [HideInInspector] public ShutterController shutterMg;
+
     private void Awake()
     {
         GetAllComponent();
@@ -50,13 +52,14 @@ public class StageCtrl : MonoBehaviour
 
     void GetAllComponent()
     {
-        sceneTransitionManager = GetComponent<SceneTransitionManager>();
         controlScreenMg = GetComponentInChildren<ControlScreenManager>();
         memoryGageMg = GetComponentInChildren<MemoryGageManager>();
-        jetMemoryMg = GetComponentInChildren<JetMemoryManager>();
-        cinemachineCtrl = Camera.main.GetComponent<CinemachineController>();
-        shutterMg = GetComponentInChildren<ShutterController>();
+        jetMg = GetComponentInChildren<JetManager>();
+        resultMg = GetComponentInChildren<ResultManager>();
         pauseMg = GetComponentInChildren<PauseManager>();
+        shutterMg = GetComponentInChildren<ShutterController>();
+
+        sceneTransitionManager = GetComponent<SceneTransitionManager>();
     }
 
     void Start()
@@ -71,7 +74,7 @@ public class StageCtrl : MonoBehaviour
         gateMg.SetStartPosition(grypsCrl.gameObject); //スタート位置に移動　
     }
 
-    public void GameStartSequence()
+    public void EnterStageSequence()
     {
         Sequence sequenceStart = DOTween.Sequence();
 
@@ -79,7 +82,7 @@ public class StageCtrl : MonoBehaviour
         sequenceStart.AppendCallback(() =>
         {
             grypsCrl.rb.constraints = RigidbodyConstraints2D.None;
-            grypsCrl.DashA((int)grypsCrl.transform.localScale.x, 0);
+            grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 0);
             sequenceStart.Kill();
         });
         /*
@@ -87,7 +90,6 @@ public class StageCtrl : MonoBehaviour
         sequenceStart.AppendInterval(0.5f);
         sequenceStart.Append(shutterMg.ShutterOpen(FadeCanvasManager.instance.isFade));//シャッターが開く
         sequenceStart.AppendInterval(0.5f);//待つ delay
-        sequenceStart.AppendInterval(0.45f);
          */
     }
 
@@ -95,6 +97,7 @@ public class StageCtrl : MonoBehaviour
     {
         controlStatus = status;
         controlScreenMg.ChangeControlLimit(controlStatus == ControlStatus.unControl);
+        pauseMg.push_Pause.interactable = (controlStatus != ControlStatus.unControl);
     }
 
 
@@ -123,6 +126,13 @@ public class StageCtrl : MonoBehaviour
         state = State.Play;
         //目の点滅を戻す
     }
+    /*
+    public void ResultA(ResultManager.RESULT result)
+    {
+        state = State.Clear;
+        ChangeControlStatus(ControlStatus.unControl);
+    }
+     */
 
     public void GameOver()
     {
@@ -163,7 +173,8 @@ public class StageCtrl : MonoBehaviour
             case State.Lack:
                 if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && !grypsCrl.isFreeze)
                 {
-                    grypsCrl.PausePlayer();
+                    //grypsCrl.PausePlayer();
+                    ChangeControlStatus(ControlStatus.unControl);
                     GameOver();
                     return;
                 }

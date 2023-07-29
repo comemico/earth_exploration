@@ -10,12 +10,10 @@ public class GrypsController : MonoBehaviour
     public GrypsParameter grypsParameter;
     public WheelManager wheelMg;
 
-    #region//インスペクターで設定する
     [Header("デバックモード切替ボタン")] public bool isDebugMode;
     [Header("サマーソルト終了時角度(何度傾けるか)")] public float targetAngle;
     [Header("力")] public float forceMagnitude;
     [Header("角度")] public float forceAngle;
-    #endregion
 
     //[Header("JetLevel")] public int[] jetLevel;
     //[Header("1メモリ当たりのスワイプ距離")] public float distancePerMemory;
@@ -29,17 +27,12 @@ public class GrypsController : MonoBehaviour
 
     [Header("stageCtrl")] public StageCtrl stageCrl;
     [Header("SomersaultButton")] public Button somersaultButton;
-    //[Header("JetButton")] public Image rocketImg;
-
     [Header("GroundCheck")] GroundCheck ground;
     [Header("Effect")] EffectManager effectManager;
     [Header("Cinemachine")] CinemachineController cinemachineCtrl;
-
     [Header("MemoryGage")] public MemoryGageManager memoryGageMg;
-    [Header("JetMemory")] public JetMemoryManager jetMemoryMg;
-    //[Header("BoostArrow")] public SpeedArrowManager speedArrow;
+    [Header("JetMemory")] public JetManager jetMemoryMg;
 
-    #region//プライベート変数
     //private Vector2 startPos;
     private Vector3 forceDirection = new Vector3(1f, 1f, 1f);
     public Rigidbody2D rb = null;
@@ -78,6 +71,7 @@ public class GrypsController : MonoBehaviour
     private Vector2 nowVector;
     public bool isSomersault = false;
 
+    #region//プライベート変数
     #endregion
 
     private void Awake()
@@ -108,23 +102,17 @@ public class GrypsController : MonoBehaviour
         anim = GetComponent<Animator>();
         effectManager = GetComponent<EffectManager>();
         ground = GetComponentInChildren<GroundCheck>();
-        //memoryGageMg = stageCrl.memoryGageMg.GetComponent<MemoryGageManager>();
-        //jetMemoryMg = stageCrl.jetMemoryMg.GetComponent<JetMemoryManager>();
     }
 
     private void FixedUpdate()
     {
         isGround = ground.IsGround();//着地判定
-        var tes = rb.velocity.normalized;
-        float ang = Vector2.Angle(rb.velocity, Vector2.right);
-        //transform.localRotation = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, Quaternion.Lerp(transform.localRotation, ang, 0.5f));
 
-        /*
         if (isGround != isGroundPrev)
         {
             if (isGround == true)
             {
-                Landing();
+                Land();
                 isGroundPrev = true;
             }
             else if (isGround == false)
@@ -133,6 +121,13 @@ public class GrypsController : MonoBehaviour
                 isGroundPrev = false;
             }
         }
+
+        /*
+        var tes = rb.velocity.normalized;
+        float ang = Vector2.Angle(rb.velocity, Vector2.right);
+        transform.localRotation = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, Quaternion.Lerp(transform.localRotation, ang, 0.5f));
+         */
+        /*
         if (isForce)
         {
             if (gearNum > 1)
@@ -149,7 +144,7 @@ public class GrypsController : MonoBehaviour
             rb.velocity *= grypsParameter.breakPower;
             if (Mathf.Abs(rb.velocity.x) <= 0.25f)
             {
-                Brake(false);
+                Brake(false);//velocityが 0.25f以下で解除
             }
         }
 
@@ -370,10 +365,8 @@ public class GrypsController : MonoBehaviour
         transform.localScale = new Vector3(key, transform.localScale.y, transform.localScale.z);
         if (isBrake)
         {
-            Brake(true);
+            Brake(true);//ControlScreenから呼ばれる
         }
-        //effectManager.Brake(true);
-        //isBrake = true;
     }
 
     public void Brake(bool isBrake)
@@ -381,62 +374,48 @@ public class GrypsController : MonoBehaviour
         this.isBrake = isBrake;
         effectManager.Brake(isBrake);
         wheelMg.WheelBlade(isBrake);
-        //BrakeEffect();
     }
 
-    public void Boost(int gearNum)//, int key)
+    public void ForceBoost(int gearNum)
     {
-        Brake(false);//掛かっているブレーキを解除する念のため
-        rb.AddForce(transform.localScale.x * transform.right * grypsParameter.boostPower[gearNum - 1]);
+        Brake(false);//ForceBoost()でブレーキを解除
         effectManager.JetEffect();
+        Vector2 force = transform.localScale.x * transform.right * grypsParameter.boostPower[gearNum - 1];
+        rb.AddForce(force);
     }
 
-    public void DashA(int key, int power)
+    public void ForceDash(int key, int power)
     {
-        if (key != transform.localScale.x)
+        Brake(false);//ForceDash()でブレーキを解除
+        if (key != (int)transform.localScale.x)
         {
             rb.velocity = Vector2.zero;
             Turn(key, false);
-            Debug.Log("Turn");
-            //transform.localScale = new Vector3(key, transform.localScale.y, transform.localScale.z);
         }
         stageCrl.controlScreenMg.KeyChange(key);
-
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.dashPower[power];
         rb.AddForce(force);
+    }
 
+    public void ForceJet(int power)
+    {
+        Brake(false);//ForceJet()でブレーキを解除
+        Vector2 force = transform.localScale.x * transform.right * grypsParameter.jetPower[power];
+        rb.AddForce(force);
+    }
+
+    private void Land()
+    {
+        stageCrl.jetMg.StartUpJetHud();
+    }
+
+    private void TakeOff()
+    {
+
+        //サマーソルトHud起動
     }
 
     /*
-    public void SuckedIn()
-    {
-        //対象の位置へ移動する
-        //操作不能にする
-    }
-
-    public void EjectFrom()
-    {
-        //向きを出口の方向に向かせる
-        //指定のForceを加える
-        //操作可能にする
-    }
-    public void EnterWarp(Transform transferDestination)
-    {
-        PausePlayer();
-        transform.position = transferDestination.position;
-        transform.localScale = new Vector3((int)transferDestination.localScale.x, transform.localScale.y, transform.localScale.z);
-    }
-
-    public void ExitWarp(int forceNum)
-    {
-        DashA((int)transform.localScale.x, 0);
-        //rb.velocity = new Vector2(3f, 0f);
-        // rb.AddForce(transform.localScale.x * transform.right * dashLevel[forceNum]);
-    }
-     */
-
-
-
     private void JetCount(int somersaultCount)
     {
         jetMemory += somersaultCount;
@@ -486,34 +465,6 @@ public class GrypsController : MonoBehaviour
 
     }
 
-
-    public void RecIsJet()
-    {
-        passedIsJet = isJet;
-    }
-
-    public void GetUpJet()
-    {
-        if (isJet)
-        {
-            return;
-        }
-        isJet = true;
-        //rocketImg.color = new Color(255f, 255f, 255f, 255f);
-    }
-    public void GetDownJet()
-    {
-        if (!isJet)
-        {
-            return;
-        }
-        isJet = false;
-        //rocketImg.color = new Color(255f, 255f, 255f, 0.4f);
-        //jetcount = 0;
-    }
-
-
-    /*
     public void OnRocketButton()
     {
         if (isFreeze)
@@ -548,44 +499,34 @@ public class GrypsController : MonoBehaviour
             StartCoroutine(DelayMethod(1.0f, () => { cinemachineCtrl.ZoomCamera(); }));
         }
     }
-     */
+    */
 
-    private IEnumerator DelayMethod(float waitTime, Action action)
+
+    public void RecIsJet()
     {
-        yield return new WaitForSeconds(waitTime);
-        action();
+        passedIsJet = isJet;
     }
 
-    /*
-    public void DashPanel(int levelNum = 0, bool directionLimit = false, int direction = 1)
+    public void GetUpJet()
     {
-
-        if (directionLimit)//方向制限の有無...(AccelerationArea)側で操作
+        if (isJet)
         {
-            if (key != direction)//反対方向の場合...(Player)と(AccelerationArea)の向きを比べる
-            {
-                key = direction;
-                rb.velocity = new Vector2((0.2f * direction), 0);//keyが変わり、velocityが0.25以下になるまでブレーキ(isBrake=true)が掛かり続けてしまう
-                isBrake = false;//掛かっているブレーキを解除する念のため
-            }
+            return;
         }
-
-        if (key >= 0)
-        {
-            this.rb.AddForce(transform.right * dashLevel[levelNum]);
-        }
-        else if (key < 0)
-        {
-            this.rb.AddForce(-transform.right * dashLevel[levelNum]);
-        }
-
-        effectManager.JetEffect();
-        SoundController.instance.PlayJetSe(jet[3]);
-        intervalTimer = 0.0f;
-        isInterval = true;
-
+        isJet = true;
+        //rocketImg.color = new Color(255f, 255f, 255f, 255f);
     }
-     */
+    public void GetDownJet()
+    {
+        if (!isJet)
+        {
+            return;
+        }
+        isJet = false;
+        //rocketImg.color = new Color(255f, 255f, 255f, 0.4f);
+        //jetcount = 0;
+    }
+
     /*
     private void Landing()
     {
@@ -610,39 +551,14 @@ public class GrypsController : MonoBehaviour
     }
      */
 
-    private void TakeOff()
+
+
+    private IEnumerator DelayMethod(float waitTime, Action action)
     {
-        somersaultButton.interactable = true; //ボタン表示
+        yield return new WaitForSeconds(waitTime);
+        action();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == deadAreaTag)
-        {
-            Down();
-        }
-        else if (collision.tag == clearAreaTag)
-        {
-            isFreeze = true;
-            transform.DOMove(collision.transform.position, 0.35f)
-                .OnComplete(() =>
-                {
-                    Clear();
-                });
-        }
-    }
-
-    public void Down()
-    {
-        PausePlayer();
-        stageCrl.GameOver();
-    }
-
-    public void Clear()
-    {
-        PausePlayer();
-        stageCrl.StageClear();
-    }
 
     public void PausePlayer()
     {
@@ -651,7 +567,6 @@ public class GrypsController : MonoBehaviour
         //speedArrow.CompleteSequence(key);
         //transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);//回転リセット
     }
-
 
     public void SomerSault(float angularChangeInDegrees)
     {

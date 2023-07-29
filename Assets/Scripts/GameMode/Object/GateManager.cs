@@ -9,7 +9,7 @@ public class GateManager : MonoBehaviour
 
     [Header("吸引力")] public SUCTION suctionPow;
 
-    [Header("角度")] [Range(0, 90)] public int angle;
+    [Header("角度")] [Range(0, 45)] public int angle;
 
     [Header("---イージング: 鍵穴----")]
     [Header("終了値")]
@@ -94,8 +94,8 @@ public class GateManager : MonoBehaviour
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
             {
                 gateCollider.enabled = false;
-                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);//着地後起動するようにする
+                //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
                 FalseMask(GATE_KEY.both);
                 CloseHole();
             }
@@ -115,10 +115,19 @@ public class GateManager : MonoBehaviour
             {
                 FalseMask(gateKey);
                 gateCollider.enabled = false;
-                grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
+
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
+                //grypsCrl.stageCrl.ResultA(ResultManager.RESULT.clear);
+
+                //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
                 grypsCrl.rb.velocity = Vector2.zero;
-                grypsCrl.transform.DOMoveX((int)gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(false).SetRelative(true).OnComplete(() => CloseHole());
+                grypsCrl.transform.DOMoveX((int)gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(false).SetRelative(true)
+                    .OnComplete(() =>
+                    {
+                        CloseHole();
+                        grypsCrl.stageCrl.resultMg.Result(ResultManager.RESULT.clear);
+
+                    });
             }
         }
     }
@@ -134,7 +143,6 @@ public class GateManager : MonoBehaviour
     {
         rock.DOComplete();
         rock.DOScale(Vector3.zero, easeDuration).SetEase(easeTypeClose);
-        //.OnComplete(() => this.gameObject.SetActive(false));
     }
 
 }

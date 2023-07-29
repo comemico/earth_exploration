@@ -4,32 +4,24 @@ using DG.Tweening;
 
 public class PauseManager : MonoBehaviour
 {
-    const float PreHeader = 20f;
-
-    [Space(PreHeader)]
-    [Header("ボタン設定")]
-    [Header("-----------------------------")]
-    public Button push_Pause;
-    public Button push_Retry;
-    public Button push_WorldMap;
-
-    [Space(PreHeader)]
     [Header("ポーズボタン")]
-    [Header("-----------------------------")]
-    public RectTransform rect_Base;
-    public Ease easeType_TimeScale;
-    public float duration_TimeScale;
+    public Button push_Pause;
+    public RectTransform dial;
+    public Image bloom;
 
+    const Ease TYPE = Ease.OutQuint;
+    const int ANGLE = -30;
+    const float DURATION = 0.2f;
 
-    [Space(PreHeader)]
-    [Header("確認")]
-    [Header("-----------------------------")]
-    public bool isPause;
+    [Header("ポップアップ")]
+    public Button push_WorldMap;
+    public Button push_Retry;
 
-    public Text pauseText;
-    public Image bloomImage;
-    StageCtrl stageCrl;
     PopController popCtrl;
+    Text pauseText;
+    public bool isPause = false;
+
+
 
     private void Awake()
     {
@@ -40,15 +32,10 @@ public class PauseManager : MonoBehaviour
     private void InitializeGetComponent()
     {
         popCtrl = GetComponent<PopController>();
-        stageCrl = GetComponentInParent<StageCtrl>();
-        isPause = false;
-        pauseText.enabled = false;
-        bloomImage.enabled = false;
-        push_Pause.interactable = false;
-        /*
         pauseText = transform.GetChild(2).GetComponent<Text>();
-        bloomImage = transform.GetChild(3).GetChild(1).GetComponent<Image>();
-         */
+        pauseText.enabled = false;
+        //push_Pause.interactable = false;
+        //bloomImage.enabled = false;
         //ClosePausePanel(true);
     }
 
@@ -68,37 +55,32 @@ public class PauseManager : MonoBehaviour
             ClosePausePanel(false);
         }
     }
-    Tween t;
+
     public void OpenPausePanel()
     {
-        //t.Kill(true);
         isPause = true;
-        pauseText.enabled = true;
-        bloomImage.enabled = true;
-        rect_Base.DOLocalRotate(new Vector3(0f, 0f, -30f), 0.2f).SetEase(easeType_TimeScale);
+
         Time.timeScale = 0f;
-        //t = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.125f).SetEase(easeType_TimeScale).OnComplete(() => push_Pause.interactable = true);
+        pauseText.enabled = true;
+        bloom.enabled = true;
+
+        dial.DOLocalRotate(new Vector3(0f, 0f, ANGLE), DURATION).SetEase(TYPE);
+
         popCtrl.OpenPanel();
     }
 
     public void ClosePausePanel(bool isComplete)
     {
-        //t.Kill(true);
         isPause = false;
-        //if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない
-        pauseText.enabled = false;
-        bloomImage.enabled = false;
-        rect_Base.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.15f).SetEase(easeType_TimeScale);
-        //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.125f).SetEase(easeType_TimeScale);
+
         Time.timeScale = 1f;
-        if (isComplete)
-        {
-            popCtrl.ClosePanel(true);
-        }
-        else
-        {
-            popCtrl.ClosePanel(false);
-        }
+        pauseText.enabled = false;
+        bloom.enabled = false;
+
+        dial.DOLocalRotate(Vector3.zero, DURATION).SetEase(TYPE);
+
+        popCtrl.ClosePanel(isComplete);
     }
 
+    //if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 public class FloorManager : MonoBehaviour
 {
     [Header("フロア配列")] public Transform[] floor;
-    CinemachineController camMg;
+    CinemachineController camCrl;
     private void Awake()
     {
         floor = new Transform[transform.childCount];
-        camMg = Camera.main.GetComponent<CinemachineController>();
+        camCrl = Camera.main.GetComponent<CinemachineController>();
         for (int i = 0; i < transform.childCount; i++)
         {
             floor[i] = transform.GetChild(i);
@@ -36,7 +36,7 @@ public class FloorManager : MonoBehaviour
             floor[floorNumber].GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
 
-        camMg.ToFloorVcam(floorNumber, key);//不完全
+        camCrl.ToFloorVcam(floorNumber, key);//不完全
 
 
         // return floorNumber;

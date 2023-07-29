@@ -123,7 +123,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             if (gearNum >= 1)
             {
-                grypsCrl.Boost(gearNum);
+                grypsCrl.ForceBoost(gearNum);
                 //stageCrl.ChangeToRestrictedControl();
                 stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
                 if (!isDebugMode)
@@ -153,7 +153,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
             if (oldKey != key)
             {
-                //stageCrl.ChangeToControl();
                 stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
                 grypsCrl.Turn(key, true);
                 KeyChange(key);
