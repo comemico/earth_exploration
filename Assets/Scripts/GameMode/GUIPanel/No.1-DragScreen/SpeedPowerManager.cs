@@ -26,12 +26,10 @@ public class SpeedPowerManager : MonoBehaviour
     CanvasGroup canvasGroup;
     RectTransform rectTransform;
 
-    //Sequence sequenceA;
     Tween tween_offset;
 
-    void Start()
+    private void Awake()
     {
-        //sequenceA = DOTween.Sequence();
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         GetAllChildObject();

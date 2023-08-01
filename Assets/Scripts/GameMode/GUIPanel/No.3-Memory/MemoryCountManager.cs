@@ -6,12 +6,11 @@ public class MemoryCountManager : MonoBehaviour
 {
     public RectTransform aheadNumber;
     public RectTransform lateNumber;
-    public float distanceY;
 
-    [Space(20)]
     [Header("イージング")]
-    public Ease easeType;
+    public float distanceY;
     public float duration;
+    public Ease easeType;
 
     private int num;
     private Text aheadNumberText;
@@ -46,9 +45,9 @@ public class MemoryCountManager : MonoBehaviour
     public void InitializeMemoryCount(int memoryNum)
     {
         num = memoryNum;
-        aheadNumberText = aheadNumber.gameObject.transform.GetChild(0).GetComponent<Text>();
+        aheadNumberText = aheadNumber.GetComponent<Text>();
         aheadNumberText.text = memoryNum.ToString();
-        lateNumberText = lateNumber.gameObject.transform.GetChild(0).GetComponent<Text>();
+        lateNumberText = lateNumber.GetComponent<Text>();
         lateNumberText.text = memoryNum.ToString();
     }
 
