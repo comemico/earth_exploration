@@ -16,6 +16,8 @@ public class SpeedPowerManager : MonoBehaviour
     [Header("種類")]
     public Ease easeType;
 
+    const int TENSION_LOOSE = 750;
+    const int TENSION_TIGHT = 600;
 
     [Header("子: RectTransform配列")] [SerializeField] private RectTransform[] gearRect;   //子
     [Header("子: Image配列")] [SerializeField] private Image[] gearImage;          //子
@@ -179,15 +181,15 @@ public class SpeedPowerManager : MonoBehaviour
         transform.localScale = new Vector3(key, 1f, 1f);
 
         tween_offset.Complete();
-        rectTransform.offsetMin = new Vector2(600f, rectTransform.offsetMin.y);
-        rectTransform.offsetMax = new Vector2(-600f, rectTransform.offsetMax.y);
+        rectTransform.offsetMin = new Vector2(TENSION_LOOSE, rectTransform.offsetMin.y);
+        rectTransform.offsetMax = new Vector2(-TENSION_LOOSE, rectTransform.offsetMax.y);
 
         tween_offset = DOTween.To(() => rectTransform.offsetMin.x, value =>
         {
             rectTransform.offsetMin = new Vector2(value, rectTransform.offsetMin.y);
             rectTransform.offsetMax = new Vector2(-value, rectTransform.offsetMax.y);
         }
-       , 500f, fadeoutTime).SetEase(easeType);
+       , TENSION_TIGHT, fadeoutTime).SetEase(easeType);
 
 
     }

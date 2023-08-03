@@ -133,6 +133,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
         gearNum = 0;
+        memoryGageMg.memoryCountMg.DownStatus(gearNum);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -175,6 +176,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             {
                 speedPowerMg.DisplaySpeedArrow(gearNum);
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
+                memoryGageMg.memoryCountMg.DownStatus(gearNum);
                 oldGearNum = gearNum;
             }
         }

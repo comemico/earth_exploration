@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 95f393b734eaf094194da0d4ae4e1ae9
+guid: d20a9987f91bce046bce43b5ebfc116c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -65,7 +65,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -123,43 +123,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Memory_Panel_01 3_0
+      name: No_3-Memory_Panel_1_0
       rect:
         serializedVersion: 2
-        x: 316
-        y: 513
-        width: 708
-        height: 403
+        x: 78
+        y: 128
+        width: 178
+        height: 101
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 208, y: 0, z: 368, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 54, y: 0, z: 93, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 481831b50c9ab044184fe603acf70ae4
-      internalID: 626440299
+      spriteID: f0a59d26aa0101e4fa7c54b2718f9b17
+      internalID: -2083585883
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Memory_Panel_01 3_1
+      name: No_3-Memory_Panel_1_1
       rect:
         serializedVersion: 2
-        x: 316
-        y: 107
-        width: 708
-        height: 403
+        x: 78
+        y: 27
+        width: 178
+        height: 101
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 208, y: 0, z: 368, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 54, y: 0, z: 93, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d34e7f4a170bc4f48bf3ee6bc7e02558
-      internalID: 1619893708
+      spriteID: 1974058f0867d794191026f2907442a8
+      internalID: 848534401
       vertices: []
       indices: 
       edges: []
@@ -175,8 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Memory_Panel_01 3_0: 626440299
-      Memory_Panel_01 3_1: 1619893708
+      No_3-Memory_Panel_1_0: -2083585883
+      No_3-Memory_Panel_1_1: 848534401
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
