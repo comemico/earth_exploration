@@ -82,7 +82,7 @@ public class StageCtrl : MonoBehaviour
         sequenceStart.AppendCallback(() =>
         {
             grypsCrl.rb.constraints = RigidbodyConstraints2D.None;
-            grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 0);
+            grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 1);
             sequenceStart.Kill();
         });
         /*

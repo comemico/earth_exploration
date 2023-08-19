@@ -441,7 +441,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: maxLifeNum
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.size
@@ -449,11 +449,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.data[0]
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.data[1]
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.data[2]
@@ -867,11 +867,11 @@ MonoBehaviour:
   m_Modifiers: []
   m_ColliderSegment:
   - {x: -49.98976, y: -29.6}
-  - {x: -49.98976, y: -3.9384613}
-  - {x: -49.992126, y: -0.00787535}
-  - {x: 49.992123, y: -0.007876898}
-  - {x: 49.989765, y: -6.6072617}
-  - {x: 49.98976, y: -29.6}
+  - {x: -49.98976, y: -2.5599992}
+  - {x: -49.99488, y: -0.00511978}
+  - {x: 49.994884, y: -0.0051200194}
+  - {x: 49.98977, y: -2.9045086}
+  - {x: 49.98976, y: -29.599998}
   - {x: -49.98976, y: -29.6}
 --- !u!1971053207 &234203894
 SpriteShapeRenderer:
@@ -931,8 +931,8 @@ SpriteShapeRenderer:
   - {fileID: -235225486, guid: 267bcf62cc9bacf4cbc38574430ea673, type: 3}
   - {fileID: -730412961, guid: 267bcf62cc9bacf4cbc38574430ea673, type: 3}
   m_LocalAABB:
-    m_Center: {x: 0, y: -12.830828, z: 0}
-    m_Extent: {x: 55.120007, y: 16.769293, z: 0}
+    m_Center: {x: 0, y: -13.520056, z: 0}
+    m_Extent: {x: 55.120007, y: 16.080057, z: 0}
   m_SpriteSortPoint: 0
 --- !u!4 &234203895
 Transform:
@@ -985,11 +985,11 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: -49.98976, y: -29.6}
-  - {x: -49.98976, y: -3.9384613}
-  - {x: -49.992126, y: -0.00787535}
-  - {x: 49.992123, y: -0.007876898}
-  - {x: 49.989765, y: -6.6072617}
-  - {x: 49.98976, y: -29.6}
+  - {x: -49.98976, y: -2.5599992}
+  - {x: -49.99488, y: -0.00511978}
+  - {x: 49.994884, y: -0.0051200194}
+  - {x: 49.98977, y: -2.9045086}
+  - {x: 49.98976, y: -29.599998}
   - {x: -49.98976, y: -29.6}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
@@ -2207,11 +2207,11 @@ RectTransform:
   m_LocalScale: {x: 1.0001551, y: 1.0001551, z: 1.0001551}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 126919479}
   - {fileID: 473538552}
   - {fileID: 1680847303}
   - {fileID: 207992663}
   - {fileID: 889143467}
-  - {fileID: 126919479}
   - {fileID: 1770125221}
   m_Father: {fileID: 1320115512}
   m_RootOrder: 1
@@ -2755,7 +2755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 685981881}
   - component: {fileID: 685981880}
-  - component: {fileID: 685981879}
+  - component: {fileID: 685981882}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2763,26 +2763,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &685981879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685981878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &685981880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2813,6 +2793,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &685981882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685981878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &697960542
 GameObject:
   m_ObjectHideFlags: 0
@@ -3618,10 +3628,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 454533899}
   - {fileID: 1928761154}
   - {fileID: 1218782279}
   - {fileID: 873839116}
-  - {fileID: 454533899}
   - {fileID: 1278387418}
   m_Father: {fileID: 1686741759}
   m_RootOrder: 1
@@ -4476,16 +4486,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fec74dd62c4da458a2a19800799be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBackPanel: 0
-  easeType_Panel: 9
+  backPanel: {fileID: 2023616731}
+  pop: {fileID: 1676286540}
+  startScale: 0
   openDuration: 0.175
   closeDuration: 0.1
-  scale_Panel: 0.65
-  mark: {fileID: 1793514097}
-  markList: []
-  easeType_Mark: 15
-  easeDuration_Mark: 0.1
-  distance_Mark: 20
+  type_Panel: 0
+  distance_Arrow: 21
+  duration_Arrow: 0.2
+  type_Arrow: 0
 --- !u!114 &1244063850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4711,16 +4720,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fec74dd62c4da458a2a19800799be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBackPanel: 0
-  easeType_Panel: 9
+  backPanel: {fileID: 1113274541}
+  pop: {fileID: 603000754}
+  startScale: 0
   openDuration: 0.175
   closeDuration: 0.1
-  scale_Panel: 0.75
-  mark: {fileID: 126919478}
-  markList: []
-  easeType_Mark: 15
-  easeDuration_Mark: 0.1
-  distance_Mark: 20
+  type_Panel: 12
+  distance_Arrow: 60
+  duration_Arrow: 0.38
+  type_Arrow: 15
 --- !u!114 &1320115516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5495,10 +5503,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1793514098}
   - {fileID: 223602381}
   - {fileID: 900770246}
   - {fileID: 583050149}
-  - {fileID: 1793514098}
   - {fileID: 2102761863}
   m_Father: {fileID: 1244063848}
   m_RootOrder: 1
@@ -5797,16 +5805,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fec74dd62c4da458a2a19800799be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBackPanel: 0
-  easeType_Panel: 9
+  backPanel: {fileID: 697960544}
+  pop: {fileID: 957875559}
+  startScale: 0
   openDuration: 0.175
   closeDuration: 0.1
-  scale_Panel: 0.65
-  mark: {fileID: 454533898}
-  markList: []
-  easeType_Mark: 15
-  easeDuration_Mark: 0.1
-  distance_Mark: 20
+  type_Panel: 15
+  distance_Arrow: 19
+  duration_Arrow: 0.26
+  type_Arrow: 15
 --- !u!114 &1686741761
 MonoBehaviour:
   m_ObjectHideFlags: 0

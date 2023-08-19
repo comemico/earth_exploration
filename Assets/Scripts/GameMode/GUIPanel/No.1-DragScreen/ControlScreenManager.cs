@@ -21,6 +21,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     [Header("デバックモード切替ボタン")]
     public bool isDebugMode;
+    public int maxGage = 3;
 
     [Header("1メモリのスワイプ量(wide=1.0)")]
     public float distancePerMemory;
@@ -31,7 +32,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     Vector2 screenFactor;
     Vector2 startPosition, currentPosition;
 
-    int maxGage = 5;
     public int gearNum;
     int oldGearNum;
 
@@ -43,6 +43,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         GetComponent();
         screenFactor = new Vector2(1f / Screen.width, 1f / Screen.height);
         distanceFactor = 1f / distancePerMemory;
+        ConsumeMemory(0);
     }
 
     private void GetComponent()
@@ -62,7 +63,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
         if (isRaycast)//Uncontrol時に切替時
         {
-            speedPowerMg.Release();
+            speedPowerMg.Release(gearNum);
             gearNum = 0;
             startPosition.x = currentPosition.x;
         }
@@ -72,14 +73,16 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         memoryGageMg.memoryGage -= consumeNum;
 
-        if (memoryGageMg.memoryGage <= 4)
+        if (memoryGageMg.memoryGage < maxGage)
         {
             maxGage = memoryGageMg.memoryGage;
         }
+        /*
         else
         {
             maxGage = 5;
         }
+          */
 
         if (memoryGageMg.memoryGage <= 0)
         {
@@ -94,27 +97,29 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         memoryGageMg.memoryGage += produceNum;
 
-        if (memoryGageMg.memoryGage <= 4)
+        if (memoryGageMg.memoryGage < maxGage)
         {
             maxGage = memoryGageMg.memoryGage;
         }
+        /*
         else
         {
             maxGage = 5;
         }
+         */
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         startPosition = eventData.position * screenFactor;
         movingMaskMg.FadeInMovingMask(startPosition);
-        speedPowerMg.GetReadyCharge(key);
+        speedPowerMg.StartDrawBow(key);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         movingMaskMg.FadeOutMovingMask();
-        speedPowerMg.Release();
+        speedPowerMg.Release(gearNum);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -133,7 +138,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
         gearNum = 0;
-        memoryGageMg.memoryCountMg.DownStatus(gearNum);
+        memoryGageMg.DownStatus(gearNum);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -170,13 +175,13 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
             float medianValue = power - gearNum;
 
-            speedPowerMg.ChargeGear(gearNum, medianValue);
+            speedPowerMg.DrawingBow(gearNum, medianValue);
 
             if (oldGearNum != gearNum)//メモリが変わった時だけ、メモリ表示の処理を行なってもらう
             {
                 speedPowerMg.DisplaySpeedArrow(gearNum);
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
-                memoryGageMg.memoryCountMg.DownStatus(gearNum);
+                memoryGageMg.DownStatus(gearNum);
                 oldGearNum = gearNum;
             }
         }
@@ -184,8 +189,9 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     }
     public void KeyChange(int key)
     {
+        //speedPowerMg.Release(gearNum);
         this.key = key;
-        speedPowerMg.GetReadyCharge(key);
+        speedPowerMg.StartDrawBow(key);
         cinemachineCrl.ChangeDirection(key);
         oldKey = key;//更新
     }

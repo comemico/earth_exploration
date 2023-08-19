@@ -1,33 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using DG.Tweening;
 
 public class JetManager : MonoBehaviour
 {
-    [Header("タイムスケール")]
+    [Header("StartUp")]
+    public float distance;
+    public float duration;
+    public Ease startupType;
+
+    [Header("TimeScale")]
     [Range(0.2f, 1f)] public float timeScale;
     public float slowDuration;
     public Ease slowType;
     public float returnDuration;
     public Ease returnType;
 
-    [Header("JetHud")]
-    public float distance;
-    public float duration;
-    public Ease startupType;
-    public Ease shutDownType;
+    [Header("Count")]
+    public MemoryCountManager countMg;
+    public int jetPower;
+    public bool isLimitRelease;
 
-    public bool buttonDownFlag;
+    const int MAX_POWER = 3;
 
     GrypsController grypsCrl;
     Tween time;
     RectTransform rectTransform;
 
+    bool buttonDownFlag;
+
     private void Awake()
     {
-        grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
         rectTransform = GetComponent<RectTransform>();
+        grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
+        countMg.InitializeMemoryCount(0);
     }
+
 
     public void OnButtonDown()
     {
@@ -35,7 +44,6 @@ public class JetManager : MonoBehaviour
         buttonDownFlag = true;
         time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScale, slowDuration).SetEase(slowType);
     }
-
     public void OnButtonUp()
     {
         if (buttonDownFlag)
@@ -44,7 +52,8 @@ public class JetManager : MonoBehaviour
             time.Kill(true);
             time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
             grypsCrl.ForceJet(0);
-            ShutDownJetHud();
+            if (!isLimitRelease) ShutDownJetHud();
+
         }
     }
 
@@ -57,6 +66,9 @@ public class JetManager : MonoBehaviour
     public void ShutDownJetHud()
     {
         rectTransform.DOKill(true);
-        rectTransform.DOAnchorPosY(0f, duration).SetEase(startupType);
+        rectTransform.DOAnchorPosY(-distance, duration).SetEase(startupType);
     }
+
+
+
 }

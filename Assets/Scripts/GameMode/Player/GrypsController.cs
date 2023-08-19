@@ -188,7 +188,7 @@ public class GrypsController : MonoBehaviour
 
     void Update()
     {
-        if (Mathf.Approximately(Time.timeScale, 0f))
+        if (Mathf.Approximately(Time.timeScale, 0f))//timescale=0‚È‚çreturn
         {
             return;
         }

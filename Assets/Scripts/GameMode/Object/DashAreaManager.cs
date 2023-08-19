@@ -18,6 +18,8 @@ public class DashAreaManager : MonoBehaviour
         [InspectorName("Се")] two
     }
 
+    GrypsController grypsCrl;
+
     SpriteRenderer right, left;
     int KeyNum;
 
@@ -42,10 +44,16 @@ public class DashAreaManager : MonoBehaviour
                 break;
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
+            if (grypsCrl == null)
+            {
+                grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+            }
+
             if (key == KEY.both)
             {
                 if ((int)collision.gameObject.transform.localScale.x >= 1)
@@ -61,8 +69,9 @@ public class DashAreaManager : MonoBehaviour
             {
                 KeyNum = (int)key;
             }
-            collision.gameObject.GetComponent<GrypsController>().ForceDash(KeyNum, (int)dashPower);
-            //collision.gameObject.GetComponent<GrypsController>().Dash((int)dashPower, directionLimit, (int)transform.localScale.x);
+            grypsCrl.ForceDash(KeyNum, (int)dashPower);
+            grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
+
         }
     }
 }

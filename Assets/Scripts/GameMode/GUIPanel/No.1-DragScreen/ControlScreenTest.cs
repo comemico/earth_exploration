@@ -42,13 +42,13 @@ public class ControlScreenTest : MonoBehaviour, IDragHandler, IEndDragHandler, I
     {
         startPosition = eventData.position * screenFactor;
         movingMaskMg.FadeInMovingMask(startPosition);
-        speedPowerMg.GetReadyCharge(key);
+        speedPowerMg.StartDrawBow(key);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         movingMaskMg.FadeOutMovingMask();
-        speedPowerMg.Release();
+        speedPowerMg.Release(gearNum);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -84,7 +84,7 @@ public class ControlScreenTest : MonoBehaviour, IDragHandler, IEndDragHandler, I
 
         float medianValue = power - gearNum;
 
-        speedPowerMg.ChargeGear(gearNum, medianValue);
+        speedPowerMg.DrawingBow(gearNum, medianValue);
 
         if (oldGearNum != gearNum)//メモリが変わった時だけ、メモリ表示の処理を行なってもらう
         {
@@ -95,7 +95,7 @@ public class ControlScreenTest : MonoBehaviour, IDragHandler, IEndDragHandler, I
     public void KeyChange(int key)
     {
         this.key = key;
-        speedPowerMg.GetReadyCharge(key);
+        speedPowerMg.StartDrawBow(key);
         oldKey = key;//更新
     }
 

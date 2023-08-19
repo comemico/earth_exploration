@@ -4,8 +4,10 @@ using DG.Tweening;
 
 public class MemoryGageManager : MonoBehaviour
 {
+    [Header("ƒŠƒ“ƒO")]
     public MemoryCountManager memoryCountMg;
-    //public GetMemoryManager getMemoryMg;
+    public Image up;
+    public Image down;
 
     [Header("ƒƒ‚ƒŠ")]
     public GameObject memoryBox;
@@ -150,6 +152,11 @@ public class MemoryGageManager : MonoBehaviour
         {
             lifeMemoryFollowerBox[i].enabled = (memory > i);
         }
+    }
+
+    public void DownStatus(int gearNum)
+    {
+        down.enabled = (gearNum >= 1);
     }
 
 }

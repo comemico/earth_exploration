@@ -5,10 +5,10 @@ using UnityEngine;
 public class GrypsParameter : MonoBehaviour
 {
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK", "4’iŠK", "5’iŠK", })]
-    [Range(5000, 30000)] public int[] boostPower;
+    [Range(1500, 10000)] public int[] boostPower;
 
     [NamedArrayAttribute(new string[] { "ã", "’†", "‘å", "“Á‘å" })]
-    [Range(5000, 30000)] public int[] dashPower;
+    [Range(1000, 10000)] public int[] dashPower;
 
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
     [Range(5000, 20000)] public int[] jetPower;

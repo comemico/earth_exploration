@@ -26,7 +26,7 @@ public class FloorManager : MonoBehaviour
         }
     }
 
-    public void ActiveFloor(Transform gateObject, int key)
+    public int ActiveFloor(Transform gateObject, int key)
     {
         AllUnenableCollider();
         int floorNumber = Array.IndexOf(floor, gateObject);
@@ -38,7 +38,7 @@ public class FloorManager : MonoBehaviour
 
         camCrl.ToFloorVcam(floorNumber, key);//•sŠ®‘S
 
-
+        return floorNumber;
         // return floorNumber;
     }
 

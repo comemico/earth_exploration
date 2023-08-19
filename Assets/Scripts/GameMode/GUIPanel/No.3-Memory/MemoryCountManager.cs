@@ -7,13 +7,10 @@ public class MemoryCountManager : MonoBehaviour
     public RectTransform aheadNumber;
     public RectTransform lateNumber;
 
-    public Image up;
-    public Image down;
-
     [Header("イージング")]
     public float distanceY;
-    public float duration;
-    public Ease easeType;
+    [Range(0.1f, 0.2f)] public float duration;
+    public Ease easeType = Ease.OutSine;
 
     private int num;
     private Text aheadNumberText;
@@ -54,9 +51,5 @@ public class MemoryCountManager : MonoBehaviour
         lateNumberText.text = memoryNum.ToString();
     }
 
-    public void DownStatus(int gearNum)
-    {
-        down.enabled = (gearNum >= 1);
-    }
 
 }
