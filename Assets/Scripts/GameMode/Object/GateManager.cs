@@ -95,10 +95,10 @@ public class GateManager : MonoBehaviour
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
             {
                 gateCollider.enabled = false;
-                grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);//着地後起動するようにする
-                //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
                 FalseMask(GATE_KEY.both);
                 CloseHole();
+                //grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);//着地後起動するようにする
+                //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
             }
         }
     }

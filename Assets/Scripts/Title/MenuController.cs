@@ -16,7 +16,7 @@ public class MenuController : MonoBehaviour
     void Start()
     {
         AddListener();
-        Application.targetFrameRate = 50;
+        //Application.targetFrameRate = 50;
     }
 
     void AddListener()

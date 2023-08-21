@@ -407,11 +407,12 @@ public class GrypsController : MonoBehaviour
     private void Land()
     {
         stageCrl.jetMg.StartUpJetHud();
+        stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
     }
 
     private void TakeOff()
     {
-
+        stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
         //サマーソルトHud起動
     }
 

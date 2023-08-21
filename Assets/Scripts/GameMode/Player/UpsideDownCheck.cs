@@ -6,7 +6,7 @@ public class UpsideDownCheck : MonoBehaviour
 {
     [Header("ダウン判定時間")] public float downTimeRange;
     private float timer;
-    //private GrypsManager gryps;
+    private GrypsController grypsCrl;
 
     private string groundTag = "Ground"; //ただの床
     private string platformTag = "GroundPlatform";//すり抜ける床
@@ -14,18 +14,34 @@ public class UpsideDownCheck : MonoBehaviour
     private string fallFloorTag = "FallFloor";//落ちる床
     private string elevatorTag = "Elevator";//エレベーター
 
-
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        timer = 0.0f;
+        if (grypsCrl == null)
+        {
+            grypsCrl = GetComponentInParent<GrypsController>();
+        }
+        //0.5秒後に起動させれば継続してStay2Dが呼ばれ続ける
+        /*
+        if (grypsCrl.rb.IsSleeping())
+        {
+            grypsCrl.rb.WakeUp();
+            Debug.Log("wakeUp");
+        }
+         */
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)//Time To Sleep = 0.5f Sleep状態までの時間
+    {
+        Debug.Log("StayTime: " + timer);
         if (collision.tag == groundTag || collision.tag == platformTag || collision.tag == moveFloorTag || collision.tag == fallFloorTag || collision.tag == elevatorTag)
         {
-            Debug.Log("stay中");
             if (timer >= downTimeRange)
             {
-                //gryps = GetComponentInParent<GrypsManager>();
-                //gryps.Down();
-
                 timer = 0.0f;
+                grypsCrl.rb.velocity = Vector2.zero;
+                grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
+                grypsCrl.stageCrl.resultMg.Result(ResultManager.RESULT.missZone);
             }
             else
             {
@@ -35,4 +51,6 @@ public class UpsideDownCheck : MonoBehaviour
         }
 
     }
+
+
 }
