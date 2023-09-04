@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
-  m_Name: Debug
+  m_Name: Catapult
   m_EditorClassIdentifier: 
   m_Angles:
   - m_Start: -45
@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Order: 0
     m_Sprites:
     - {fileID: 21300000, guid: 4320aa793b4aef54a9b83fbb6a36382c, type: 3}
-  m_FillTexture: {fileID: 2800000, guid: 94cc0f0a0713e1a4cbcb846383a39273, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: b7d39675cc07814458ad6e818c22c7a4, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:

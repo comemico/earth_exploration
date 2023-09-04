@@ -6,6 +6,7 @@ using DG.Tweening;
 public class JetManager : MonoBehaviour
 {
     [Header("StartUp")]
+    public RectTransform pushRect;
     public float distance;
     public float duration;
     public Ease startupType;
@@ -17,56 +18,61 @@ public class JetManager : MonoBehaviour
     public float returnDuration;
     public Ease returnType;
 
+    GrypsController grypsCrl;
+    [HideInInspector] public JetCountManager jetCountMg;
+    Tween time;
+
+    /*
     [Header("Count")]
     public MemoryCountManager countMg;
     public int jetPower;
     public bool isLimitRelease;
+     */
 
-    const int MAX_POWER = 3;
-
-    GrypsController grypsCrl;
-    Tween time;
-    RectTransform rectTransform;
-
-    bool buttonDownFlag;
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
         grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
-        countMg.InitializeMemoryCount(0);
+        jetCountMg = GetComponentInChildren<JetCountManager>();
+        //countMg.InitializeMemoryCount(0);
     }
-
 
     public void OnButtonDown()
     {
         time.Kill(true);
-        buttonDownFlag = true;
         time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScale, slowDuration).SetEase(slowType);
+
+        jetCountMg.PushDown();
     }
+
     public void OnButtonUp()
     {
-        if (buttonDownFlag)
-        {
-            buttonDownFlag = false;
-            time.Kill(true);
-            time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
-            grypsCrl.ForceJet(0);
-            if (!isLimitRelease) ShutDownJetHud();
+        time.Kill(true);
+        time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
 
+        jetCountMg.PushUp();
+
+        if (jetCountMg.isCharge)
+        {
+            grypsCrl.ForceJet(0);
+            jetCountMg.ResetJetRing();
+            //if (!isLimitRelease) ShutDownJetHud();
+            jetCountMg.isCharge = false;
         }
     }
 
+
+
     public void StartUpJetHud()
     {
-        rectTransform.DOKill(true);
-        rectTransform.DOAnchorPosY(distance, duration).SetEase(startupType);
+        pushRect.DOKill(true);
+        pushRect.DOAnchorPosY(distance, duration).SetEase(startupType);
     }
 
     public void ShutDownJetHud()
     {
-        rectTransform.DOKill(true);
-        rectTransform.DOAnchorPosY(-distance, duration).SetEase(startupType);
+        pushRect.DOKill(true);
+        pushRect.DOAnchorPosY(-distance, duration).SetEase(startupType);
     }
 
 

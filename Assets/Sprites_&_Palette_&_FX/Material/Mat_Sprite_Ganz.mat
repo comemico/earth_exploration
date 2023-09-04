@@ -154,6 +154,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_72f82b3b5aef451b97de3cb48d0655d2_Out_0_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _gryps_1024_512:
         m_Texture: {fileID: -8328923581568760697, guid: 88a49d06eb60177488f951b1057ab6fc, type: 3}
         m_Scale: {x: 1, y: 1}

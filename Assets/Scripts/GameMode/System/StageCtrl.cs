@@ -96,7 +96,7 @@ public class StageCtrl : MonoBehaviour
     public void ChangeControlStatus(ControlStatus status)
     {
         controlStatus = status;
-        controlScreenMg.ChangeControlLimit(controlStatus == ControlStatus.unControl);
+        controlScreenMg.ChangeControlLimit(status);
         pauseMg.push_Pause.interactable = (controlStatus != ControlStatus.unControl);
     }
 
@@ -171,7 +171,7 @@ public class StageCtrl : MonoBehaviour
                 break;
 
             case State.Lack:
-                if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && !grypsCrl.isFreeze)
+                if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && controlStatus != ControlStatus.unControl)
                 {
                     //grypsCrl.PausePlayer();
                     ChangeControlStatus(ControlStatus.unControl);

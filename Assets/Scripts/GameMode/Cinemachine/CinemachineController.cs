@@ -8,7 +8,7 @@ public class CinemachineController : MonoBehaviour
     [Header("VirtualCamera配列")] public CinemachineVirtualCamera[] vcamFloor;//編集不可
     [Header("ターゲット")] public GrypsController gryps;
     [Header("ScreenX:中央からの距離")] public float screenX;
-    [Header("Screen:遷移時間")] public float time = 1.0f;
+    [Header("Screen:遷移時間")] public float turnTime = 0.5f;
     [Header("イージングの種類")] public Ease easeType;
     [Header("fieldOfViewBox")] public int[] fieldOfViewBox;
     //[Header("field of view : デバック用")] public Text fieldOfView;
@@ -18,6 +18,7 @@ public class CinemachineController : MonoBehaviour
     CinemachineVirtualCamera activeVC;
     CinemachineVirtualCamera nearestVC;
 
+    Tween tween_screenX;
 
     private void Awake()
     {
@@ -50,10 +51,8 @@ public class CinemachineController : MonoBehaviour
 
     public void ChangeDirection(int key)
     {
-        DOTween.To(() => framingTransposer.m_ScreenX,
-            x => framingTransposer.m_ScreenX = x,
-            0.5f - (key * screenX), time)
-            .SetEase(easeType);//.SetUpdate(false);
+        //tween_screenX.Kill(true);
+        tween_screenX = DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f - (key * screenX), turnTime).SetEase(easeType);
     }
 
     public void ZoomCamera(int boxNum = 0, float time = 1.0f, Ease type = 0)

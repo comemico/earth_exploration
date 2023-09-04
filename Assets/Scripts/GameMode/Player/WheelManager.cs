@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -9,31 +10,41 @@ public class WheelManager : MonoBehaviour
     [Header("バーナウト値")]
     [NamedArrayAttribute(new string[] { "1段階", "2段階", "3段階", "4段階", "5段階", })]
     [Range(500, 2000)] public int[] burnPower;
+    public int powerLevel;
 
-    [Header("前輪 :参照")] public Transform frontTransform;
-    [Header("前輪 :円周")] public float radiusFront; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
+    [Header("前輪 ")]
+    public Transform frontTransform;
+    public float radiusFront; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
+    public Renderer matFront;
+    Tween tween_lampFront;
 
-    [Header("後輪 :参照")] public Transform[] wheelBlade;
-    [Header("後輪 :円周")] public float radiusRear; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
+    [Header("後輪 ")]
+    public Transform[] wheelBlade;
+    public float radiusRear; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
+    public Renderer matRear;
+    Tween tween_lampRear;
+    bool isLamp;
+    bool oldJudge;
 
-    [Header("---イージング----")]
-    [Header("終了値")]
+    [Header("Lamp")]
+    public float startValue_Lamp;
+    public float easeDuration_Lamp;
+    public Ease easeType_Lamp;
+
+    [Header("WheelBlade")]
     public float endValue;
-    [Header("種類")]
-    public Ease easeType;
-    [Header("時間")]
     public float easeDuration;
+    public Ease easeType;
 
     private GrypsController grypsCrl;
     private float factorFront;
     private float factorRear;
-    //public Light2D light2d;
 
     private List<Tween> tweenList = new List<Tween>();
+
     private void Awake()
     {
         grypsCrl = GetComponentInParent<GrypsController>();
-        //light2d = GetComponentInChildren<Light2D>();        
     }
     private void Start()
     {
@@ -43,7 +54,6 @@ public class WheelManager : MonoBehaviour
 
     private void Update()
     {
-
         if (Mathf.Abs(grypsCrl.rb.velocity.x) >= 1f)
         {
             SpinWheel(frontTransform, factorFront);//前輪
@@ -55,10 +65,17 @@ public class WheelManager : MonoBehaviour
         {
             if (grypsCrl.stageCrl.controlScreenMg.gearNum >= 1)
             {
-                BurnOutWheel(grypsCrl.stageCrl.controlScreenMg.gearNum - 1);
+                BurnOutWheel(grypsCrl.stageCrl.controlScreenMg.gearNum);
+                /*
+                if (powerLevel != grypsCrl.stageCrl.controlScreenMg.gearNum)
+                {
+                    TurnOnLamp();
+                    powerLevel = grypsCrl.stageCrl.controlScreenMg.gearNum;
+                }
+                 */
+
             }
         }
-
     }
 
     public void SpinWheel(Transform wheel, float factor)
@@ -69,11 +86,30 @@ public class WheelManager : MonoBehaviour
         wheel.Rotate(0f, 0f, -1 * angle * Mathf.Rad2Deg);
     }
 
+
     public void BurnOutWheel(int gearNum)
     {
-        transform.Rotate(0f, 0f, -1 * burnPower[gearNum] * Time.deltaTime);
-        //light
+        transform.Rotate(0f, 0f, -1 * burnPower[gearNum - 1] * Time.deltaTime);
     }
+
+    public void Judge(int gearNum)
+    {
+        isLamp = (gearNum > 0);
+
+        if (oldJudge != isLamp)
+        {
+            TurnLamp(isLamp, false);
+            oldJudge = isLamp;
+        }
+    }
+
+    public void TurnLamp(bool isLamp, bool isFront)
+    {
+        tween_lampRear = DOTween.To(() => matRear.material.GetFloat("_Power"), x => matRear.material.SetFloat("_Power", x), Convert.ToInt32(isLamp), easeDuration_Lamp).SetEase(easeType_Lamp);
+        if (isFront) tween_lampFront = DOTween.To(() => matFront.material.GetFloat("_Power"), x => matFront.material.SetFloat("_Power", x), Convert.ToInt32(isLamp), easeDuration_Lamp).SetEase(easeType_Lamp);
+        //Debug.Log(Convert.ToInt32(isLamp));
+    }
+
 
     public void WheelBlade(bool isBrake)
     {

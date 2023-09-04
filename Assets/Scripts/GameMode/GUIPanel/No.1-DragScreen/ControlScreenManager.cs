@@ -57,15 +57,16 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         crlImage = GetComponent<Image>();
     }
 
-    public void ChangeControlLimit(bool isRaycast)//, bool isInterval)空中時、ワープ中、etc...
+    public void ChangeControlLimit(StageCtrl.ControlStatus status)//, bool isInterval)空中時、ワープ中、etc...
     {
-        crlImage.raycastTarget = !isRaycast;
+        crlImage.raycastTarget = (status != StageCtrl.ControlStatus.unControl);
 
-        if (isRaycast)//Uncontrol時に切替時
+        startPosition.x = currentPosition.x;
+
+        if (status == StageCtrl.ControlStatus.unControl)//Uncontrol時に切替時
         {
-            speedPowerMg.Release(gearNum);
             gearNum = 0;
-            startPosition.x = currentPosition.x;
+            speedPowerMg.Release(gearNum);
         }
     }
 
@@ -129,12 +130,8 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             if (gearNum >= 1)
             {
                 grypsCrl.ForceBoost(gearNum);
-                //stageCrl.ChangeToRestrictedControl();
                 stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
-                if (!isDebugMode)
-                {
-                    ConsumeMemory(gearNum);
-                }
+                if (!isDebugMode) ConsumeMemory(gearNum);
             }
         }
         gearNum = 0;
@@ -182,14 +179,15 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
                 speedPowerMg.DisplaySpeedArrow(gearNum);
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
                 memoryGageMg.DownStatus(gearNum);
+                grypsCrl.wheelMg.Judge(gearNum);
                 oldGearNum = gearNum;
             }
         }
 
     }
+
     public void KeyChange(int key)
     {
-        //speedPowerMg.Release(gearNum);
         this.key = key;
         speedPowerMg.StartDrawBow(key);
         cinemachineCrl.ChangeDirection(key);

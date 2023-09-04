@@ -13,9 +13,10 @@ public class DashAreaManager : MonoBehaviour
     [Header("ÉpÉèÅ[")] public DashLevel dashPower;
     public enum DashLevel
     {
-        [InspectorName("è¨")] zero = 0,
+        [InspectorName("é„")] zero = 0,
         [InspectorName("íÜ")] one,
-        [InspectorName("ëÂ")] two
+        [InspectorName("ã≠")] two,
+        [InspectorName("ì¡ã≠")] three
     }
 
     GrypsController grypsCrl;
@@ -49,10 +50,9 @@ public class DashAreaManager : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if (grypsCrl == null)
-            {
-                grypsCrl = collision.gameObject.GetComponent<GrypsController>();
-            }
+            if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+
+            if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) return;
 
             if (key == KEY.both)
             {
@@ -69,9 +69,10 @@ public class DashAreaManager : MonoBehaviour
             {
                 KeyNum = (int)key;
             }
+
             grypsCrl.ForceDash(KeyNum, (int)dashPower);
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
-
+            grypsCrl.stageCrl.jetMg.jetCountMg.DisplayJetCount(grypsCrl.stageCrl.jetMg.jetCountMg.jetNumber + 1);
         }
     }
 }

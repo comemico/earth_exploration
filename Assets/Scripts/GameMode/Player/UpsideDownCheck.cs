@@ -33,7 +33,6 @@ public class UpsideDownCheck : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)//Time To Sleep = 0.5f Sleep状態までの時間
     {
-        Debug.Log("StayTime: " + timer);
         if (collision.tag == groundTag || collision.tag == platformTag || collision.tag == moveFloorTag || collision.tag == fallFloorTag || collision.tag == elevatorTag)
         {
             if (timer >= downTimeRange)
@@ -47,10 +46,6 @@ public class UpsideDownCheck : MonoBehaviour
             {
                 timer += Time.deltaTime;
             }
-
         }
-
     }
-
-
 }
