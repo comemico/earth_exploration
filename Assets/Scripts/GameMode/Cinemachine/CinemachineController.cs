@@ -7,6 +7,7 @@ public class CinemachineController : MonoBehaviour
 {
     [Header("VirtualCamera配列")] public CinemachineVirtualCamera[] vcamFloor;//編集不可
     [Header("ターゲット")] public GrypsController gryps;
+    [Header("ターゲット")] public Transform grypsSprite;
     [Header("ScreenX:中央からの距離")] public float screenX;
     [Header("Screen:遷移時間")] public float turnTime = 0.5f;
     [Header("イージングの種類")] public Ease easeType;
@@ -46,7 +47,7 @@ public class CinemachineController : MonoBehaviour
             vcamFloor[i].Follow = null;
         }
         vcamFloor[floorNum].Priority = 10;
-        vcamFloor[floorNum].Follow = gryps.transform;
+        vcamFloor[floorNum].Follow = grypsSprite;
     }
 
     public void ChangeDirection(int key)

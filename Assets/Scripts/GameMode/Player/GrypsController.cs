@@ -38,6 +38,12 @@ public class GrypsController : MonoBehaviour
     private Vector2 nowVector;
     public bool isSomersault = false;
 
+    private bool isTurning;
+    private float distanceFactor;
+    private float heightFactor;
+    private float goalHeight;
+    private float moveDistance;
+    private float turnPoint;
     /*
     private bool isForce = false;
     //[Header("JetLevel")] public int[] jetLevel;
@@ -118,6 +124,26 @@ public class GrypsController : MonoBehaviour
             rb.velocity *= grypsParameter.breakPower;
             if (Mathf.Abs(rb.velocity.x) <= 0.25f) Brake(false);//velocityが 0.25f以下で解除
         }
+
+        /*
+    if (isTurning)
+    {
+        moveDistance += Mathf.Abs(rb.velocity.x * Time.deltaTime);
+        heightFactor = moveDistance * distanceFactor;
+        Debug.Log(moveDistance);
+        transform.GetChild(0).position = new Vector3(transform.position.x, transform.position.y + (heightFactor * goalHeight), transform.position.z);
+
+        if (goalHeight >= goalHeight * heightFactor)
+        {
+            isTurning = false;
+        }
+        if (moveDistance >= 30)
+        {
+            isTurning = false;
+            Debug.Log("stop");
+        }
+    }
+         */
 
         if (isSomersault)
         {
@@ -346,7 +372,7 @@ public class GrypsController : MonoBehaviour
     private void Land()
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-        stageCrl.jetMg.jetCountMg.JugeTapMode();
+        //stageCrl.jetMg.jetCountMg.JugeTapMode();
         wheelMg.TurnLamp(false, true);
     }
 
@@ -356,6 +382,16 @@ public class GrypsController : MonoBehaviour
         Brake(false);//TakeOff()でブレーキを解除
         //サマーソルトHud起動
     }
+
+    public void TurnCorner(float distanceHeight, float distanceMoving)
+    {
+        turnPoint = transform.position.x;
+        distanceFactor = 1 / distanceMoving;
+        goalHeight = distanceHeight;
+        transform.GetChild(0).position = new Vector3(transform.position.x, transform.position.y + distanceHeight, transform.position.z);
+        isTurning = true;
+    }
+
 
     /*
     private void JetCount(int somersaultCount)
@@ -442,7 +478,6 @@ public class GrypsController : MonoBehaviour
         }
     }
     */
-
 
     public void RecIsJet()
     {

@@ -4,18 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class JetCountManager : MonoBehaviour
+public class JetGUIManager : MonoBehaviour
 {
-    [Header("TapImage")]
+    //*ƒ{ƒ^ƒ“‚ðo‚µ“ü‚ê‚·‚éˆ—=>GUIMg <-‚±‚±
+
+    [Header("Ring")]
     public Image circleImage;
     [Range(0.1f, 0.5f)] public float longTapTime;
-    public Color fillingColor;
-    public Color completeColor;
-
-    [Header("LimitRing")]
     public Image limitRingImage;
     public CanvasGroup ringCanvas;
     public int jetNumber;
+
+    [Header("Button")]
+    public RectTransform buttonLeft;
+    public RectTransform buttonRight;
+    public float distance;
+    public float duration;
+    public Ease startupType;
 
     private bool isTapMode;
     [HideInInspector] public bool isCharge;
@@ -27,6 +32,8 @@ public class JetCountManager : MonoBehaviour
     StageCtrl stageCrl;
     JetManager jetMg;
 
+
+    /*
     private void Start()
     {
         stageCrl = transform.root.GetComponent<StageCtrl>();
@@ -42,7 +49,7 @@ public class JetCountManager : MonoBehaviour
             {
                 isDown = false;
                 isCharge = true;
-                Debug.Log("LongTap");
+                //Debug.Log("LongTap");
                 circleImage.color = completeColor;
             }
         }
@@ -67,7 +74,6 @@ public class JetCountManager : MonoBehaviour
 
     public void DisplayJetCount(int jetNum)
     {
-        Debug.Log(jetNum);
         if (jetNum > MAXJETNUMBER) return;
         limitRingImage.fillAmount = (float)jetNum / (float)MAXJETNUMBER;
         jetNumber = jetNum;
@@ -80,10 +86,8 @@ public class JetCountManager : MonoBehaviour
         {
             jetMg.StartUpJetHud();
             isTapMode = true;
-            ringCanvas.gameObject.transform.DOScale(1f, 0.25f).SetEase(Ease.InQuint);
+            ringCanvas.gameObject.transform.DOScale(1.2f, 0.25f).SetEase(Ease.InQuint);
             ringCanvas.DOFade(1f, 0.25f).SetEase(Ease.InQuint);
-
-            Debug.Log(ringCanvas.gameObject.transform.localScale);
         }
     }
 
@@ -95,8 +99,21 @@ public class JetCountManager : MonoBehaviour
         limitRingImage.fillAmount = 0f;
 
         isTapMode = false;
-        ringCanvas.gameObject.transform.DOScale(0.8f, 0.25f).SetEase(Ease.InQuint);
+        ringCanvas.gameObject.transform.DOScale(1f, 0.25f).SetEase(Ease.InQuint);
         ringCanvas.DOFade(0f, 0.25f).SetEase(Ease.InQuint);
     }
 
+    public void StartUpJetHud()
+    {
+        pushRect.DOKill(true);
+        pushRect.DOAnchorPosY(0f, duration).SetEase(startupType);
+    }
+
+    public void ShutDownJetHud()
+    {
+        pushRect.DOKill(true);
+        pushRect.DOAnchorPosY(-distance, duration).SetEase(startupType);
+    }
+
+    */
 }

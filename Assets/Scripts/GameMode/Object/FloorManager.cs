@@ -42,5 +42,19 @@ public class FloorManager : MonoBehaviour
         // return floorNumber;
     }
 
+    public int TurnFloor(Transform gateObject)
+    {
+        AllUnenableCollider();
+        int floorNumber = Array.IndexOf(floor, gateObject);
+
+        for (int i = 0; i < floor[floorNumber].GetChild(0).childCount; i++)
+        {
+            floor[floorNumber].GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = true;
+        }
+
+        return floorNumber;
+        // return floorNumber;
+    }
+
     //allCollider = GetComponentsInChildren<Collider2D>();”z—ñŽæ“¾•û–@
 }
