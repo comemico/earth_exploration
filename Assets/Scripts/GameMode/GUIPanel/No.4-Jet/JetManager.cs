@@ -14,6 +14,7 @@ public class JetManager : MonoBehaviour
     public Ease limitType = Ease.InOutQuad;
 
     public int limitNumber;
+    int oldlimitNumber;
     public float perTime;
     public int consumeNum;
     const int MAXLIMIT = 3;
@@ -44,7 +45,7 @@ public class JetManager : MonoBehaviour
     public Ease returnType;
     Tween tween_time;
 
-
+    StageCtrl stageCrl;
     public GrypsController grypsCrl;
     public JetGUIManager jetGuiMg;
 
@@ -59,6 +60,8 @@ public class JetManager : MonoBehaviour
     {
         chargeRingCanGrp = chargeRing.GetComponent<CanvasGroup>();
         chargeRingImg = chargeRing.GetChild(1).GetComponent<Image>();
+        stageCrl = transform.root.GetComponent<StageCtrl>();
+
     }
 
     private void Start()
@@ -69,17 +72,21 @@ public class JetManager : MonoBehaviour
     public void DisplayJetLimit(int limitNum)
     {
         if (limitNum > MAXLIMIT) return;
+        //Debug.Log(limitNum);
 
         limitRingImg.DOKill(true);
         limitRingImg.DOFillAmount((float)limitNum / (float)MAXLIMIT, limitDuration).SetEase(limitType);
 
         this.limitNumber = limitNum;
-        //JugeJetMode(this.limitNumber);
+        JugeJetMode();
     }
 
-    void JugeJetMode(int limitNum)
+    void JugeJetMode()
     {
-        Debug.Log("JetLevel : " + limitNum);
+        if (!jetGuiMg.isHud && stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
+        {
+            jetGuiMg.StartUpJetHud();
+        }
     }
 
     public void OnButtonDown()
@@ -90,8 +97,6 @@ public class JetManager : MonoBehaviour
 
         tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
-
-
     }
 
     public void OnButtonUp()
@@ -116,6 +121,15 @@ public class JetManager : MonoBehaviour
     {
         limitNumber -= consumeNum;//limitRing‚Ì•\Ž¦”‚ð‡‚í‚¹‚é
         DisplayJetLimit(limitNumber);
+
+        if (consumeNum >= 1)
+        {
+            grypsCrl.ForceJet(consumeNum - 1);
+            if (limitNumber <= 0)
+            {
+                jetGuiMg.ShutDownJetHud();
+            }
+        }
         consumeNum = 0;
 
     }

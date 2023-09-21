@@ -52,7 +52,7 @@ public class DashAreaManager : MonoBehaviour
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
 
-            if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) return;
+            //if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) return;
 
             if (key == KEY.both)
             {

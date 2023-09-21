@@ -367,6 +367,7 @@ public class GrypsController : MonoBehaviour
         Brake(false);//ForceJet()‚ÅƒuƒŒ[ƒL‚ğ‰ğœ
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.jetPower[power];
         rb.AddForce(force);
+        stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
     }
 
     private void Land()

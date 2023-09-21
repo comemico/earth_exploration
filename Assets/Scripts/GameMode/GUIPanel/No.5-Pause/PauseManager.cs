@@ -10,7 +10,7 @@ public class PauseManager : MonoBehaviour
     public Image bloom;
 
     const Ease TYPE = Ease.OutQuint;
-    const int ANGLE = -30;
+    const int ANGLE = -60;
     const float DURATION = 0.2f;
 
     [Header("ポップアップ")]

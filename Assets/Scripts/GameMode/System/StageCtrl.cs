@@ -97,7 +97,7 @@ public class StageCtrl : MonoBehaviour
     {
         controlStatus = status;
         controlScreenMg.ChangeControlLimit(status);
-        pauseMg.push_Pause.interactable = (controlStatus != ControlStatus.unControl);
+        //pauseMg.push_Pause.interactable = (controlStatus != ControlStatus.unControl);
     }
 
 
