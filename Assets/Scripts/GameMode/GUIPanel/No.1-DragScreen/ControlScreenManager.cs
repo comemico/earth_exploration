@@ -191,6 +191,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         this.key = key;
         speedPowerMg.StartDrawBow(key);
         cinemachineCrl.ChangeDirection(key);
+        stageCrl.saltoMg.transform.localScale = new Vector3(key, 1f, 1f);
         oldKey = key;//çXêV
     }
 

@@ -74,7 +74,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Emission: 4
+    - _Emission: 5
     - _EnableExternalAlpha: 0
     - _Slider: 1.5
     - _isEmissiveMap: 0

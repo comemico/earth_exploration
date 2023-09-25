@@ -14,7 +14,7 @@ public class TurnAreaManager : MonoBehaviour
     GrypsController grypsCrl;
     [HideInInspector] public bool isTurn;
     float distanceHeight;
-    public float distanceMoving;
+    //public float distanceMoving;
 
     [Header("Tween : Sprite.Move")]
     [Range(0f, 0.5f)] public float easeDuration;

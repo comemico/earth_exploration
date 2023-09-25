@@ -22,14 +22,20 @@ public class WheelManager : MonoBehaviour
     public Transform[] wheelBlade;
     public float radiusRear; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
     public Renderer matRear;
+    public SpriteRenderer breakPad;
     Tween tween_lampRear;
-    bool isLamp;
+    bool isGain;
     bool oldJudge;
 
     [Header("Lamp")]
-    public float startValue_Lamp;
-    public float easeDuration_Lamp;
-    public Ease easeType_Lamp;
+    //public float startValue_Lamp;
+    public float lampDuration;
+    public Ease lampType;
+
+    [Header("ArchedBack")]
+    public float archedValue;
+    public float archedDuration;
+    public Ease archedType;
 
     [Header("WheelBlade")]
     public float endValue;
@@ -90,29 +96,61 @@ public class WheelManager : MonoBehaviour
     public void BurnOutWheel(int gearNum)
     {
         transform.Rotate(0f, 0f, -1 * burnPower[gearNum - 1] * Time.deltaTime);
+
     }
 
     public void Judge(int gearNum)
     {
-        isLamp = (gearNum > 0);
+        isGain = (gearNum > 0);
 
-        if (oldJudge != isLamp)
+        if (oldJudge != isGain)
         {
-            TurnLamp(isLamp, false);
-            oldJudge = isLamp;
+            TurnLamp(isGain, false);
+            ArchedBack(isGain);
+            oldJudge = isGain;
         }
     }
 
-    public void TurnLamp(bool isLamp, bool isFront)
+    public void TurnLamp(bool isGain, bool isFront)
     {
-        tween_lampRear = DOTween.To(() => matRear.material.GetFloat("_Power"), x => matRear.material.SetFloat("_Power", x), Convert.ToInt32(isLamp), easeDuration_Lamp).SetEase(easeType_Lamp);
-        if (isFront) tween_lampFront = DOTween.To(() => matFront.material.GetFloat("_Power"), x => matFront.material.SetFloat("_Power", x), Convert.ToInt32(isLamp), easeDuration_Lamp).SetEase(easeType_Lamp);
+        tween_lampRear = DOTween.To(() => matRear.material.GetFloat("_Power"), x => matRear.material.SetFloat("_Power", x), Convert.ToInt32(isGain), lampDuration).SetEase(lampType);
+        if (isFront) tween_lampFront = DOTween.To(() => matFront.material.GetFloat("_Power"), x => matFront.material.SetFloat("_Power", x), Convert.ToInt32(isGain), lampDuration).SetEase(lampType);
         //Debug.Log(Convert.ToInt32(isLamp));
+    }
+
+    public void ArchedBack(bool isGain)
+    {
+        grypsCrl.transform.GetChild(0).DOLocalRotate(new Vector3(0f, 0f, archedValue * Convert.ToInt32(isGain)), archedDuration).SetEase(archedType);
+
+        //if (isGain)grypsCrl.transform.GetChild(0).DORotate(new Vector3(0f, 0f, 0.25f), 0.05f).SetEase(Ease.OutSine).SetRelative(true).SetLoops(-1, LoopType.Yoyo).SetDelay(archedDuration);
     }
 
 
     public void WheelBlade(bool isBrake)
     {
+        if (isBrake)
+        {
+            for (int i = 0; i < wheelBlade.Length; i++)
+            {
+                wheelBlade[i].transform.DOLocalRotate(new Vector3(0f, 0f, endValue), easeDuration).SetEase(easeType);
+
+            }
+
+            breakPad.DOFade(1f, 0.2f);
+
+        }
+        else
+        {
+            for (int i = 0; i < wheelBlade.Length; i++)
+            {
+                wheelBlade[i].transform.DOLocalRotate(Vector3.zero, easeDuration).SetEase(easeType);
+            }
+
+            breakPad.DOFade(0f, 0.2f);
+
+        }
+
+        /*
         for (int i = 0; i < wheelBlade.Length; i++)
         {
             wheelBlade[i].transform.DOComplete();
@@ -125,6 +163,7 @@ public class WheelManager : MonoBehaviour
                 wheelBlade[i].transform.DOLocalRotate(Vector3.zero, easeDuration).SetEase(easeType);
             }
         }
+         */
     }
 
 

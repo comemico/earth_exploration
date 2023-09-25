@@ -38,7 +38,7 @@ public class StageCtrl : MonoBehaviour
     }
 
     [Header("No.1")] [HideInInspector] public ControlScreenManager controlScreenMg;
-
+    [Header("No.2")] [HideInInspector] public SaltoManager saltoMg;
     [Header("No.3")] [HideInInspector] public MemoryGageManager memoryGageMg;
     [Header("No.4")] [HideInInspector] public JetManager jetMg;
     [Header("No.5")] [HideInInspector] public PauseManager pauseMg;
@@ -53,10 +53,11 @@ public class StageCtrl : MonoBehaviour
     void GetAllComponent()
     {
         controlScreenMg = GetComponentInChildren<ControlScreenManager>();
+        saltoMg = GetComponentInChildren<SaltoManager>();
         memoryGageMg = GetComponentInChildren<MemoryGageManager>();
         jetMg = GetComponentInChildren<JetManager>();
-        resultMg = GetComponentInChildren<ResultManager>();
         pauseMg = GetComponentInChildren<PauseManager>();
+        resultMg = GetComponentInChildren<ResultManager>();
         shutterMg = GetComponentInChildren<ShutterController>();
 
         sceneTransitionManager = GetComponent<SceneTransitionManager>();
