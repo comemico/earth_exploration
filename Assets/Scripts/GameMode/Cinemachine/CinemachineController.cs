@@ -11,8 +11,10 @@ public class CinemachineController : MonoBehaviour
     [Header("ScreenX:中央からの距離")] public float screenX;
     [Header("Screen:遷移時間")] public float turnTime = 0.5f;
     [Header("イージングの種類")] public Ease easeType;
-    [Header("fieldOfViewBox")] public int[] fieldOfViewBox;
+    //[Header("fieldOfViewBox")] public int[] fieldOfViewBox;
     //[Header("field of view : デバック用")] public Text fieldOfView;
+    [NamedArrayAttribute(new string[] { "Default", "近", "中", "遠" })]
+    [Range(90, 120)] public int[] fieldOfViewBox;
 
     [HideInInspector] public CinemachineBrain brain;
     CinemachineFramingTransposer framingTransposer;

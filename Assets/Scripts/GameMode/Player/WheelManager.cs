@@ -60,27 +60,20 @@ public class WheelManager : MonoBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(grypsCrl.rb.velocity.x) >= 1f)
-        {
-            SpinWheel(frontTransform, factorFront);//前輪
-            SpinWheel(transform, factorRear);//後輪
-        }
-
         //後輪のみ
         if (Mathf.Abs(grypsCrl.rb.velocity.x) <= 20f)
         {
             if (grypsCrl.stageCrl.controlScreenMg.gearNum >= 1)
             {
                 BurnOutWheel(grypsCrl.stageCrl.controlScreenMg.gearNum);
-                /*
-                if (powerLevel != grypsCrl.stageCrl.controlScreenMg.gearNum)
-                {
-                    TurnOnLamp();
-                    powerLevel = grypsCrl.stageCrl.controlScreenMg.gearNum;
-                }
-                 */
-
             }
+        }
+
+        if (Mathf.Abs(grypsCrl.rb.velocity.x) >= 0.5f)
+        {
+            SpinWheel(frontTransform, factorFront);//前輪
+            if (grypsCrl.stageCrl.controlScreenMg.gearNum >= 1) return;
+            SpinWheel(transform, factorRear);//後輪
         }
     }
 
@@ -89,14 +82,21 @@ public class WheelManager : MonoBehaviour
         var translation = grypsCrl.rb.velocity * Time.deltaTime; // 位置の変化量
         var distance = translation.magnitude; // 移動した距離
         var angle = distance * factor; // (distance / circleCollider.radius) 球が回転するべき量 
-        wheel.Rotate(0f, 0f, -1 * angle * Mathf.Rad2Deg);
+
+        if (translation.x > 0)
+        {
+            wheel.Rotate(0f, 0f, (int)grypsCrl.transform.localScale.x * -1f * angle * Mathf.Rad2Deg);
+        }
+        else if (translation.x <= 0)
+        {
+            wheel.Rotate(0f, 0f, (int)grypsCrl.transform.localScale.x * 1f * angle * Mathf.Rad2Deg);
+        }
     }
 
 
     public void BurnOutWheel(int gearNum)
     {
         transform.Rotate(0f, 0f, -1 * burnPower[gearNum - 1] * Time.deltaTime);
-
     }
 
     public void Judge(int gearNum)

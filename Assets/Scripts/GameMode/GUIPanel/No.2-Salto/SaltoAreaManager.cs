@@ -6,6 +6,7 @@ using DG.Tweening;
 public class SaltoAreaManager : MonoBehaviour
 {
     public float flightDuration;
+
     public float runUpSpeed;
 
     [Header("Tween : Camera.FOV")]
@@ -34,10 +35,8 @@ public class SaltoAreaManager : MonoBehaviour
         {
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
             {
-
                 grypsCrl.stageCrl.saltoMg.JugeSaltoMode();
                 //Camera:FOV
-
                 isSalto = true;
             }
         }

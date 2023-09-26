@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 using SoundSystem;
 
 public class GrypsController : MonoBehaviour
@@ -19,6 +20,8 @@ public class GrypsController : MonoBehaviour
     public float forceMagnitude;
     public float forceAngle;
     private int somersaultCount = 0;
+    Tween tween_salto;
+
 
     [Header("インターバル")]
     public float interval;
@@ -125,6 +128,69 @@ public class GrypsController : MonoBehaviour
             if (Mathf.Abs(rb.velocity.x) <= 0.25f) Brake(false);//velocityが 0.25f以下で解除
         }
 
+
+        if (isSomersault)
+        {
+            Vector2 prevvec = prev * Vector2.up;
+            Vector2 nowvec = transform.rotation * Vector2.up;
+            float angle = Vector2.Angle(prevvec, nowvec);
+            myAngle += angle;
+            prev = transform.rotation;
+            if (myAngle >= resultAngle - 35f)
+            {
+
+            }
+            if (transform.localScale.x == 1)//右を見ている
+            {
+                transform.localEulerAngles = new Vector3(0f, 0f, (360 - targetAngle));//340 : 
+            }
+            else if (transform.localScale.x == -1)//左を見ている
+            {
+                transform.localEulerAngles = new Vector3(0f, 0f, (360 + targetAngle));//380 : 360からどれだけ離れているのかで考えてみた
+            }
+            /*
+            if (myAngle >= resultAngle - 35f)
+            {
+                //Debug.Log("減速中");
+                rb.angularVelocity *= 0.75f;
+
+                if (myAngle >= resultAngle)
+                {
+                    somersaultCount++;
+                    //memoryGageMg.getMemoryMg.DisplaySomerSaultCount(somersaultCount);
+                    memoryGageMg.memoryGage++;
+                    memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage);
+                    myAngle = 0f;
+                    rb.angularVelocity = 0f;
+                    if (transform.localScale.x == 1)//右を見ている
+                    {
+                        transform.localEulerAngles = new Vector3(0f, 0f, (360 - targetAngle));//340 : 
+                    }
+                    else if (transform.localScale.x == -1)//左を見ている
+                    {
+                        transform.localEulerAngles = new Vector3(0f, 0f, (360 + targetAngle));//380 : 360からどれだけ離れているのかで考えてみた
+                    }
+                    isSomersault = false;
+                }
+            }
+             */
+        }
+
+        if (stageCrl.controlStatus == StageCtrl.ControlStatus.restrictedControl && Mathf.Abs(rb.velocity.x) <= 20f)
+        {
+            if (intervalTimer >= interval)
+            {
+                stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
+                wheelMg.TurnLamp(false, true);
+                intervalTimer = 0.0f;
+                //Debug.Log("解除");
+            }
+            else
+            {
+                intervalTimer += Time.deltaTime;
+            }
+        }
+
         /*
     if (isTurning)
     {
@@ -145,54 +211,6 @@ public class GrypsController : MonoBehaviour
     }
          */
 
-        if (isSomersault)
-        {
-            Vector2 prevvec = prev * Vector2.up;
-            Vector2 nowvec = transform.rotation * Vector2.up;
-            float angle = Vector2.Angle(prevvec, nowvec);
-            myAngle += angle;
-            prev = transform.rotation;
-
-            if (myAngle >= resultAngle - 20f)
-            {
-                //Debug.Log("減速中");
-                rb.angularVelocity *= 0.75f;
-
-                if (myAngle >= resultAngle)
-                {
-                    somersaultCount++;
-                    //memoryGageMg.getMemoryMg.DisplaySomerSaultCount(somersaultCount);
-                    //memoryGageMg.DotweenBlueGage(memoryGageMg.memoryGage, memoryGageMg.memoryGage + 1, 0.3f);
-                    memoryGageMg.memoryGage++;
-                    memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage);
-                    myAngle = 0f;
-                    rb.angularVelocity = 0f;
-                    if (transform.localScale.x == 1)//右を見ている
-                    {
-                        transform.localEulerAngles = new Vector3(0f, 0f, (360 - targetAngle));//340 : 
-                    }
-                    else if (transform.localScale.x == -1)//左を見ている
-                    {
-                        transform.localEulerAngles = new Vector3(0f, 0f, (360 + targetAngle));//380 : 360からどれだけ離れているのかで考えてみた
-                    }
-                    isSomersault = false;
-                }
-            }
-        }
-        if (stageCrl.controlStatus == StageCtrl.ControlStatus.restrictedControl && Mathf.Abs(rb.velocity.x) <= 20f)
-        {
-            if (intervalTimer >= interval)
-            {
-                stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-                wheelMg.TurnLamp(false, true);
-                intervalTimer = 0.0f;
-                //Debug.Log("解除");
-            }
-            else
-            {
-                intervalTimer += Time.deltaTime;
-            }
-        }
     }
 
 
@@ -371,11 +389,47 @@ public class GrypsController : MonoBehaviour
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
     }
 
+    public void Salto()
+    {
+        tween_salto.Kill(true);
+        tween_salto = transform.GetChild(0).DOLocalRotate(new Vector3(0, 0, 360f), 0.3f, RotateMode.FastBeyond360).SetEase(Ease.OutSine).OnComplete(stageCrl.saltoMg.SaltoComplete);
+        /*
+        if ((int)transform.localScale.x == 1)//右を見ている
+        {
+            tween_salto.Kill(true);
+            tween_salto = transform.DORotate(new Vector3(0, 0, 360f - targetAngle), 0.25f).SetRelative(true).SetUpdate(false).SetEase(Ease.OutSine);
+        }
+        else if ((int)transform.localScale.x == -1)//左を見ている
+        {
+            tween_salto.Kill(true);
+            tween_salto = transform.DOLocalRotate(new Vector3(0, 0, 360f + targetAngle), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.OutSine);
+        }
+        */
+    }
+
+    public void SomerSault(float angularChangeInDegrees)
+    {
+        if (!isSomersault)
+        {
+            CalcForceDirection();
+            Vector3 force = forceMagnitude * forceDirection;
+            nowVector = transform.rotation * Vector2.up;//今の向きのベクター
+            resultAngle = (int)Vector2.Angle(nowVector, targetVector);
+            resultAngle = 360 - resultAngle;
+            //Debug.Log(resultAngle);
+            float impulse = (angularChangeInDegrees * Mathf.Deg2Rad) * rb.inertia;
+            rb.AddTorque(transform.localScale.x * impulse, ForceMode2D.Impulse);
+            isSomersault = true;
+
+            rb.AddForce(force, ForceMode2D.Impulse);
+            //rb.AddForce(force, ForceMode2D.Force);
+        }
+    }
+
     private void Land()
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
         stageCrl.saltoMg.Release();
-        //stageCrl.jetMg.jetCountMg.JugeTapMode();
         wheelMg.TurnLamp(false, true);
     }
 
@@ -500,6 +554,11 @@ public class GrypsController : MonoBehaviour
         //rocketImg.color = new Color(255f, 255f, 255f, 0.4f);
         //jetcount = 0;
     }
+    private IEnumerator DelayMethod(float waitTime, Action action)
+    {
+        yield return new WaitForSeconds(waitTime);
+        action();
+    }
 
     /*
     private void Landing()
@@ -534,34 +593,7 @@ public class GrypsController : MonoBehaviour
     }
      */
 
-    private IEnumerator DelayMethod(float waitTime, Action action)
-    {
-        yield return new WaitForSeconds(waitTime);
-        action();
-    }
 
-    public void SomerSault(float angularChangeInDegrees)
-    {
-        if (!isSomersault)
-        {
-            CalcForceDirection();
-            Vector3 force = forceMagnitude * forceDirection;
-            rb.AddForce(force, ForceMode2D.Impulse);
-            //rb.AddForce(force, ForceMode2D.Force);
-            //memoryGageMg.getMemoryMg.AppearPlusMark();
-            //transform.DOLocalRotate(new Vector3(0, 0, 360f), 0.25f, RotateMode.FastBeyond360);
-            nowVector = transform.rotation * Vector2.up;//今の向きのベクター
-            resultAngle = (int)Vector2.Angle(nowVector, targetVector);
-            resultAngle = 360 - resultAngle;
-
-            //Debug.Log(resultAngle);
-            float impulse = (angularChangeInDegrees * Mathf.Deg2Rad) * rb.inertia;
-
-            rb.AddTorque(transform.localScale.x * impulse, ForceMode2D.Impulse);
-            isSomersault = true;
-
-        }
-    }
 
 
 }

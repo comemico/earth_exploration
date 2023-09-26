@@ -37,7 +37,7 @@ public class JetManager : MonoBehaviour
 
     [Header("TimeScale")]
     [NamedArrayAttribute(new string[] { "Fill", "First", "Secound", "Third" })]
-    [Range(0.2f, 1f)] public float[] timeScaleBox;
+    [Range(0.05f, 1f)] public float[] timeScaleBox;
 
     public float slowDuration;
     public Ease slowType;
@@ -81,7 +81,7 @@ public class JetManager : MonoBehaviour
         JugeJetMode();
     }
 
-    void JugeJetMode()
+    public void JugeJetMode()
     {
         if (!jetGuiMg.isHud && stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
         {
@@ -97,6 +97,9 @@ public class JetManager : MonoBehaviour
 
         tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
+        if (Time.timeScale > timeScaleBox[0])
+        {
+        }
     }
 
     public void OnButtonUp()
@@ -114,6 +117,7 @@ public class JetManager : MonoBehaviour
         tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
 
+
         Release();
     }
 
@@ -124,6 +128,7 @@ public class JetManager : MonoBehaviour
 
         if (consumeNum >= 1)
         {
+            stageCrl.saltoMg.Release();
             grypsCrl.ForceJet(consumeNum - 1);
             if (limitNumber <= 0)
             {
