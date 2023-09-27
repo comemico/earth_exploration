@@ -429,7 +429,7 @@ public class GrypsController : MonoBehaviour
     private void Land()
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-        stageCrl.saltoMg.Release();
+        stageCrl.saltoMg.Release(); //Salto’†’…’n‚µ‚½ê‡SaltoHud‚ğShutdown‚³‚¹‚é‚½‚ß‚ÉŒÄ‚Ô
         wheelMg.TurnLamp(false, true);
     }
 

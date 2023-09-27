@@ -35,7 +35,7 @@ public class SaltoAreaManager : MonoBehaviour
         {
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
             {
-                grypsCrl.stageCrl.saltoMg.JugeSaltoMode();
+                grypsCrl.stageCrl.saltoMg.JugeSaltoMode(flightDuration);
                 //Camera:FOV
                 isSalto = true;
             }

@@ -39,24 +39,24 @@ public class SaltoManager : MonoBehaviour
     {
         stageCrl = transform.root.GetComponent<StageCtrl>();
     }
-    public void JugeSaltoMode()
+
+    public void JugeSaltoMode(float gageTime)
     {
         tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
         saltoHudMg.StartUpSaltoHud();
-        StartTimeGage(3.5f);
+        StartTimeGage(gageTime);
         isSalto = false;
     }
 
-    public void StartTimeGage(float time)
+    public void StartTimeGage(float gageTime)
     {
         saltoTimeGage.fillAmount = 0.5f;
         saltoTimeGage.DOKill(true);
-        saltoTimeGage.DOFillAmount(0.1666667f, time).SetEase(saltoTimeType)
+        saltoTimeGage.DOFillAmount(0.1666667f, gageTime).SetEase(saltoTimeType)
             .OnComplete(() =>
             {
-                Release();
-                //stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
+                Release();//Jet‚ÌisHud‚ªfalse‚ÅA1‚ÂˆÈãJetMemory‚ª‚ ‚ê‚ÎAJetHudZ
             });
     }
 
@@ -77,15 +77,12 @@ public class SaltoManager : MonoBehaviour
         }
     }
 
-    public void OnButtonDown()
-    {
-
-    }
 
     public void OnButtonUp()
     {
-        if (!isSalto && stageCrl.controlStatus == StageCtrl.ControlStatus.unControl)
+        if (!isSalto && stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && saltoHudMg.isHud)
         {
+
             buttonEmi.enabled = false;
             stageCrl.grypsCrl.Salto();
             disc.transform.DOLocalRotate(new Vector3(0, 0, discAngle), discDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(discType);
@@ -102,13 +99,13 @@ public class SaltoManager : MonoBehaviour
     {
         //memoryUp
         saltoNumMemory.fillAmount = 0.1666f * saltoNum;
-        stageCrl.jetMg.DisplayJetLimit(stageCrl.jetMg.limitNumber + 1);
+        stageCrl.jetMg.DisplayJetLimit(stageCrl.jetMg.limitNumber + 1); //‹ó’†(unControl)‚È‚Ì‚ÅJetHud~
 
         buttonEmi.enabled = true;
         if (saltoNum >= 3)
         {
             stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-            Release();
+            Release(); //‰ñ“]”ãŒÀ‚ÅSaltoHud‚ğ‹­§Shutdown
             return;
         }
         isSalto = false;

@@ -13,6 +13,9 @@ public class GrypsParameter : MonoBehaviour
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
     [Range(3000, 10000)] public int[] jetPower;
 
+    [NamedArrayAttribute(new string[] { "1‰ñ“]", "2‰ñ“]", "3‰ñ“]" })]
+    [Range(0.2f, 0.75f)] public float[] saltoTime;
+
     [NamedArrayAttribute(new string[] { "Žã", "’†", "‹­" })]
     [Range(0.5f, 0.15f)] public float[] suctionPower;
 

@@ -33,6 +33,7 @@ public class JetGUIManager : MonoBehaviour
 
     public void StartUpJetHud()
     {
+        //Debug.Log("startUpJet");
         tweenList.KillAllAndClear();
         Sequence seq_startup = DOTween.Sequence();
 
@@ -49,6 +50,8 @@ public class JetGUIManager : MonoBehaviour
     }
     public void ShutDownJetHud()
     {
+        //Debug.Log("shutDownJet");
+
         tweenList.KillAllAndClear();
         Sequence seq_shutdown = DOTween.Sequence();
 

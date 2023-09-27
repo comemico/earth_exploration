@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 using DG.Tweening;
 
 
@@ -12,11 +11,7 @@ public class JetManager : MonoBehaviour
     public Image limitRingImg;
     public float limitDuration = 0.25f;
     public Ease limitType = Ease.InOutQuad;
-
     public int limitNumber;
-    int oldlimitNumber;
-    public float perTime;
-    public int consumeNum;
     const int MAXLIMIT = 3;
 
     [Header("ChargeRing")]
@@ -26,19 +21,15 @@ public class JetManager : MonoBehaviour
     CanvasGroup chargeRingCanGrp;
     Image chargeRingImg;
 
-    public float fullTime;
-    public Color fillingColor;
-    public Color firstColor;
-    public Color secoundColor;
-    public Color completeColor;
-    float time;
+    [Range(0.25f, 1.0f)] public float chargeTime;
+    public Ease chargeType;
+
+    int consumeNum;
+    public Color[] chargeColor;
     bool isDown;
 
-
     [Header("TimeScale")]
-    [NamedArrayAttribute(new string[] { "Fill", "First", "Secound", "Third" })]
-    [Range(0.05f, 1f)] public float[] timeScaleBox;
-
+    [Range(0.05f, 1f)] public float chargeTimeScale;
     public float slowDuration;
     public Ease slowType;
     public float returnDuration;
@@ -53,7 +44,6 @@ public class JetManager : MonoBehaviour
     private void Awake()
     {
         GetComponent();
-        perTime = fullTime / (float)MAXLIMIT;
     }
 
     void GetComponent()
@@ -61,7 +51,6 @@ public class JetManager : MonoBehaviour
         chargeRingCanGrp = chargeRing.GetComponent<CanvasGroup>();
         chargeRingImg = chargeRing.GetChild(1).GetComponent<Image>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
-
     }
 
     private void Start()
@@ -72,18 +61,32 @@ public class JetManager : MonoBehaviour
     public void DisplayJetLimit(int limitNum)
     {
         if (limitNum > MAXLIMIT) return;
-        //Debug.Log(limitNum);
 
         limitRingImg.DOKill(true);
         limitRingImg.DOFillAmount((float)limitNum / (float)MAXLIMIT, limitDuration).SetEase(limitType);
 
         this.limitNumber = limitNum;
-        JugeJetMode();
+        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)//空中時(Salto)はJetHud起× 着地時(Dash)はJetHud起〇
+        {
+            JugeJetMode();
+        }
+    }
+
+    public void ChargeRing(int limitNum)
+    {
+        consumeNum = 0;
+        chargeRingImg.fillAmount = 0f;
+        chargeRingImg.DOFillAmount(0.3333333f, chargeTime).SetEase(chargeType).SetLoops(limitNum, LoopType.Incremental)
+            .OnStepComplete(() =>
+            {
+                consumeNum++;
+                chargeRingImg.color = chargeColor[consumeNum];
+            });
     }
 
     public void JugeJetMode()
     {
-        if (!jetGuiMg.isHud && stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
+        if (!jetGuiMg.isHud && limitNumber >= 1)
         {
             jetGuiMg.StartUpJetHud();
         }
@@ -91,133 +94,53 @@ public class JetManager : MonoBehaviour
 
     public void OnButtonDown()
     {
-        isDown = true;
+        //isDown = true;
+        ChargeRing(limitNumber);
         buttonMark_Left.enabled = true;
         buttonMark_Right.enabled = true;
 
-        tween_time.Kill(true);
-        tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
-        if (Time.timeScale > timeScaleBox[0])
+        if (Time.timeScale > chargeTimeScale)
         {
+            tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, chargeTimeScale, slowDuration).SetEase(slowType);
         }
     }
 
     public void OnButtonUp()
     {
-        isDown = false;
+        //isDown = false;
         buttonMark_Left.enabled = false;
         buttonMark_Right.enabled = false;
 
-        time = 0f;
+        chargeRingImg.DOKill(false);
         chargeRingImg.fillAmount = 0f;
-        chargeRingImg.color = fillingColor;
-        buttonMark_Left.color = fillingColor;
-        buttonMark_Right.color = fillingColor;
+        chargeRingImg.color = chargeColor[0];
+        buttonMark_Left.color = chargeColor[0];
+        buttonMark_Right.color = chargeColor[0];
 
         tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
 
-
-        Release();
+        Release(consumeNum);
     }
 
-    void Release()
+    void Release(int consumeNum)
     {
-        limitNumber -= consumeNum;//limitRingの表示数を合わせる
+        limitNumber -= consumeNum; //limitRingの表示数を合わせる
+
         DisplayJetLimit(limitNumber);
+
+        stageCrl.saltoMg.Release(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ
 
         if (consumeNum >= 1)
         {
-            stageCrl.saltoMg.Release();
             grypsCrl.ForceJet(consumeNum - 1);
             if (limitNumber <= 0)
             {
                 jetGuiMg.ShutDownJetHud();
             }
         }
-        consumeNum = 0;
-
     }
 
-    private void Update()
-    {
-        if (isDown)
-        {
-            time += Time.deltaTime;
-            chargeRingImg.fillAmount = time / fullTime;
-
-            if (time >= perTime * limitNumber)
-            {
-                chargeRingImg.fillAmount = (float)limitNumber / (float)MAXLIMIT;
-                isDown = false;
-            }
-
-            //押した時間によって消費するジェットメモリを決める
-            if (time >= perTime && consumeNum < 1)
-            {
-                consumeNum = 1;
-
-                tween_time.Kill(true);
-                tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[1], slowDuration).SetEase(slowType);
-
-                chargeRingImg.color = firstColor;
-                buttonMark_Left.color = firstColor;
-                buttonMark_Right.color = firstColor;
-            }
-            if (time >= perTime * 2 && consumeNum < 2)
-            {
-                consumeNum = 2;
-
-                tween_time.Kill(true);
-                tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[2], slowDuration).SetEase(slowType);
-
-                chargeRingImg.color = secoundColor;
-                buttonMark_Left.color = secoundColor;
-                buttonMark_Right.color = secoundColor;
-            }
-            if (time >= fullTime)
-            {
-                consumeNum = 3;
-
-                tween_time.Kill(true);
-                tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[3], slowDuration).SetEase(slowType);
-
-                chargeRingImg.color = completeColor;
-                buttonMark_Left.color = completeColor;
-                buttonMark_Right.color = completeColor;
-                chargeRingImg.fillAmount = 1f;
-                isDown = false;
-            }
-
-        }
-    }
-
-
-    /*
-    public void OnButtonDown()
-    {
-        tween_time.Kill(true);
-        tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScale, slowDuration).SetEase(slowType);
-
-        jetCountMg.PushDown();
-    }
-
-    public void OnButtonUp()
-    {
-        tween_time.Kill(true);
-        tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
-
-        jetCountMg.PushUp();
-
-        if (jetCountMg.isCharge)
-        {
-            grypsCrl.ForceJet(0);
-            jetCountMg.ResetJetRing();
-            //if (!isLimitRelease) ShutDownJetHud();
-            jetCountMg.isCharge = false;
-        }
-    }
-    */
 
 
 

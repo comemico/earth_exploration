@@ -113,13 +113,13 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         startPosition = eventData.position * screenFactor;
-        movingMaskMg.FadeInMovingMask(startPosition);
+        //movingMaskMg.FadeInMovingMask(startPosition);
         speedPowerMg.StartDrawBow(key);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        movingMaskMg.FadeOutMovingMask();
+        //movingMaskMg.FadeOutMovingMask();
         speedPowerMg.Release(gearNum);
     }
 

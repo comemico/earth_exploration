@@ -1105,21 +1105,17 @@ MonoBehaviour:
   limitDuration: 0.15
   limitType: 7
   limitNumber: 0
-  perTime: 0
-  consumeNum: 0
   chargeRing: {fileID: 662091701}
   buttonMark_Left: {fileID: 995339421}
   buttonMark_Right: {fileID: 316573392}
-  fullTime: 0.5
-  fillingColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
-  firstColor: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
-  secoundColor: {r: 0.2627451, g: 0.17254902, b: 0.9490196, a: 1}
-  completeColor: {r: 0.1254902, g: 0.8509804, b: 0.67058825, a: 1}
-  timeScaleBox:
-  - 0.4
-  - 0.3
-  - 0.2
-  - 0.1
+  chargeTime: 0.6
+  chargeType: 2
+  chargeColor:
+  - {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
+  - {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
+  - {r: 0.2627451, g: 0.17254902, b: 0.9490196, a: 1}
+  - {r: 0.1254902, g: 0.8509804, b: 0.67058825, a: 1}
+  chargeTimeScale: 0.1
   slowDuration: 0.1
   slowType: 15
   returnDuration: 0.25
@@ -4172,7 +4168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c97781d5376da4fb104fde335dd33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flightDuration: 5
+  flightDuration: 3.5
   runUpSpeed: 50
   fov: 100
   easeDuration: 0.25
@@ -15373,7 +15369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1805337605
 Transform:
   m_ObjectHideFlags: 0
@@ -110049,7 +110045,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostPower: dc050000d0070000b80b0000
   dashPower: dc050000d0070000ac0d000088130000
-  jetPower: b80b0000a00f000088130000
+  jetPower: b80b0000ac0d0000a00f0000
+  saltoTime:
+  - 0.35
+  - 0.5
+  - 0.75
   suctionPower:
   - 0.5
   - 0.35
