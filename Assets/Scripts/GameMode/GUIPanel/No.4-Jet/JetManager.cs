@@ -26,7 +26,7 @@ public class JetManager : MonoBehaviour
 
     int consumeNum;
     public Color[] chargeColor;
-    bool isDown;
+    public bool isDown;
 
     [Header("TimeScale")]
     [Range(0.05f, 1f)] public float chargeTimeScale;
@@ -37,6 +37,7 @@ public class JetManager : MonoBehaviour
     Tween tween_time;
 
     StageCtrl stageCrl;
+    CinemachineController cinemachineCrl;
     public GrypsController grypsCrl;
     public JetGUIManager jetGuiMg;
 
@@ -51,6 +52,7 @@ public class JetManager : MonoBehaviour
         chargeRingCanGrp = chargeRing.GetComponent<CanvasGroup>();
         chargeRingImg = chargeRing.GetChild(1).GetComponent<Image>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
+        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
     }
 
     private void Start()
@@ -94,8 +96,11 @@ public class JetManager : MonoBehaviour
 
     public void OnButtonDown()
     {
-        //isDown = true;
+        isDown = true;
+
+        grypsCrl.jetAnimator.SetBool("isDown", isDown);
         ChargeRing(limitNumber);
+
         buttonMark_Left.enabled = true;
         buttonMark_Right.enabled = true;
 
@@ -107,9 +112,10 @@ public class JetManager : MonoBehaviour
 
     public void OnButtonUp()
     {
-        //isDown = false;
-        buttonMark_Left.enabled = false;
-        buttonMark_Right.enabled = false;
+        isDown = false;
+
+        grypsCrl.jetAnimator.SetBool("isDown", isDown);
+        Release(consumeNum);
 
         chargeRingImg.DOKill(false);
         chargeRingImg.fillAmount = 0f;
@@ -117,10 +123,13 @@ public class JetManager : MonoBehaviour
         buttonMark_Left.color = chargeColor[0];
         buttonMark_Right.color = chargeColor[0];
 
-        tween_time.Kill(true);
-        tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
+        buttonMark_Left.enabled = false;
+        buttonMark_Right.enabled = false;
 
-        Release(consumeNum);
+        if (!stageCrl.saltoMg.saltoHudMg.isHud) //if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)//空中時(Salto)はJetHud起× 着地時(Dash)はJetHud起〇
+        {
+            tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
+        }
     }
 
     void Release(int consumeNum)
@@ -129,10 +138,9 @@ public class JetManager : MonoBehaviour
 
         DisplayJetLimit(limitNumber);
 
-        stageCrl.saltoMg.Release(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ
-
         if (consumeNum >= 1)
         {
+            stageCrl.saltoMg.Release(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ
             grypsCrl.ForceJet(consumeNum - 1);
             if (limitNumber <= 0)
             {

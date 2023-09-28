@@ -22,13 +22,18 @@ public class GrypsController : MonoBehaviour
     private int somersaultCount = 0;
     Tween tween_salto;
 
-
-    [Header("インターバル")]
-    public float interval;
-    private float intervalTimer = 0.0f;
-
     [HideInInspector] public Rigidbody2D rb = null;
-    Animator anim = null;
+    public Animator jetAnimator;
+    Animator saltoAnimator;
+    CapsuleCollider2D capsuleCol;
+
+    [Header("ブーストのリロード基準")]
+    public float reloadTime = 0.1f;
+    [Range(25, 100)] public float reloadVelocity;
+    private float time;
+
+
+
     private Vector3 forceDirection = new Vector3(1f, 1f, 1f);
     private bool isGroundPrev = false;
     private bool isGround = false;
@@ -91,7 +96,8 @@ public class GrypsController : MonoBehaviour
     void AllGetComponent()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        capsuleCol = GetComponent<CapsuleCollider2D>();
+        //jetAnimator = GetComponent<Animator>();
         grypsParameter = GetComponent<GrypsParameter>();
         wheelMg = GetComponentInChildren<WheelManager>();
         effectManager = GetComponentInChildren<EffectManager>();
@@ -176,19 +182,19 @@ public class GrypsController : MonoBehaviour
              */
         }
 
-        if (stageCrl.controlStatus == StageCtrl.ControlStatus.restrictedControl && Mathf.Abs(rb.velocity.x) <= 20f)
+        if (stageCrl.controlStatus == StageCtrl.ControlStatus.restrictedControl && Mathf.Abs(rb.velocity.x) <= reloadVelocity)
         {
-            if (intervalTimer >= interval)
+            if (time >= reloadTime)
             {
                 stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
                 wheelMg.TurnLamp(false, true);
-                intervalTimer = 0.0f;
-                //Debug.Log("解除");
+                time = 0.0f;
             }
             else
             {
-                intervalTimer += Time.deltaTime;
+                time += Time.deltaTime;
             }
+
         }
 
         /*
@@ -360,6 +366,17 @@ public class GrypsController : MonoBehaviour
         if (isBrake) Brake(true);//ControlScreenから呼ばれる
     }
 
+    public void Return()
+    {
+        rb.DORotate(0f, 0.5f).SetEase(Ease.OutSine);
+        /*
+        float inclination = transform.rotation.z;
+        transform.GetChild(0).rotation = Quaternion.Euler(0.0f, 0.0f, inclination);
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);//回転リセット
+        transform.GetChild(0).DOLocalRotate(new Vector3(0, 0, (int)transform.localScale.x * 0f), 0.3f, RotateMode.Fast).SetEase(Ease.OutSine);
+         */
+    }
+
     public void ForceDash(int key, int power)
     {
         Brake(false);//ForceDash()でブレーキを解除
@@ -437,7 +454,7 @@ public class GrypsController : MonoBehaviour
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
         Brake(false);//TakeOff()でブレーキを解除
-
+        //rb.DORotate(-1 * (int)transform.localScale.x * 10f, 0.5f).SetEase(Ease.OutSine);
     }
 
     public void TurnCorner(float distanceHeight, float distanceMoving)

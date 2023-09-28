@@ -24,7 +24,6 @@ public class JetGUIManager : MonoBehaviour
     public float buttonDuration = 0.25f;
     public Ease buttonType = Ease.InOutQuad;
 
-
     public bool isHud;
     [HideInInspector] public bool isCharge;
     List<Tween> tweenList = new List<Tween>();
@@ -33,7 +32,6 @@ public class JetGUIManager : MonoBehaviour
 
     public void StartUpJetHud()
     {
-        //Debug.Log("startUpJet");
         tweenList.KillAllAndClear();
         Sequence seq_startup = DOTween.Sequence();
 
@@ -48,10 +46,11 @@ public class JetGUIManager : MonoBehaviour
         tweenList.Add(seq_startup);
         isHud = true;
     }
+
+
+
     public void ShutDownJetHud()
     {
-        //Debug.Log("shutDownJet");
-
         tweenList.KillAllAndClear();
         Sequence seq_shutdown = DOTween.Sequence();
 
@@ -68,10 +67,7 @@ public class JetGUIManager : MonoBehaviour
     }
 
 
-
-
     /*
-
     public void JugeTapMode()
     {
         if (jetNumber == 3 && stageCrl.controlStatus != StageCtrl.ControlStatus.unControl && !isTapMode)
@@ -82,7 +78,6 @@ public class JetGUIManager : MonoBehaviour
             ringCanvas.DOFade(1f, 0.25f).SetEase(Ease.InQuint);
         }
     }
-
     public void ResetJetRing()
     {
         jetMg.ShutDownJetHud();
@@ -94,8 +89,5 @@ public class JetGUIManager : MonoBehaviour
         ringCanvas.gameObject.transform.DOScale(1f, 0.25f).SetEase(Ease.InQuint);
         ringCanvas.DOFade(0f, 0.25f).SetEase(Ease.InQuint);
     }
-
-
-
     */
 }

@@ -9,10 +9,8 @@ public class SaltoAreaManager : MonoBehaviour
 
     public float runUpSpeed;
 
-    [Header("Tween : Camera.FOV")]
-    public float fov;
-    [Range(0f, 0.5f)] public float easeDuration;
-    public Ease easeType;
+    [Header("Zoom: Camera.FOV")]
+    public int fov;
 
     [Header("“üŒû•ûŒü‚ÆN“ü‚ÌŒü‚«")]
     public ENTRANCE_KEY entranceKey;
@@ -26,7 +24,10 @@ public class SaltoAreaManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+        if (grypsCrl == null)
+        {
+            grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -35,12 +36,13 @@ public class SaltoAreaManager : MonoBehaviour
         {
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
             {
+                Camera.main.GetComponent<CinemachineController>().Zoom(fov);
                 grypsCrl.stageCrl.saltoMg.JugeSaltoMode(flightDuration);
-                //Camera:FOV
                 isSalto = true;
             }
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")

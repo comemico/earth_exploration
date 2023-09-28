@@ -33,16 +33,19 @@ public class SaltoManager : MonoBehaviour
     int saltoNum;
     public bool isSalto;
     StageCtrl stageCrl;
+    CinemachineController cinemachineCrl;
+
     //GrypsController grypsCrl;
 
     private void Start()
     {
         stageCrl = transform.root.GetComponent<StageCtrl>();
+        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
     }
 
     public void JugeSaltoMode(float gageTime)
     {
-        tween_time.Kill(true);
+        //tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
         saltoHudMg.StartUpSaltoHud();
         StartTimeGage(gageTime);
@@ -64,10 +67,11 @@ public class SaltoManager : MonoBehaviour
     {
         if (saltoHudMg.isHud)
         {
+            cinemachineCrl.DefaultZoom();
             saltoHudMg.ShutDownSaltoHud();
             saltoNum = 0;
-            disc.transform.DOKill(true);
-            tween_time.Kill(true);
+            //disc.transform.DOKill(true);
+
             tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType)
                 .OnComplete(() =>
                 {
@@ -88,7 +92,7 @@ public class SaltoManager : MonoBehaviour
             disc.transform.DOLocalRotate(new Vector3(0, 0, discAngle), discDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(discType);
             isSalto = true;
             saltoNum++;
-            tween_time.Kill(true);
+            //tween_time.Kill(true);
             tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[saltoNum], slowDuration).SetEase(slowType);
 
         }

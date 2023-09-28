@@ -1108,13 +1108,14 @@ MonoBehaviour:
   chargeRing: {fileID: 662091701}
   buttonMark_Left: {fileID: 995339421}
   buttonMark_Right: {fileID: 316573392}
-  chargeTime: 0.6
+  chargeTime: 0.55
   chargeType: 2
   chargeColor:
   - {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   - {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   - {r: 0.2627451, g: 0.17254902, b: 0.9490196, a: 1}
   - {r: 0.1254902, g: 0.8509804, b: 0.67058825, a: 1}
+  isDown: 0
   chargeTimeScale: 0.1
   slowDuration: 0.1
   slowType: 15
@@ -4170,9 +4171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flightDuration: 3.5
   runUpSpeed: 50
-  fov: 100
-  easeDuration: 0.25
-  easeType: 6
+  fov: 102
   entranceKey: 1
 --- !u!1 &517660191
 GameObject:
@@ -5835,7 +5834,7 @@ MonoBehaviour:
   m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 67f96426a316c62f
+  m_ApplyToSortingLayers: 67f96426a316c62fa7e79479
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -7288,7 +7287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3759aca85ffa43a47bf34e607324808f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  downTimeRange: 0.45
+  downTimeRange: 0.2
 --- !u!61 &965673326
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11244,9 +11243,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1425390371}
   - component: {fileID: 1425390373}
-  - component: {fileID: 1425390372}
+  - component: {fileID: 1425390374}
   m_Layer: 0
-  m_Name: SpriteAnimation_Nozzle_01_0
+  m_Name: SpriteAnimator_JetNozzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11267,27 +11266,6 @@ Transform:
   m_Father: {fileID: 3607800623417565761}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1425390372
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1425390370}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b8cfaba66fda30d4285c622c262d2844, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &1425390373
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11340,6 +11318,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+--- !u!95 &1425390374
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425390370}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b8cfaba66fda30d4285c622c262d2844, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1426194899
 GameObject:
   m_ObjectHideFlags: 0
@@ -13776,7 +13775,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 5.217749
+  m_FocalLength: 11.588265
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -13957,13 +13956,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vcamFloor:
   - {fileID: 842169869}
-  gryps: {fileID: 8393327615752564922}
   grypsSprite: {fileID: 1670789330740813602}
-  screenX: 0.15
-  turnTime: 0.45
-  easeType: 6
-  fieldOfViewBox: 5c0000005f0000006400000078000000
+  range: 0.15
+  turnDuration: 0.5
+  turnType: 6
+  fovDuration: 0.35
+  fovType: 1
+  defaultFov: 92
+  fovDeDuration: 1.25
+  fovDeType: 1
   brain: {fileID: 1680017958}
+  activeVC: {fileID: 0}
 --- !u!1 &1680737170
 GameObject:
   m_ObjectHideFlags: 0
@@ -109940,7 +109943,6 @@ GameObject:
   - component: {fileID: 8393327615752564922}
   - component: {fileID: 8393327615752564918}
   - component: {fileID: 8393327615752564917}
-  - component: {fileID: 8393327615752564919}
   m_Layer: 0
   m_Name: Gryps[MK-01]
   m_TagString: Player
@@ -110010,27 +110012,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 2
---- !u!95 &8393327615752564919
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393327615752564915}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: be1a2e779d1e56a4d9b7d6494224c5cc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8393327615752564921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110043,7 +110024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2188a178d72240a42847747fad5273c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boostPower: dc050000d0070000b80b0000
+  boostPower: dc05000098080000800c0000
   dashPower: dc050000d0070000ac0d000088130000
   jetPower: b80b0000ac0d0000a00f0000
   saltoTime:
@@ -110076,8 +110057,10 @@ MonoBehaviour:
   targetAngle: 20
   forceMagnitude: 0
   forceAngle: 0
-  interval: 0.1
   rb: {fileID: 0}
+  jetAnimator: {fileID: 1425390374}
+  reloadTime: 0.1
+  reloadVelocity: 50
   isSomersault: 0
 --- !u!4 &8428381414609440587
 Transform:

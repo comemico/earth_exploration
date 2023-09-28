@@ -38,9 +38,10 @@ public class UpsideDownCheck : MonoBehaviour
             if (timer >= downTimeRange)
             {
                 timer = 0.0f;
-                grypsCrl.rb.velocity = Vector2.zero;
-                grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
-                grypsCrl.stageCrl.resultMg.Result(ResultManager.RESULT.missZone);
+                grypsCrl.Return();
+                //grypsCrl.rb.velocity = Vector2.zero;
+                //grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
+                //grypsCrl.stageCrl.resultMg.Result(ResultManager.RESULT.missZone);
             }
             else
             {
