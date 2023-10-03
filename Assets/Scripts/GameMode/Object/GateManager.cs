@@ -39,9 +39,9 @@ public class GateManager : MonoBehaviour
     Collider2D gateCollider;
     FloorManager floorMg;
 
-    const int DISTANCE_SUCKEDIN = 3;
+    const int DISTANCE_SUCKEDIN = 5;
     const int DISTANCE_GATE = 3;
-    const float APPEARENCE_HEIGHT = 0.5f;
+    const float APPEARENCE_HEIGHT = 0f;
 
     private void Awake()
     {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ba86629e09be1e94facf3074c11cb0dd
+guid: 19c9dbf6eecd3de4b8a419b4f822d008
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -65,7 +65,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -121,7 +121,70 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Title_ButtonBase_01_setting
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 389
+        width: 509
+        height: 574
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bc52e9926f7fa64d950290eeafdb2fa
+      internalID: 1560586713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_ButtonBase_01_credit
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 314
+        width: 348
+        height: 701
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d875ec30ec2da44daffa52bb3e739e6
+      internalID: 377774378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_ButtonBase_01_exit
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 18
+        width: 694
+        height: 260
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca822bd415d2dbf4fb4c7c07d77c2115
+      internalID: -1267218749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +195,10 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Title_ButtonBase_01_credit: 377774378
+      Title_ButtonBase_01_exit: -1267218749
+      Title_ButtonBase_01_setting: 1560586713
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

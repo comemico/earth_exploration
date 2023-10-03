@@ -23,6 +23,7 @@ public class PopController : MonoBehaviour
     public Ease type_Arrow;
     RectTransform[] arrow;
 
+
     List<Tween> tweenList = new List<Tween>();
 
     private void Awake()
@@ -89,6 +90,7 @@ public class PopController : MonoBehaviour
 
         if (isComplete) sequence.Complete();
     }
+
 
     private void OnDestroy()
     {

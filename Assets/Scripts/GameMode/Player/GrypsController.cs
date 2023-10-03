@@ -24,7 +24,7 @@ public class GrypsController : MonoBehaviour
 
     [HideInInspector] public Rigidbody2D rb = null;
     public Animator jetAnimator;
-    Animator saltoAnimator;
+    public Animator saltoAnimator;
     CapsuleCollider2D capsuleCol;
 
     [Header("ブーストのリロード基準")]

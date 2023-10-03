@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -7,20 +8,19 @@ public class PauseManager : MonoBehaviour
     [Header("ポーズボタン")]
     public Button push_Pause;
     public RectTransform dial;
-    public Image bloom;
+    public Text pauseText;
 
     const Ease TYPE = Ease.OutQuint;
     const int ANGLE = -60;
     const float DURATION = 0.2f;
 
     [Header("ポップアップ")]
-    public Button push_WorldMap;
-    public Button push_Retry;
-
-    PopController popCtrl;
-    Text pauseText;
+    public Image[] emissionImg;
     public bool isPause = false;
 
+    PopController popCtrl;
+    StageCtrl stageCrl;
+    float savedTimeScale;
 
 
     private void Awake()
@@ -32,8 +32,8 @@ public class PauseManager : MonoBehaviour
     private void InitializeGetComponent()
     {
         popCtrl = GetComponent<PopController>();
-        pauseText = transform.GetChild(2).GetComponent<Text>();
-        pauseText.enabled = false;
+        stageCrl = GetComponentInParent<StageCtrl>();
+        //pauseText.enabled = false;
         //push_Pause.interactable = false;
         //bloomImage.enabled = false;
         //ClosePausePanel(true);
@@ -59,12 +59,12 @@ public class PauseManager : MonoBehaviour
     public void OpenPausePanel()
     {
         isPause = true;
-
+        savedTimeScale = Time.timeScale;
         Time.timeScale = 0f;
+        stageCrl.saltoMg.saltoTimeGage.DOPause();
         pauseText.enabled = true;
-        bloom.enabled = true;
-
-        dial.DOLocalRotate(new Vector3(0f, 0f, ANGLE), DURATION).SetEase(TYPE);
+        SwichBloom(true, 0.25f);
+        //dial.DOLocalRotate(new Vector3(0f, 0f, ANGLE), DURATION).SetEase(TYPE);
 
         popCtrl.OpenPanel();
     }
@@ -72,14 +72,32 @@ public class PauseManager : MonoBehaviour
     public void ClosePausePanel(bool isComplete)
     {
         isPause = false;
+        stageCrl.saltoMg.saltoTimeGage.DOPlay();
 
-        Time.timeScale = 1f;
+        if (Mathf.Approximately(Time.timeScale, 1f))//timescale= 1fに近ければ1fに設定
+        {
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            Time.timeScale = savedTimeScale;
+        }
+
         pauseText.enabled = false;
-        bloom.enabled = false;
-
-        dial.DOLocalRotate(Vector3.zero, DURATION).SetEase(TYPE);
+        SwichBloom(false, 0.2f);
+        //dial.DOLocalRotate(Vector3.zero, DURATION).SetEase(TYPE);
 
         popCtrl.ClosePanel(isComplete);
+    }
+
+    public void SwichBloom(bool isEnabled, float fadeTime) //PanelAnimeで光源が見えるのを防ぐ目的
+    {
+        foreach (Image img in emissionImg)
+        {
+            img.enabled = isEnabled;
+            img.DOKill(true);
+            img.DOFade(Convert.ToInt32(isEnabled), fadeTime).SetEase(Ease.InQuint);
+        }
     }
 
     //if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない

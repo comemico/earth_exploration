@@ -48,6 +48,7 @@ public class SaltoManager : MonoBehaviour
         //tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
         saltoHudMg.StartUpSaltoHud();
+        stageCrl.grypsCrl.saltoAnimator.SetBool("isWing", saltoHudMg.isHud);
         StartTimeGage(gageTime);
         isSalto = false;
     }
@@ -69,6 +70,7 @@ public class SaltoManager : MonoBehaviour
         {
             cinemachineCrl.DefaultZoom();
             saltoHudMg.ShutDownSaltoHud();
+            stageCrl.grypsCrl.saltoAnimator.SetBool("isWing", saltoHudMg.isHud);
             saltoNum = 0;
             //disc.transform.DOKill(true);
 
