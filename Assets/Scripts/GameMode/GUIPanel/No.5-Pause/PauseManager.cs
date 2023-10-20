@@ -63,7 +63,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 0f;
         stageCrl.saltoMg.saltoTimeGage.DOPause();
         pauseText.enabled = true;
-        SwichBloom(true, 0.25f);
+        SwichBloom(true, 0.2f);
         //dial.DOLocalRotate(new Vector3(0f, 0f, ANGLE), DURATION).SetEase(TYPE);
 
         popCtrl.OpenPanel();

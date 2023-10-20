@@ -9,7 +9,7 @@ public class ButtonExtension : MonoBehaviour,
 {
     public void OnPointerDown(PointerEventData eventData)
     {
-        transform.DOScale(0.95f, 0.1f).SetEase(Ease.OutCubic);
+        transform.DOScale(0.95f, 0.1f).SetEase(Ease.OutQuint);
     }
 
     public void OnPointerUp(PointerEventData eventData)

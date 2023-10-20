@@ -43,7 +43,7 @@ public class StageCtrl : MonoBehaviour
     [Header("No.4")] [HideInInspector] public JetManager jetMg;
     [Header("No.5")] [HideInInspector] public PauseManager pauseMg;
     [Header("No.6")] [HideInInspector] public ResultManager resultMg;
-    [Header("No.7")] [HideInInspector] public ShutterController shutterMg;
+    [Header("No.7")] [HideInInspector] public CurtainManager curtainMg;
 
     private void Awake()
     {
@@ -58,7 +58,7 @@ public class StageCtrl : MonoBehaviour
         jetMg = GetComponentInChildren<JetManager>();
         pauseMg = GetComponentInChildren<PauseManager>();
         resultMg = GetComponentInChildren<ResultManager>();
-        shutterMg = GetComponentInChildren<ShutterController>();
+        curtainMg = GetComponentInChildren<CurtainManager>();
 
         sceneTransitionManager = GetComponent<SceneTransitionManager>();
     }
@@ -79,6 +79,8 @@ public class StageCtrl : MonoBehaviour
     {
         Sequence sequenceStart = DOTween.Sequence();
 
+        sequenceStart.Append(curtainMg.StartUp());
+        sequenceStart.AppendInterval(0.15f);
         sequenceStart.Append(gateMg.OpenHole());//鍵穴が開く 
         sequenceStart.AppendCallback(() =>
         {

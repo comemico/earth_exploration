@@ -995,10 +995,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5151673968771341921}
+  - component: {fileID: 5151673968771341932}
   - component: {fileID: 5151673968771341920}
   - component: {fileID: 5151673968771341935}
   - component: {fileID: 5151673968771341939}
-  - component: {fileID: 5151673968771341932}
   m_Layer: 5
   m_Name: Canvas-Fade
   m_TagString: Untagged
@@ -1022,13 +1022,29 @@ RectTransform:
   - {fileID: 8064133507419029465}
   - {fileID: 4565075549776426058}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &5151673968771341932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5151673968771341931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fea8704750356e4bbd4fb0c0fd41d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFade: 1
+  easeType_BackPanel: 3
+  fadeInTime: 0.25
+  fadeOutTime: 0.25
 --- !u!223 &5151673968771341920
 Canvas:
   m_ObjectHideFlags: 0
@@ -1092,22 +1108,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5151673968771341932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5151673968771341931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fea8704750356e4bbd4fb0c0fd41d1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFade: 1
-  easeType_BackPanel: 3
-  fadeInTime: 0.25
-  fadeOutTime: 0.25
 --- !u!1 &5151673969535648804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,7 +1163,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5151673969535648804}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 0.75
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1233,7 +1233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -250}
+  m_AnchoredPosition: {x: -76.5, y: 0}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &4459392442585612950
@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3a55cfebb540e4c9aa1104c3b9aafe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EveryCalcurationTime: 0.5
+  EveryCalcurationTime: 0.75
   fpsText: {fileID: 5023840341463147732}
 --- !u!222 &5029428061199840739
 CanvasRenderer:
@@ -1280,12 +1280,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 80
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 5
     m_MaxSize: 80
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0

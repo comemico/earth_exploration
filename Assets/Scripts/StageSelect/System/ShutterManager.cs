@@ -7,18 +7,40 @@ public class ShutterManager : MonoBehaviour
 {
     const float PreHeader = 20f;
 
+    [Header("MemoryPanel")]
+    public RectTransform memoryPanel;
+    public float initialMemoryY;
 
-    [Space(PreHeader)]
+    [Header("CoursePanel")]
+    public RectTransform coursePanel;
+    public float initialCourseX;
+
+    [Header("HomePanel")]
+    public RectTransform homePanel;
+    public float initialHomeX;
+
+    [Header("StartPanel")]
+    public RectTransform startPanel;
+    public float initialStartY;
+
+    [Header("FirstMove")]
+    [Range(0.1f, 0.25f)] public float firstDuration;
+    public Ease firstType;
+
+    [Header("SecondMove")]
+    [Range(0.1f, 0.25f)] public float secondDuration;
+    public Ease secondType;
+
     [Header("シーンに移れるかのシグナル")]
-    [Header("-----------------------------")]
     public bool isCompleteShutter;
 
-
+    /*
     [Space(PreHeader)]
     [Header("コースボタン")]
     [Header("-----------------------------")]
     public RectTransform courseButton_Up;
     public RectTransform courseButton_Down;
+     */
 
     [Header("開いた値")]
     public float openvalue_courseButton;
@@ -32,7 +54,6 @@ public class ShutterManager : MonoBehaviour
 
     [Space(PreHeader)]
     [Header("発進パネル")]
-    [Header("-----------------------------")]
     public RectTransform gameStartPanel;
 
     [Header("開いた値")]
@@ -47,8 +68,6 @@ public class ShutterManager : MonoBehaviour
 
     [Space(PreHeader)]
     [Header("シャッター")]
-    [Header("-----------------------------")]
-    public RectTransform shutter;
 
     [Header("開いた値")]
     public float openvalue_shutter;
@@ -88,20 +107,25 @@ public class ShutterManager : MonoBehaviour
 
     void Initialize()
     {
-        shutter.anchoredPosition = new Vector2(openvalue_shutter, 0);
-        gameStartPanel.anchoredPosition = new Vector2(0f, closevalue_startPanel);
-        courseButton_Up.anchoredPosition = new Vector2(0f, closevalue_courseButton);
-        courseButton_Down.anchoredPosition = new Vector2(0f, -closevalue_courseButton);
+        memoryPanel.anchoredPosition = new Vector2(-400f, initialMemoryY);
+        coursePanel.anchoredPosition = new Vector2(initialCourseX, 0f);
+        homePanel.anchoredPosition = new Vector2(initialHomeX, 0f);
+        startPanel.anchoredPosition = new Vector2(0f, initialStartY);
     }
 
     public void ShutterOpen(bool isComplete)
     {
         isCompleteShutter = false;
+
         Sequence seq_open = DOTween.Sequence().SetUpdate(false);
 
-        seq_open.Append(gameStartPanel.DOAnchorPosY(openvalue_startPanel, duration_startPanel).SetEase(easeType_startPanel));
-        seq_open.Join(courseButton_Up.DOAnchorPosY(openvalue_courseButton, duration_courseButton).SetEase(easeType_courseButton));
-        seq_open.Join(courseButton_Down.DOAnchorPosY(-openvalue_courseButton, duration_courseButton).SetEase(easeType_courseButton));
+        seq_open.Append(coursePanel.DOAnchorPosX(-1 * initialCourseX, firstDuration).SetEase(firstType));
+        seq_open.Join(homePanel.DOAnchorPosX(0f, firstDuration).SetEase(firstType));
+
+        seq_open.Append(memoryPanel.DOAnchorPosY(-1 * initialMemoryY, secondDuration).SetEase(secondType));
+        seq_open.Join(startPanel.DOAnchorPosY(-1 * initialStartY, secondDuration).SetEase(secondType));
+
+        seq_open.AppendCallback(() => courseCtrl.MoveCourse(GManager.instance.recentCourseNum, courseCtrl.fadeDuration));
 
         tweenList.Add(seq_open);
 
@@ -115,13 +139,20 @@ public class ShutterManager : MonoBehaviour
     {
         Sequence seq_close = DOTween.Sequence();
 
-        seq_close.AppendInterval(0.2f);
-        seq_close.Append(gameStartPanel.DOAnchorPosY(closevalue_startPanel, duration_startPanel).SetEase(easeType_startPanel));
-        seq_close.AppendCallback(() => courseCtrl.FadeOutItems(isComplete));
-        seq_close.Join(courseButton_Up.DOAnchorPosY(closevalue_courseButton, duration_courseButton).SetEase(easeType_courseButton));
-        seq_close.Join(courseButton_Down.DOAnchorPosY(-closevalue_courseButton, duration_courseButton).SetEase(easeType_courseButton));
+        seq_close.AppendInterval(0.25f);
+
+        seq_close.AppendCallback(() => courseCtrl.FadeOutItems());
+        seq_close.AppendInterval(courseCtrl.fadeDuration);
+
+        seq_close.Append(memoryPanel.DOAnchorPosY(initialMemoryY, secondDuration).SetEase(secondType));
+        seq_close.Join(startPanel.DOAnchorPosY(initialStartY, secondDuration).SetEase(secondType));
+
+        seq_close.Append(coursePanel.DOAnchorPosX(initialCourseX, firstDuration).SetEase(firstType));
+        seq_close.Join(homePanel.DOAnchorPosX(initialHomeX, firstDuration).SetEase(firstType));
+
         seq_close.AppendInterval(0.1f);
-        seq_close.Append(shutter.DOAnchorPosX(closevalue_shutter, duration_shutter).SetEase(easeType_shutter));
+
+
         seq_close.OnComplete(() =>
         {
             FadeCanvasManager.instance.CheckLoad();

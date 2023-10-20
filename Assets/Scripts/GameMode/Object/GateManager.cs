@@ -98,6 +98,7 @@ public class GateManager : MonoBehaviour
                 FalseMask(GATE_KEY.both);
                 CloseHole();
                 //grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);//’…’nŒã‹N“®‚·‚é‚æ‚¤‚É‚·‚é
+                grypsCrl.stageCrl.curtainMg.Hide();
                 grypsCrl.stageCrl.pauseMg.push_Pause.interactable = true;
             }
         }

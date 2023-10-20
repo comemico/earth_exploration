@@ -6,35 +6,16 @@ using UnityEngine.EventSystems;
 
 public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    const float PreHeader = 20f;
 
-    [Space(PreHeader)]
     [Header("取得&確認")]
-    [Header("-----------------------------")]
     public GameObject Course;
     public List<CourseInformation> courseInfoList;
+
     [Header("ドラッグ～アニメーション中かどうか")]
     public bool isDragging;
 
-
-    [Space(PreHeader)]
-    [Header("操作")]
-    [Header("---コースパネル----")]
-    [Header("操作感度")]
+    [Header("スワイプ感度")]
     public float dragSensitivity;
-
-    [Header("---イージング----")]
-    [Header("種類")]
-    public Ease easeType;
-    [Header("時間")]
-    public float easeDuration;
-    [Header("---イージング:Fade----")]
-    [Header("種類")]
-    public Ease easeTypeFade;
-    [Header("時間")]
-    public float easeDurationFade;
-    [Header("移動量")]
-    public float distanceFade;
 
     [Header("---選択:距離----")]
     [Header("最大値")]
@@ -43,16 +24,25 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     public float rangeOfInfluence_Distance;
 
     [Header("---選択:大きさ----")]
+    [Header("最大値")]
     public float maxValue_Scale;
     [Header("影響範囲")]
     public float rangeOfInfluence_Scale;
 
+    [Header("DOTween")]
+    const float DEFAULT = 0.25f;
+    public float fadeDuration;
+    public Ease courseType;
+
+
+
     AreaController areaCtrl;
-    private List<Tween> tweenList = new List<Tween>();
-    public CourseFrameManager courseFrameMg;
+    CourseFrameManager courseFrameMg;
+
     private int nearestNumber;//最も近い要素が変わったら更新する為の変数
     private float factorDistance;
     private float factorScale;
+    private List<Tween> tweenList = new List<Tween>();
 
     private void Start()
     {
@@ -131,7 +121,7 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
     public void OnEndDrag(PointerEventData e)
     {
-        MagnetItems(NearestCourseInfo().RectTransform.anchoredPosition.y);
+        MagnetItems(NearestCourseInfo().RectTransform.anchoredPosition.y, DEFAULT);
     }
 
     private void DragCompleted() => isDragging = false;
@@ -165,9 +155,12 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         if (courseInfoList.Count - 1 > nearestNum)
         {
             nearestNumber = nearestNum + 1;
+            MoveCourse(nearestNumber);
+            /*
             areaCtrl.MoveArea(nearestNumber);
             SelectionEnable(nearestNumber);
             MagnetItems(courseInfoList[nearestNumber].RectTransform.anchoredPosition.y);
+             */
         }
     }
     public void MoveDownArea()
@@ -176,30 +169,33 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         if (nearestNum >= 1)
         {
             nearestNumber = nearestNum - 1;
+            MoveCourse(nearestNumber);
+            /*
             areaCtrl.MoveArea(nearestNumber);
             SelectionEnable(nearestNumber);
             MagnetItems(courseInfoList[nearestNumber].RectTransform.anchoredPosition.y);
+             */
         }
     }
 
-    public void MoveCourse(int courseNum)
+    public void MoveCourse(int courseNum, float duration = DEFAULT)
     {
         nearestNumber = courseNum;
         areaCtrl.MoveArea(courseNum);
         SelectionEnable(courseNum);
-        MagnetItems(courseInfoList[courseNum].RectTransform.anchoredPosition.y);
+        MagnetItems(courseInfoList[courseNum].RectTransform.anchoredPosition.y, duration);
     }
 
-    void MagnetItems(float targetY)
+    void MagnetItems(float targetY, float duration)
     {
         courseFrameMg.RectTransform.DOComplete();
         courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, targetY);
-        courseFrameMg.RectTransform.DOAnchorPosY(-targetY, easeDuration).SetRelative(true).SetEase(easeType);
+        courseFrameMg.RectTransform.DOAnchorPosY(-targetY, duration).SetRelative(true).SetEase(courseType);
         courseFrameMg.SelectCourse();
 
         for (int i = 0; i < courseInfoList.Count; i++)
         {
-            Tween t = courseInfoList[i].RectTransform.DOAnchorPosY(-targetY, easeDuration).SetRelative(true).SetEase(easeType);
+            Tween t = courseInfoList[i].RectTransform.DOAnchorPosY(-targetY, duration).SetRelative(true).SetEase(courseType);
 
             if (i <= courseInfoList.Count)
             {
@@ -215,33 +211,12 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         }
     }
 
-    public void FadeOutItems(bool isComplete)
+    public void FadeOutItems()
     {
-        courseFrameMg.RectTransform.DOAnchorPosY(distanceFade, easeDurationFade).SetRelative(true).SetEase(easeTypeFade);
+        courseFrameMg.RectTransform.DOAnchorPosY(650f, fadeDuration).SetRelative(true).SetEase(courseType);
         for (int i = 0; i < courseInfoList.Count; i++)
         {
-            Tween t = courseInfoList[i].RectTransform.DOAnchorPosY(distanceFade, easeDurationFade).SetRelative(true).SetEase(easeTypeFade);
-
-            if (i <= courseInfoList.Count)
-            {
-                Sequence sequence = DOTween.Sequence();
-                sequence.Append(t);
-                sequence.AppendCallback(DragCompleted);
-                if (isComplete) sequence.Complete();
-                tweenList.Add(sequence);
-            }
-            else
-            {
-                tweenList.Add(t);
-            }
-        }
-    }
-    public void FadeInItems()
-    {
-        courseFrameMg.RectTransform.DOAnchorPosY(distanceFade, easeDurationFade).SetRelative(true).SetEase(easeTypeFade);
-        for (int i = 0; i < courseInfoList.Count; i++)
-        {
-            Tween t = courseInfoList[i].RectTransform.DOAnchorPosY(distanceFade, easeDurationFade).SetRelative(true).SetEase(easeTypeFade);
+            Tween t = courseInfoList[i].RectTransform.DOAnchorPosY(650f, fadeDuration).SetRelative(true).SetEase(courseType);
 
             if (i <= courseInfoList.Count)
             {
@@ -264,13 +239,17 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             courseInfoList.Add(Course.transform.GetChild(i).GetComponent<CourseInformation>());
         }
 
+        /*
         //開始時に選択したコース番号へ移動する処理
         Vector2 target = courseInfoList[initialValue].RectTransform.anchoredPosition;
         for (int i = 0; i < courseInfoList.Count; i++)
         {
             courseInfoList[i].RectTransform.anchoredPosition -= target;
         }
-        courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseFrameMg.RectTransform.anchoredPosition.y);
+         */
+        //courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseFrameMg.RectTransform.anchoredPosition.y);
+        courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseInfoList[initialValue].RectTransform.anchoredPosition.y);
+
         SelectionEnable(initialValue);
     }
 

@@ -104,6 +104,7 @@ public class SaltoManager : MonoBehaviour
     public void SaltoComplete()
     {
         //memoryUp
+        //stageCrl.controlScreenMg.ProduceMemory(1);
         saltoNumMemory.fillAmount = 0.1666f * saltoNum;
         stageCrl.jetMg.DisplayJetLimit(stageCrl.jetMg.limitNumber + 1); //‹ó’†(unControl)‚È‚Ì‚ÅJetHud~
 

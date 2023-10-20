@@ -7,7 +7,6 @@ using DG.Tweening;
 
 public class FadeCanvasManager : MonoBehaviour
 {
-
     #region//シングルトン
     public static FadeCanvasManager instance;
 

@@ -16,6 +16,7 @@ public class CourseInformation : MonoBehaviour
         Course_09,
         Course_10
     }
+
     public CourseNumber courseNumber;
     public string courseName;
 

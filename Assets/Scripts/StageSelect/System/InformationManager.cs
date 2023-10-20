@@ -26,7 +26,6 @@ public class InformationManager : MonoBehaviour
 
     [Header("このエリアのレベル上限")]
     public int maxAreaLevel;
-
     [Header("ステージ番号")]
     public int stageNum;
     [Header("ステージレベル")]
@@ -37,12 +36,12 @@ public class InformationManager : MonoBehaviour
 
     [HideInInspector] public StageFrameManager stageFrameMg;
     ShutterManager shutterMg;
-    SceneTransitionManager sceneTransitionMg;
+    //SceneTransitionManager sceneTransitionMg;
 
     private void Awake()
     {
         shutterMg = GetComponent<ShutterManager>();
-        sceneTransitionMg = GetComponent<SceneTransitionManager>();
+        //sceneTransitionMg = GetComponent<SceneTransitionManager>();
         stageFrameMg = GetComponentInChildren<StageFrameManager>();
     }
 
@@ -70,7 +69,8 @@ public class InformationManager : MonoBehaviour
     public void StartGame()
     {
         var sceneName = "area" + courseNum + "stage" + stageNum;
-        FadeCanvasManager.instance.LoadScene(sceneName);
+        //        FadeCanvasManager.instance.LoadScene(sceneName);
+        FadeCanvasManager.instance.LoadFade(sceneName);
         shutterMg.ShutterClose(false);
 
         //sceneTransitionMg.SceneTo(sceneName);
