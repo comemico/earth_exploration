@@ -63,8 +63,9 @@ public class FadeCanvasManager : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         isFade = false;
-        backPanel.blocksRaycasts = true;
-        loadingAnimPlayer.PlayLoadAnim();
+        backPanel.blocksRaycasts = true;//タッチブロック
+        loadingAnimPlayer.PlayLoadAnim();//グルグル起動
+
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
     }
@@ -94,11 +95,12 @@ public class FadeCanvasManager : MonoBehaviour
     public void LoadFade(string sceneName)
     {
         isFade = true;
-        backPanel.blocksRaycasts = true;
-        loadingAnimPlayer.PlayLoadAnim();
+        backPanel.blocksRaycasts = true;//タッチブロック
+        loadingAnimPlayer.PlayLoadAnim();//グルグル起動
 
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
+
         tween = backPanel.DOFade(1f, fadeOutTime).OnComplete(() =>
             {
                 StartCoroutine(CoroutineFade());

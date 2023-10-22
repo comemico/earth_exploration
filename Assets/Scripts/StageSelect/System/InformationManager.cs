@@ -69,9 +69,12 @@ public class InformationManager : MonoBehaviour
     public void StartGame()
     {
         var sceneName = "area" + courseNum + "stage" + stageNum;
+        shutterMg.CloseShutter(sceneName);
+
+
         //        FadeCanvasManager.instance.LoadScene(sceneName);
-        FadeCanvasManager.instance.LoadFade(sceneName);
-        shutterMg.ShutterClose(false);
+        //FadeCanvasManager.instance.LoadFade(sceneName);
+        //shutterMg.ShutterClose(false);
 
         //sceneTransitionMg.SceneTo(sceneName);
         /*

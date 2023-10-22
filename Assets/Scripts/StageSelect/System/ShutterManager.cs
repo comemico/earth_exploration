@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class ShutterManager : MonoBehaviour
 {
-    const float PreHeader = 20f;
-
     [Header("MemoryPanel")]
     public RectTransform memoryPanel;
     public float initialMemoryY;
@@ -31,52 +31,24 @@ public class ShutterManager : MonoBehaviour
     [Range(0.1f, 0.25f)] public float secondDuration;
     public Ease secondType;
 
+    [Header("BackPanel")]
+    public Image backPanel;
+    [Range(0.1f, 0.5f)] public float fadeInDuration;
+    public Ease fadeInType;
+    [Range(0.1f, 0.5f)] public float fadeOutDuration;
+    public Ease fadeOutType;
+
+    [Header("Icon")]
+    public CanvasGroup icon;
+    [Range(0.1f, 0.5f)] public float iconDuration;
+    public Ease iconType;
+    public Image iconEmi;
+    public Color loadColor;
+    public Color normalColor;
+
     [Header("シーンに移れるかのシグナル")]
     public bool isCompleteShutter;
-
-    /*
-    [Space(PreHeader)]
-    [Header("コースボタン")]
-    [Header("-----------------------------")]
-    public RectTransform courseButton_Up;
-    public RectTransform courseButton_Down;
-     */
-
-    [Header("開いた値")]
-    public float openvalue_courseButton;
-    [Header("閉じた値")]
-    public float closevalue_courseButton;
-    [Header("時間")]
-    public float duration_courseButton;
-    [Header("タイプ")]
-    public Ease easeType_courseButton;
-
-
-    [Space(PreHeader)]
-    [Header("発進パネル")]
-    public RectTransform gameStartPanel;
-
-    [Header("開いた値")]
-    public float openvalue_startPanel;
-    [Header("閉じた値")]
-    public float closevalue_startPanel;
-    [Header("時間")]
-    public float duration_startPanel;
-    [Header("タイプ")]
-    public Ease easeType_startPanel;
-
-
-    [Space(PreHeader)]
-    [Header("シャッター")]
-
-    [Header("開いた値")]
-    public float openvalue_shutter;
-    [Header("閉じた値")]
-    public float closevalue_shutter;
-    [Header("時間")]
-    public float duration_shutter;
-    [Header("タイプ")]
-    public Ease easeType_shutter;
+    AsyncOperation async;
 
     public CourseController courseCtrl;
 
@@ -111,6 +83,11 @@ public class ShutterManager : MonoBehaviour
         coursePanel.anchoredPosition = new Vector2(initialCourseX, 0f);
         homePanel.anchoredPosition = new Vector2(initialHomeX, 0f);
         startPanel.anchoredPosition = new Vector2(0f, initialStartY);
+
+        backPanel.color = Color.black;
+        icon.alpha = 1f;
+        iconEmi.color = normalColor;
+
     }
 
     public void ShutterOpen(bool isComplete)
@@ -118,7 +95,8 @@ public class ShutterManager : MonoBehaviour
         isCompleteShutter = false;
 
         Sequence seq_open = DOTween.Sequence().SetUpdate(false);
-
+        seq_open.AppendInterval(0.25f);
+        seq_open.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
         seq_open.Append(coursePanel.DOAnchorPosX(-1 * initialCourseX, firstDuration).SetEase(firstType));
         seq_open.Join(homePanel.DOAnchorPosX(0f, firstDuration).SetEase(firstType));
 
@@ -132,6 +110,42 @@ public class ShutterManager : MonoBehaviour
         if (isComplete)
         {
             seq_open.Complete();
+        }
+    }
+
+    public void CloseShutter(string sceneName)//Scene移動処理
+    {
+        backPanel.raycastTarget = true;
+        iconEmi.color = loadColor;
+
+        async = SceneManager.LoadSceneAsync(sceneName);
+        async.allowSceneActivation = false;
+
+        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad)
+        .OnComplete(() =>
+        {
+            Tween emi = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
+            .OnStepComplete(() =>
+            {
+                CheckLoad();//ループ一回毎に (progress >= 0.9f) か判定する
+            }
+            );
+            tweenList.Add(emi);//ループをkillことでエラーを出さないようにする
+        }
+        );
+
+        Sequence seq_close = DOTween.Sequence();
+        seq_close.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
+        seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
+        tweenList.Add(seq_close);
+    }
+
+    public void CheckLoad()
+    {
+        if (async.progress >= 0.9f)
+        {
+            Time.timeScale = 1f;
+            async.allowSceneActivation = true;
         }
     }
 

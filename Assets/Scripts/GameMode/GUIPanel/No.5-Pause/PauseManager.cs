@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class PauseManager : MonoBehaviour
@@ -10,11 +11,10 @@ public class PauseManager : MonoBehaviour
     public RectTransform dial;
     public Text pauseText;
 
-    const Ease TYPE = Ease.OutQuint;
-    const int ANGLE = -60;
-    const float DURATION = 0.2f;
-
     [Header("ポップアップ")]
+    public Button push_Retry;
+    public Button push_World;
+    public Button push_Close;
     public Image[] emissionImg;
     public bool isPause = false;
 
@@ -42,6 +42,9 @@ public class PauseManager : MonoBehaviour
     private void AddListener()
     {
         push_Pause.onClick.AddListener(PushPauseButton);
+        push_Retry.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain(SceneManager.GetActiveScene().name));
+        push_World.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
+        push_Close.onClick.AddListener(PushPauseButton);
     }
 
     public void PushPauseButton()
