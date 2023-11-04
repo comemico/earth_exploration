@@ -5,58 +5,65 @@ using DG.Tweening;
 
 public class AreaController : MonoBehaviour
 {
-    const float PreHeader = 20f;
-
-    [Space(PreHeader)]
     [Header("取得")]
-    [Header("-----------------------------")]
     public GameObject area;
     public List<StageController> stageCtrlList;
 
-
-    [Space(PreHeader)]
-    [Header("操作---エリア移動---")]
-    [Header("-----------------------------")]
-    [Header("イージング")]
-    public Ease easeType;
-    public float easeDuration;
-
+    [Header("イージング-エリア移動-")]
+    public float moveDuration;
+    public Ease moveType;
 
     InformationManager informationMg;
+    StageFrameManager stageFrameMg;
+
     private List<Tween> tweenList = new List<Tween>();
+    private void OnDestroy() => tweenList.KillAllAndClear();
 
     private void Start()
     {
-        informationMg = GetComponentInParent<InformationManager>();
+        GetComponent();
         InitializedAreaPosition(GManager.instance.recentCourseNum);
-        MoveArea(GManager.instance.recentCourseNum, true);
     }
 
-    private void OnDestroy()
+    void GetComponent()
     {
-        tweenList.KillAllAndClear();
+        informationMg = GetComponentInParent<InformationManager>();
+        stageFrameMg = GetComponentInChildren<StageFrameManager>();
+    }
+
+    public void InitializedAreaPosition(int initialValue)
+    {
+        for (int i = 0; i < area.transform.childCount; i++)
+        {
+            stageCtrlList.Add(area.transform.GetChild(i).GetComponent<StageController>());
+        }
+        //コースエリア位置へ移動
+        Vector2 targetY = stageCtrlList[initialValue].RectTransform.anchoredPosition;
+        for (int i = 0; i < stageCtrlList.Count; i++)
+        {
+            stageCtrlList[i].RectTransform.anchoredPosition -= targetY;
+        }
     }
 
     public void MoveArea(int courseNum, bool isComplete = false)
     {
-
         if (courseNum >= stageCtrlList.Count)
         {
             Debug.Log("エリアが追加されていません");
             return;
         }
+        StageInformation stageInfo = stageCtrlList[courseNum].NearestStageInfo();
 
-        informationMg.UpdateStageInformation(stageCtrlList[courseNum].NearestStageInfo());
-        informationMg.UpdateCourseNumber(courseNum, stageCtrlList[courseNum].maxAreaLevel);
+        stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
 
         tweenList.KillAllAndClear();
+        informationMg.UpdateStageInformation(stageInfo);
+        informationMg.UpdateCourseNumber(courseNum);
 
         float target = stageCtrlList[courseNum].RectTransform.anchoredPosition.y;
-
         for (int i = 0; i < stageCtrlList.Count; i++)
         {
-            Tween t = stageCtrlList[i].RectTransform.DOAnchorPosY(-target, easeDuration).SetRelative(true).SetEase(easeType);
-
+            Tween t = stageCtrlList[i].RectTransform.DOAnchorPosY(-target, moveDuration).SetRelative(true).SetEase(moveType);
             if (i <= stageCtrlList.Count)
             {
                 Sequence seq = DOTween.Sequence();
@@ -74,21 +81,6 @@ public class AreaController : MonoBehaviour
         }
     }
 
-    public void InitializedAreaPosition(int initialValue)
-    {
-        for (int i = 0; i < area.transform.childCount; i++)
-        {
-            stageCtrlList.Add(area.transform.GetChild(i).GetComponent<StageController>());
-        }
-
-        //開始時に選択したコース番号へ移動する処理
-        Vector2 targetY = stageCtrlList[initialValue].RectTransform.anchoredPosition;
-        for (int i = 0; i < stageCtrlList.Count; i++)
-        {
-            stageCtrlList[i].RectTransform.anchoredPosition -= targetY;
-        }
-
-    }
 
 
 }

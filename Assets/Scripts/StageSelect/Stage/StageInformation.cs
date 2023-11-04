@@ -15,6 +15,7 @@ public class StageInformation : MonoBehaviour
         Stage_06,
         Stage_07
     }
+
     public enum StageLevel
     {
         Level_01 = 1,
@@ -28,10 +29,11 @@ public class StageInformation : MonoBehaviour
         Level_09,
         Level_10
     }
-    public StageNumber stageNumber;
-    public StageLevel stageLevel;
-    [Range(1, 40)] public int lifeNumber;
 
+    public StageNumber stageNumber;
+    [Range(1, 37)] public int stageLevel;
+    public string tips;
+    //[Range(1, 40)] public int stageLifeNumber;
     public RectTransform RectTransform => this.transform as RectTransform;
     StageController stageCtrl;
     StageInformation stageInfo;

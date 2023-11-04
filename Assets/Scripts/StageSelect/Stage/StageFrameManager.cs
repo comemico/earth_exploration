@@ -5,173 +5,168 @@ using UnityEngine.UI;
 
 public class StageFrameManager : MonoBehaviour
 {
-    const float PreHeader = 20f;
+    [Header("Scope")]
+    public RectTransform scopeOut;
+    public RectTransform scopeIn;
+    Image scopeImg;
+    public float initialScale;
+    [Range(0.1f, 0.5f)] public float scaleDuration;
+    public Ease scaleType;
+    [Range(0.1f, 0.5f)] public float fadeDuration;
+    public Ease fadeType;
+    [Range(1f, 10f)] public float loopDuration;
+    Tween scopeLoop;
+
+    //[Range(0.1f, 0.5f)] public float focusDuration;
+    //public Ease focusType;
+    //public float focusAmount; //回転量
+
+    [Header("Lv.Memory")]
+    public Image lvImg;
+    public Image[] lvLamp;
+    [Range(0.1f, 0.5f)] public float openDuration;
+    public Ease openType;
+    [Range(0.1f, 0.5f)] public float lampDuration;
+    public Ease lampType;
+    const float INITIALAMOUNT = 0.008f;
+    const float PERAMOUNT = 0.0263f;
+    const float INITIALANGLE = 4f;
+    const float PERANGLE = 9.484f;
+
+    [Header("Message")]
+    public RectTransform msgEdge;
+    public Image rankLamp;
+    public float perTextWide;
+    public int characterLimit = 10;
+    Image msgImg;
+    CanvasGroup backImg;
+    Text tipsText;
+    RectTransform tipsRect;
+    [Range(0.1f, 0.5f)] public float scrollSpeed;
+    [Range(0.1f, 0.5f)] public float msgFadeDuration;
+    public Ease msgFadeType;
+    [Range(0.1f, 0.5f)] public float msgOpenDuration;
+    public Ease msgOpenType;
+    public Color[] rankColor;
+
 
     public RectTransform RectTransform => this.transform as RectTransform;
-
-    [Space(PreHeader)]
-    [Header("ターゲットスコープ")]
-    [Header("-----------------------------")]
-    public GameObject frame_Out;
-    public GameObject frame_In;
-    [Header("スケール")]
-    public float maxValue;
-    [Header("時間")]
-    public float duration_Scale;
-    public float duration_Rotation;
-    public float duration_Fade;
-    public float duration_Loop;
-    [Header("タイプ")]
-    public Ease easeType_Target;
-
-    private RectTransform frame_Out_Rect;
-    private CanvasGroup frame_Out_Canvas;
-    private RectTransform frame_In_Rect;
-
-
-    [Space(PreHeader)]
-    [Header("スライダー")]
-    [Header("-----------------------------")]
-    public Slider slider_First;
-    public Slider slider_Second;
-    [Header("時間")]
-    public float duration_First;
-    public float duration_Second;
-    [Header("タイプ")]
-    public Ease easeType_Slider;
-    [Header("1マスの長さ")]
-    public float distance_Slider;
-
-    private RectTransform slider_Second_Rect;
-
-
-    [Space(PreHeader)]
-    [Header("バックパネル")]
-    [Header("-----------------------------")]
-    public GameObject level_Mark;
-    [Header("1マスの長さ")]
-    public float distance_BackPanel;
-    public float distance_BackPanel_Initial;
-
-    private RectTransform level_BackPanel_Rect;
-    private CanvasGroup level_BackPanel_Canvas;
-
-
-    [Space(PreHeader)]
-    [Header("マーク取得")]
-    [Header("-----------------------------")]
-    [Header("ステージレベル上限")]
-    public GameObject maxLevelOb;
-    public GameObject LevelOb;
-    [Header("ステージレベル")]
-    public Image[] maxLevelBox;
-    public Image[] levelBox;
-
-    Tween tween;
-    private List<Tween> tweenList = new List<Tween>();
+    List<Tween> tweenList = new List<Tween>();
 
     private void OnDestroy()
     {
-        tweenList.Add(tween);
+        tweenList.Add(scopeLoop);
         tweenList.KillAllAndClear();
     }
 
     void Awake()
     {
-        AllGetComponent();
-        InitializeStageLevel();
-
-        tween = frame_In_Rect.DOLocalRotate(new Vector3(0, 0, 360f), duration_Loop, RotateMode.FastBeyond360)
-         .SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).SetRelative(true);
-
+        GetComponent();
+        scopeLoop = scopeIn.DOLocalRotate(new Vector3(0, 0, 360f), loopDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
     }
 
-    void AllGetComponent()
+    void GetComponent()
     {
-        frame_Out_Rect = frame_Out.GetComponent<RectTransform>();
-        frame_Out_Canvas = frame_Out.GetComponent<CanvasGroup>();
-        frame_In_Rect = frame_In.GetComponent<RectTransform>();
+        scopeImg = scopeOut.transform.GetComponent<Image>();
+        msgImg = msgEdge.transform.GetComponent<Image>();
+        backImg = msgEdge.transform.GetChild(0).GetComponent<CanvasGroup>();
+        tipsText = msgEdge.transform.GetComponentInChildren<Text>();
+        tipsRect = tipsText.transform.GetComponent<RectTransform>();
+    }
 
-        slider_Second_Rect = slider_Second.gameObject.GetComponent<RectTransform>();
+    private void Update()
+    {
+        scopeOut.transform.rotation = scopeIn.transform.rotation;
+    }
 
-        level_BackPanel_Canvas = level_Mark.GetComponent<CanvasGroup>();
-        level_BackPanel_Rect = level_Mark.transform.GetChild(0).GetComponent<RectTransform>();
+    public Sequence TargetScope()
+    {
+        scopeImg.color = new Color(1, 1, 1, 0);
+        scopeOut.transform.localScale = new Vector3(initialScale, initialScale, 1f);
+        //scopeOut.transform.localEulerAngles = new Vector3(0f, 0f, -1 * (Mathf.Abs(scopeIn.localEulerAngles.z) + 65f));
+
+        Sequence seq_scope = DOTween.Sequence();
+        seq_scope.Append(scopeOut.transform.DOScale(Vector3.one, scaleDuration).SetEase(scaleType));
+        seq_scope.Join(scopeImg.DOFade(1f, fadeDuration).SetEase(fadeType));
+        //seq_scope.Append(scopeOut.transform.DOLocalRotate(new Vector3(0f, 0f, focusAmount), focusDuration, RotateMode.LocalAxisAdd).SetEase(focusType).SetRelative(true));
+        tweenList.Add(seq_scope);
+        return seq_scope;
     }
 
 
-    private void InitializeStageLevel()
+    public Sequence TargetLevel(int levelNum)
     {
-        maxLevelBox = new Image[maxLevelOb.transform.childCount];
-        levelBox = new Image[LevelOb.transform.childCount];
+        DisplayLevelMemory(0);
+        lvImg.fillAmount = 0f;
+        lvImg.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
 
-        for (int i = 0; i < maxLevelOb.transform.childCount; i++)
+        Sequence seq_lv = DOTween.Sequence();//TimeScaleを無視している
+        seq_lv.Append(lvImg.DOFillAmount(INITIALAMOUNT + (PERAMOUNT * levelNum), openDuration).SetEase(openType));
+        seq_lv.Join(lvImg.transform.DOLocalRotate(new Vector3(0.0f, 0.0f, 90f - (INITIALANGLE + (PERANGLE * levelNum))), openDuration, RotateMode.FastBeyond360).SetEase(openType));
+        seq_lv.AppendInterval(0.15f);
+        seq_lv.Append(DOTween.To(() => 0, x => DisplayLevelMemory(x), levelNum, lampDuration).SetEase(lampType));
+        tweenList.Add(seq_lv);
+        return seq_lv;
+    }
+    public void DisplayLevelMemory(int levelNum)
+    {
+        for (int i = 0; i < lvLamp.Length; i++)
         {
-            maxLevelBox[i] = maxLevelOb.transform.GetChild(i).GetComponent<Image>();
-            levelBox[i] = LevelOb.transform.GetChild(i).GetComponent<Image>();
-
-            maxLevelBox[i].enabled = false;
-            levelBox[i].enabled = false;
-        }
+            lvLamp[i].enabled = (levelNum > i);
+        };
     }
 
-    public void DisplayMaxLevel(int num)
+    public Sequence OpenTips()
     {
-        slider_Second_Rect.sizeDelta = new Vector2((distance_Slider * num), slider_Second_Rect.sizeDelta.y);
-        level_BackPanel_Rect.sizeDelta = new Vector2(distance_BackPanel_Initial + (distance_BackPanel * num), level_BackPanel_Rect.sizeDelta.y);
+        backImg.alpha = 0f;
+        msgImg.color = new Color(1, 1, 1, 0);
+        msgEdge.sizeDelta = new Vector2(140.8f, 140.8f);
 
-        for (int i = 0; i < maxLevelBox.Length; i++)
-        {
-            maxLevelBox[i].enabled = (num > i);
-        }
+        Sequence sq_tips = DOTween.Sequence();
+        sq_tips.AppendInterval(0.1f);
+        sq_tips.Append(msgImg.DOFade(1f, msgFadeDuration).SetEase(msgFadeType));
+        sq_tips.Append(msgEdge.DOSizeDelta(new Vector2(660f, 140.8f), msgOpenDuration).SetEase(msgOpenType));
+        sq_tips.Append(backImg.DOFade(1f, msgFadeDuration).SetEase(msgFadeType));
+
+        tweenList.Add(sq_tips);
+        return sq_tips;
     }
 
-    private void DisplayStageLevel(int num)
+    public void ScrollText()
     {
-        for (int i = 0; i < levelBox.Length; i++)
-        {
-            levelBox[i].enabled = (num > i);
-        }
+
+        tipsRect.anchoredPosition = new Vector2(120, 0f);
+
+        Sequence sq_scroll = DOTween.Sequence();
+        sq_scroll.Append(tipsText.DOFade(1f, 0.5f));
+        sq_scroll.Join(tipsRect.DOAnchorPosX(80, 0.5f).SetEase(Ease.Linear));
+        if (tipsText.text.Length <= characterLimit) return;
+
+        sq_scroll.AppendInterval(3f);
+        //・テキスト長さの7.5割を進む、6割からFadeOut ・sequence.Append().SetLoop(-1) ポイントはSetLoops()をsequenceにかけること
+        sq_scroll.Append(tipsRect.DOAnchorPosX(-1 * (tipsText.text.Length * perTextWide) * 0.75f, (tipsText.text.Length * scrollSpeed) * 0.75f).SetRelative(true).SetEase(Ease.Linear));
+        sq_scroll.Join(tipsText.DOFade(0f, 0.75f).SetDelay((tipsText.text.Length * scrollSpeed) * 0.6f).SetEase(Ease.Linear));//テキスト長さの半分を超えたあたりから起動
+        sq_scroll.Append(tipsRect.DOAnchorPosX(120, 0)).SetLoops(-1);
+        sq_scroll.AppendInterval(0.25f);
+        tweenList.Add(sq_scroll);
     }
 
-    public void ChangeTarget(int levelNum)
+    public void ChangeTarget(int levelNum, string tips)
     {
-        DisplayStageLevel(levelNum);
-
         tweenList.KillAllAndClear();
 
+        tipsText.text = tips;
+        tipsText.color = new Color(1, 1, 1, 0);
+        float value = levelNum / 8f;
+        rankLamp.color = rankColor[(int)Mathf.Ceil(value) - 1];
+
         Sequence sequence = DOTween.Sequence();
-        Sequence sequence_Target = DOTween.Sequence();
-        Sequence sequence_Level = DOTween.Sequence();
-
-
-        sequence_Target.OnStart(() =>
-        {
-            frame_Out_Rect.transform.localScale = new Vector3(maxValue, maxValue, 1f);
-            frame_Out_Rect.transform.localEulerAngles = Vector3.zero;
-            frame_Out_Canvas.alpha = 0f;
-            slider_First.value = 0f;
-            slider_Second.value = 0f;
-            level_BackPanel_Canvas.alpha = 0f;
-        });
-
-
-
-        sequence_Target.Append(frame_Out_Canvas.DOFade(1f, duration_Fade).SetEase(easeType_Target));
-        sequence_Target.Join(frame_Out_Rect.transform.DOScale(Vector3.one, duration_Scale).SetEase(easeType_Target));
-        sequence_Target.Join(frame_Out_Rect.transform.DORotate(new Vector3(0f, 0f, 120f), duration_Rotation).SetEase(easeType_Target));
-
-
-        sequence_Level.Append(slider_First.DOValue(1f, duration_First).SetEase(easeType_Slider));
-        sequence_Level.Append(slider_Second.DOValue(1f, duration_Second).SetEase(easeType_Slider));
-        sequence_Level.Join(level_BackPanel_Canvas.DOFade(1f, duration_First).SetEase(easeType_Slider));
-
-
-        sequence.Append(sequence_Target);
-        sequence.Insert(0.175f, sequence_Level);
+        sequence.Append(TargetScope());
+        sequence.Append(TargetLevel(levelNum));
+        sequence.Join(OpenTips());
+        sequence.AppendCallback(() => ScrollText());
 
         tweenList.Add(sequence);
-
     }
-
 
 }

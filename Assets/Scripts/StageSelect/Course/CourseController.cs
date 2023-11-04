@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-
     [Header("取得&確認")]
     public GameObject Course;
     public List<CourseInformation> courseInfoList;
@@ -34,8 +33,7 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     public float fadeDuration;
     public Ease courseType;
 
-
-
+    InformationManager informationMg;
     AreaController areaCtrl;
     CourseFrameManager courseFrameMg;
 
@@ -43,20 +41,44 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     private float factorDistance;
     private float factorScale;
     private List<Tween> tweenList = new List<Tween>();
+    private void OnDestroy() => tweenList.KillAllAndClear();
 
     private void Start()
     {
-        areaCtrl = transform.parent.GetComponentInChildren<AreaController>();
-        courseFrameMg = GetComponentInChildren<CourseFrameManager>();
-
+        GetComponent();
         InitializedStagePosition(GManager.instance.recentCourseNum);
         factorDistance = 1 / rangeOfInfluence_Distance;
         factorScale = 1 / rangeOfInfluence_Scale;
     }
 
-    private void OnDestroy()
+    void GetComponent()
     {
-        tweenList.KillAllAndClear();
+        informationMg = GetComponentInParent<InformationManager>();
+        areaCtrl = transform.parent.GetComponentInChildren<AreaController>();
+        courseFrameMg = GetComponentInChildren<CourseFrameManager>();
+    }
+
+    public void InitializedStagePosition(int initialValue)
+    {
+        for (int i = 0; i < Course.transform.childCount; i++)
+        {
+            courseInfoList.Add(Course.transform.GetChild(i).GetComponent<CourseInformation>());
+        }
+
+        courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseInfoList[initialValue].RectTransform.anchoredPosition.y);
+
+        SelectionEnable(initialValue); //コースランプ点灯
+
+        informationMg.courseNum = GManager.instance.recentCourseNum;
+
+        /*
+        //開始時に選択したコース番号へ移動する処理
+        Vector2 target = courseInfoList[initialValue].RectTransform.anchoredPosition;
+        for (int i = 0; i < courseInfoList.Count; i++)
+        {
+            courseInfoList[i].RectTransform.anchoredPosition -= target;
+        }
+         */
     }
 
     private void Update()
@@ -84,7 +106,6 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     {
         foreach (var item in courseInfoList)
         {
-
             float distance = Mathf.Abs(item.RectTransform.anchoredPosition.y);
             float value_Distance = Mathf.Clamp(maxValue_Distance - (distance * factorDistance), 0, maxValue_Distance);
             Vector2 pos = item.RectTransform.anchoredPosition;
@@ -96,7 +117,6 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             scale.x = value_Scale;
             scale.y = value_Scale;
             item.RectTransform.localScale = scale;
-
         }
     }
 
@@ -230,27 +250,6 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
                 tweenList.Add(t);
             }
         }
-    }
-
-    public void InitializedStagePosition(int initialValue)
-    {
-        for (int i = 0; i < Course.transform.childCount; i++)
-        {
-            courseInfoList.Add(Course.transform.GetChild(i).GetComponent<CourseInformation>());
-        }
-
-        /*
-        //開始時に選択したコース番号へ移動する処理
-        Vector2 target = courseInfoList[initialValue].RectTransform.anchoredPosition;
-        for (int i = 0; i < courseInfoList.Count; i++)
-        {
-            courseInfoList[i].RectTransform.anchoredPosition -= target;
-        }
-         */
-        //courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseFrameMg.RectTransform.anchoredPosition.y);
-        courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseInfoList[initialValue].RectTransform.anchoredPosition.y);
-
-        SelectionEnable(initialValue);
     }
 
     public void SelectionEnable(int courseNum)

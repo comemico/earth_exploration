@@ -441,7 +441,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: maxLifeNum
-      value: 15
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.size
@@ -449,11 +449,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.data[0]
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.data[1]
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1235179926451280822, guid: 0eb3c63008e5c414fb22db612169ce22, type: 3}
       propertyPath: courseDate.Array.data[2]

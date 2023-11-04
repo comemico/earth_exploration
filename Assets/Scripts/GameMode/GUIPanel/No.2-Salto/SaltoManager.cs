@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-
 public class SaltoManager : MonoBehaviour
 {
     public SaltoHudManager saltoHudMg;
@@ -34,7 +33,6 @@ public class SaltoManager : MonoBehaviour
     public bool isSalto;
     StageCtrl stageCrl;
     CinemachineController cinemachineCrl;
-
     //GrypsController grypsCrl;
 
     private void Start()
@@ -103,10 +101,10 @@ public class SaltoManager : MonoBehaviour
 
     public void SaltoComplete()
     {
-        //memoryUp
-        //stageCrl.controlScreenMg.ProduceMemory(1);
-        saltoNumMemory.fillAmount = 0.1666f * saltoNum;
+        stageCrl.controlScreenMg.ProduceMemory(1);
         stageCrl.jetMg.DisplayJetLimit(stageCrl.jetMg.limitNumber + 1); //‹ó’†Žž(unControl)‚È‚Ì‚ÅJetHud~
+
+        saltoNumMemory.fillAmount = 0.1666f * saltoNum;
 
         buttonEmi.enabled = true;
         if (saltoNum >= 3)

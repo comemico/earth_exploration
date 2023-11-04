@@ -7,29 +7,15 @@ using DG.Tweening;
 
 public class ShutterManager : MonoBehaviour
 {
-    [Header("MemoryPanel")]
-    public RectTransform memoryPanel;
-    public float initialMemoryY;
-
-    [Header("CoursePanel")]
-    public RectTransform coursePanel;
-    public float initialCourseX;
-
-    [Header("HomePanel")]
     public RectTransform homePanel;
-    public float initialHomeX;
+    public float initialHomeY;
 
-    [Header("StartPanel")]
     public RectTransform startPanel;
+    public RectTransform startRingIn;
+    public RectTransform startRingOut;
+    public CanvasGroup startRing;
+
     public float initialStartY;
-
-    [Header("FirstMove")]
-    [Range(0.1f, 0.25f)] public float firstDuration;
-    public Ease firstType;
-
-    [Header("SecondMove")]
-    [Range(0.1f, 0.25f)] public float secondDuration;
-    public Ease secondType;
 
     [Header("BackPanel")]
     public Image backPanel;
@@ -46,64 +32,75 @@ public class ShutterManager : MonoBehaviour
     public Color loadColor;
     public Color normalColor;
 
+    [Header("StartRing")]
+    [Range(12f, 72f)] public float ringOutDuration;
+    [Range(12f, 72f)] public float ringInDuration;
+    public float rotateValue;
+    public float rotateDuration;
+    public Ease rotateType;
+    public float fadeDuration;
+    public Ease fadeType;
+    public float scaleDuration;
+    public Ease scaleType;
+    public float intervalTime;
+
+    Tween ringOut;
+    Tween ringIn;
+
+    [Header("RectMove")]
+    [Range(0.1f, 0.25f)] public float firstDuration;
+    public Ease firstType;
+
+
     [Header("シーンに移れるかのシグナル")]
     public bool isCompleteShutter;
     AsyncOperation async;
 
     public CourseController courseCtrl;
-
     private List<Tween> tweenList = new List<Tween>();
 
     private void OnDestroy()
     {
+        //tweenList.Add(ringOut);
+        //tweenList.Add(ringIn);
         tweenList.KillAllAndClear();
     }
-
-    /*
-    private void OnDisable()
-    {
-        if (DOTween.instance != null)
-        {
-            tweenList.KillAllAndClear();
-            // tween?.Kill();// Tween破棄
-        }
-    }
-     */
-
 
     void Start()
     {
         Initialize();
-        ShutterOpen(false);
+        OpenShutter(false);
     }
 
     void Initialize()
     {
-        memoryPanel.anchoredPosition = new Vector2(-400f, initialMemoryY);
-        coursePanel.anchoredPosition = new Vector2(initialCourseX, 0f);
-        homePanel.anchoredPosition = new Vector2(initialHomeX, 0f);
+        homePanel.anchoredPosition = new Vector2(0f, initialHomeY);
         startPanel.anchoredPosition = new Vector2(0f, initialStartY);
 
         backPanel.color = Color.black;
         icon.alpha = 1f;
         iconEmi.color = normalColor;
 
+        ringOut = startRingOut.DOLocalRotate(new Vector3(0, 0, 360f), ringOutDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
+        ringIn = startRingIn.DOLocalRotate(new Vector3(0, 0, 360f), ringInDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
+
     }
 
-    public void ShutterOpen(bool isComplete)
+    public void OpenShutter(bool isComplete)
     {
         isCompleteShutter = false;
 
         Sequence seq_open = DOTween.Sequence().SetUpdate(false);
-        seq_open.AppendInterval(0.25f);
+        seq_open.AppendInterval(0.35f);
         seq_open.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
-        seq_open.Append(coursePanel.DOAnchorPosX(-1 * initialCourseX, firstDuration).SetEase(firstType));
-        seq_open.Join(homePanel.DOAnchorPosX(0f, firstDuration).SetEase(firstType));
+        seq_open.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
 
-        seq_open.Append(memoryPanel.DOAnchorPosY(-1 * initialMemoryY, secondDuration).SetEase(secondType));
-        seq_open.Join(startPanel.DOAnchorPosY(-1 * initialStartY, secondDuration).SetEase(secondType));
-
+        seq_open.AppendInterval(0.3f);
         seq_open.AppendCallback(() => courseCtrl.MoveCourse(GManager.instance.recentCourseNum, courseCtrl.fadeDuration));
+
+        seq_open.AppendInterval(0.55f);
+        seq_open.Append(homePanel.DOAnchorPosY(0f, firstDuration).SetEase(firstType));
+        seq_open.Join(startPanel.DOAnchorPosY(-1 * initialStartY, firstDuration).SetEase(firstType));
 
         tweenList.Add(seq_open);
 
@@ -121,7 +118,7 @@ public class ShutterManager : MonoBehaviour
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
 
-        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad)
+        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad).SetDelay(0.8f)
         .OnComplete(() =>
         {
             Tween emi = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
@@ -135,6 +132,16 @@ public class ShutterManager : MonoBehaviour
         );
 
         Sequence seq_close = DOTween.Sequence();
+        seq_close.AppendCallback(() =>
+        {
+            ringOut.Kill(false);
+            ringIn.Kill(false);
+        });
+        seq_close.Append(startRingOut.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
+        seq_close.Join(startRingIn.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
+        seq_close.Join(startRingIn.DOScale(1.1f, scaleDuration).SetEase(scaleType));
+        seq_close.Join(startRing.DOFade(0f, fadeDuration).SetEase(fadeType).SetDelay(intervalTime));
+
         seq_close.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
         seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
         tweenList.Add(seq_close);
@@ -148,7 +155,7 @@ public class ShutterManager : MonoBehaviour
             async.allowSceneActivation = true;
         }
     }
-
+    /*
     public void ShutterClose(bool isComplete)
     {
         Sequence seq_close = DOTween.Sequence();
@@ -158,11 +165,9 @@ public class ShutterManager : MonoBehaviour
         seq_close.AppendCallback(() => courseCtrl.FadeOutItems());
         seq_close.AppendInterval(courseCtrl.fadeDuration);
 
-        seq_close.Append(memoryPanel.DOAnchorPosY(initialMemoryY, secondDuration).SetEase(secondType));
-        seq_close.Join(startPanel.DOAnchorPosY(initialStartY, secondDuration).SetEase(secondType));
+        seq_close.Append(startPanel.DOAnchorPosY(initialStartY, secondDuration).SetEase(secondType));
 
-        seq_close.Append(coursePanel.DOAnchorPosX(initialCourseX, firstDuration).SetEase(firstType));
-        seq_close.Join(homePanel.DOAnchorPosX(initialHomeX, firstDuration).SetEase(firstType));
+        seq_close.Append(homePanel.DOAnchorPosX(initialHomeY, firstDuration).SetEase(firstType));
 
         seq_close.AppendInterval(0.1f);
 
@@ -181,5 +186,6 @@ public class ShutterManager : MonoBehaviour
         }
 
     }
+     */
 
 }

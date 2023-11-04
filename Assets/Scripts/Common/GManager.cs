@@ -14,9 +14,10 @@ public class GManager : MonoBehaviour
     [Space(PreHeader)]
     [Header("保存する変数")]
     [Header("-----------------------------")]
-    [Header("エリアの到達値")] public int[] courseDate;
-    [Header("最大ライフ数")] public int maxLifeNum;
+    [Header("エリアごとのの最大到達値")] public int[] courseDate;
+    [Header("最大ライフ数")] [Range(1, 40)] public int maxLifeNum;
     [Header("直近の選択エリア番号")] public int recentCourseNum;
+    [Header("直近の選択エリア番号")] public int recentStageNum;
 
     /*
     [Space(PreHeader)]

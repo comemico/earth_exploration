@@ -9,9 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-
     MovingMaskManager movingMaskMg;
-    SpeedPowerManager speedPowerMg;
+    BowManager speedPowerMg;
     MemoryGageManager memoryGageMg;
     Image crlImage;
 
@@ -21,7 +20,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     [Header("デバックモード切替ボタン")]
     public bool isDebugMode;
-    public int maxGage = 3;
+    public int maxGage; //残りメモリ数に応じて上限が変化する(3～1)
 
     [Header("1メモリのスワイプ量(wide=1.0)")]
     public float distancePerMemory;
@@ -52,7 +51,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
         cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
         movingMaskMg = transform.parent.GetComponentInChildren<MovingMaskManager>();
-        speedPowerMg = transform.parent.GetComponentInChildren<SpeedPowerManager>();
+        speedPowerMg = transform.parent.GetComponentInChildren<BowManager>();
         memoryGageMg = transform.root.GetComponentInChildren<MemoryGageManager>();
         crlImage = GetComponent<Image>();
     }
@@ -66,7 +65,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         if (status == StageCtrl.ControlStatus.unControl)//Uncontrol時に切替時
         {
             gearNum = 0;
-            speedPowerMg.Release(gearNum);
+            speedPowerMg.Release();
         }
     }
 
@@ -78,49 +77,42 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             maxGage = memoryGageMg.memoryGage;
         }
-        /*
-        else
-        {
-            maxGage = 5;
-        }
-          */
 
+        //メモリ切れモード起動
         if (memoryGageMg.memoryGage <= 0)
         {
             memoryGageMg.memoryGage = 0;
             //grypsCrl.rb.velocity = new Vector2(3f, 0f);
             //stageCtrl.Lack();
-            //不足状態→まだスピードが落ちていない、回転によってメモリが回復する
+            //不足状態→まだスピードが落ちていない、サルトによってメモリが回復する
         }
     }
 
     public void ProduceMemory(int produceNum)
     {
+        memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage + produceNum);
         memoryGageMg.memoryGage += produceNum;
+        memoryGageMg.memoryCountMg.ProduceLamp();
 
-        if (memoryGageMg.memoryGage < maxGage)
+        if (memoryGageMg.memoryGage > maxGage)
         {
-            maxGage = memoryGageMg.memoryGage;
+            maxGage = Mathf.Clamp(memoryGageMg.memoryGage, 0, 3);
         }
-        /*
-        else
-        {
-            maxGage = 5;
-        }
-         */
+        //メモリ切れモードからの復帰
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         startPosition = eventData.position * screenFactor;
-        //movingMaskMg.FadeInMovingMask(startPosition);
         speedPowerMg.StartDrawBow(key);
+        //movingMaskMg.FadeInMovingMask(startPosition);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        speedPowerMg.Release();
         //movingMaskMg.FadeOutMovingMask();
-        speedPowerMg.Release(gearNum);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -135,13 +127,13 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
         gearNum = 0;
-        memoryGageMg.DownStatus(gearNum);
+        //memoryGageMg.memoryCountMg.ConsumeLamp(gearNum);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         currentPosition = eventData.position * screenFactor;
-        movingMaskMg.OnDragMovingMask(currentPosition);
+        //movingMaskMg.OnDragMovingMask(currentPosition);
 
         if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
         {
@@ -178,7 +170,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             {
                 speedPowerMg.DisplaySpeedArrow(gearNum);
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
-                memoryGageMg.DownStatus(gearNum);
+                memoryGageMg.memoryCountMg.ConsumeLamp();
                 grypsCrl.wheelMg.Judge(gearNum);
                 oldGearNum = gearNum;
             }

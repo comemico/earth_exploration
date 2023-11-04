@@ -1,18 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEditor;
-/*
-#if UNITY_EDITOR
-#endif
- */
+
 
 public class InformationManager : MonoBehaviour
 {
-    const float PreHeader = 20f;// ヘッダー前のスペース
-
-    [Space(PreHeader)]
-    [Header("確認")]
-    [Header("-----------------------------")]
+    /*
     [Header("選択コース")]
     public AreaType courseName;
     public enum AreaType
@@ -22,61 +15,47 @@ public class InformationManager : MonoBehaviour
         [InspectorName("屋上")] 屋上,
         [InspectorName("遊園地")] 遊園地
     }
+    public int maxAreaLevel;[Header("このエリアのレベル上限")]
+     */
+
     public int courseNum;
-
-    [Header("このエリアのレベル上限")]
-    public int maxAreaLevel;
-    [Header("ステージ番号")]
-    public int stageNum;
-    [Header("ステージレベル")]
-    public int stageLevel;
-    [Header("ライフメモリ数")]
-    public int lifeNum;
-
+    public int stageNum;//[Header("ステージ番号")]
+    public int stageLevel;//[Header("ステージレベル")]
+    //public int stageLifeNum;//[Header("ライフメモリ数")]
 
     [HideInInspector] public StageFrameManager stageFrameMg;
     ShutterManager shutterMg;
-    //SceneTransitionManager sceneTransitionMg;
 
     private void Awake()
     {
-        shutterMg = GetComponent<ShutterManager>();
-        //sceneTransitionMg = GetComponent<SceneTransitionManager>();
-        stageFrameMg = GetComponentInChildren<StageFrameManager>();
+        GetComponent();
     }
 
+    void GetComponent()
+    {
+        shutterMg = GetComponent<ShutterManager>();
+        stageFrameMg = GetComponentInChildren<StageFrameManager>();
+    }
 
     public void UpdateStageInformation(StageInformation stageInfo)
     {
         this.stageNum = (int)stageInfo.stageNumber;
-        this.lifeNum = stageInfo.lifeNumber;
+        GManager.instance.recentStageNum = this.stageNum;
         this.stageLevel = (int)stageInfo.stageLevel;
-
     }
 
-    public void UpdateCourseNumber(int courseNumber = 0, int maxAreaLevel = 0)
+    public void UpdateCourseNumber(int courseNumber = 0)
     {
-        GManager.instance.recentCourseNum = courseNumber;
         this.courseNum = courseNumber;
-        this.maxAreaLevel = maxAreaLevel;
-        stageFrameMg.DisplayMaxLevel(maxAreaLevel);
-        stageFrameMg.ChangeTarget(this.stageLevel);
-
-        courseName = (AreaType)Enum.ToObject(typeof(AreaType), courseNumber);
+        GManager.instance.recentCourseNum = this.courseNum;
+        //courseName = (AreaType)Enum.ToObject(typeof(AreaType), courseNumber);
     }
-
 
     public void StartGame()
     {
         var sceneName = "area" + courseNum + "stage" + stageNum;
         shutterMg.CloseShutter(sceneName);
 
-
-        //        FadeCanvasManager.instance.LoadScene(sceneName);
-        //FadeCanvasManager.instance.LoadFade(sceneName);
-        //shutterMg.ShutterClose(false);
-
-        //sceneTransitionMg.SceneTo(sceneName);
         /*
         if (EditorBuildSettings.scenes.Any(scene => Path.GetFileNameWithoutExtension(scene.path) == sceneName))
         {
@@ -85,14 +64,16 @@ public class InformationManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"指定のシーン{sceneName}はビルドに設定されていません");
+            Debug.Log("指定のシーンはビルドに設定されていません");
+            //Debug.Log($"指定のシーン{sceneName}はビルドに設定されていません");
         }
          */
+
     }
 
     public void ToTitleScene()
     {
-        FadeCanvasManager.instance.LoadFade("Title");
+        shutterMg.CloseShutter("Title");
     }
 
 }
