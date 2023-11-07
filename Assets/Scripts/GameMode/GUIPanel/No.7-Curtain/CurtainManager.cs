@@ -13,8 +13,8 @@ public class CurtainManager : MonoBehaviour
     public Ease sliderType;
 
     [Header("NameInfo")]
-    public RectTransform stageName;
-    public RectTransform courseName;
+    public RectTransform course;
+    public RectTransform stage;
     [Range(0.1f, 0.5f)] public float nameDuration;
     public Ease nameType;
 
@@ -32,6 +32,9 @@ public class CurtainManager : MonoBehaviour
     public Image iconEmi;
     public Color loadColor;
     public Color normalColor;
+
+    [Header("StageInfo")]
+    public GameObject stageInfo;
 
     const int SLIDER = 500;
     const int HEIGHT = 100;
@@ -55,8 +58,8 @@ public class CurtainManager : MonoBehaviour
     {
         backPanel.color = Color.black;
         slider.sizeDelta = new Vector2(0f, 2f);
-        stageName.anchoredPosition = new Vector2(0f, -HEIGHT);
-        courseName.anchoredPosition = new Vector2(0f, HEIGHT);
+        course.anchoredPosition = new Vector2(0f, -HEIGHT);
+        stage.anchoredPosition = new Vector2(0f, HEIGHT);
         icon.alpha = 1f;
         iconEmi.color = normalColor;
     }
@@ -69,8 +72,8 @@ public class CurtainManager : MonoBehaviour
 
         seq_start.Append(slider.DOSizeDelta(new Vector2(SLIDER, 2f), sliderDuration).SetEase(sliderType));
         seq_start.AppendInterval(0.1f);
-        seq_start.Append(courseName.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
-        seq_start.Join(stageName.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
+        seq_start.Append(stage.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
+        seq_start.Join(course.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
         seq_start.AppendInterval(0.4f);
         seq_start.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
         seq_start.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
@@ -83,12 +86,21 @@ public class CurtainManager : MonoBehaviour
         Sequence seq_hide = DOTween.Sequence();
 
         seq_hide.AppendInterval(0.65f);
-        seq_hide.Append(courseName.DOAnchorPosY(HEIGHT, nameDuration).SetEase(nameType));
-        seq_hide.Join(stageName.DOAnchorPosY(-HEIGHT, nameDuration).SetEase(nameType));
+        seq_hide.Append(stage.DOAnchorPosY(HEIGHT, nameDuration).SetEase(nameType));
+        seq_hide.Join(course.DOAnchorPosY(-HEIGHT, nameDuration).SetEase(nameType));
         seq_hide.AppendInterval(0.1f);
         seq_hide.Append(slider.DOSizeDelta(new Vector2(0f, 2f), sliderDuration).SetEase(sliderType));
+        seq_hide.AppendCallback(DisplayInfo);
         tweenList.Add(seq_hide);
         return seq_hide;
+    }
+
+    public void DisplayInfo()
+    {
+        slider.sizeDelta = new Vector2(SLIDER, 2f);
+        course.anchoredPosition = Vector2.zero;
+        stage.anchoredPosition = Vector2.zero;
+        stageInfo.SetActive(false);
     }
 
     public void CloseCurtain(string sceneName)//Sceneà⁄ìÆèàóù

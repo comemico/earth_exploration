@@ -355,7 +355,7 @@ public class GrypsController : MonoBehaviour
     {
         Brake(false);//ForceBoost()でブレーキを解除
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.boostPower[gearNum - 1];
-        rb.AddForce(force);
+        rb.AddForce(force, ForceMode2D.Impulse);
         //effectManager.JetEffect();
         wheelMg.ArchedBack(false);
     }
@@ -388,7 +388,7 @@ public class GrypsController : MonoBehaviour
         wheelMg.TurnLamp(true, true);
         stageCrl.controlScreenMg.KeyChange(key);
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.dashPower[power];
-        rb.AddForce(force);
+        rb.AddForce(force, ForceMode2D.Impulse);
     }
 
     public void Brake(bool isBrake)
@@ -402,7 +402,7 @@ public class GrypsController : MonoBehaviour
     {
         Brake(false);//ForceJet()でブレーキを解除
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.jetPower[power];
-        rb.AddForce(force);
+        rb.AddForce(force, ForceMode2D.Impulse);
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
     }
 

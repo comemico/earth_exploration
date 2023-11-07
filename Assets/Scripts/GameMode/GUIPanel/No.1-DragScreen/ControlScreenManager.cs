@@ -2,11 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-using System.Collections;
-using System.Collections.Generic;
-using SoundSystem;
-using UnityEngine.SceneManagement;
-
 public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     MovingMaskManager movingMaskMg;
@@ -90,6 +85,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ProduceMemory(int produceNum)
     {
+        if (memoryGageMg.memoryGage >= GManager.instance.maxLifeNum) return;
         memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage + produceNum);
         memoryGageMg.memoryGage += produceNum;
         memoryGageMg.memoryCountMg.ProduceLamp();
@@ -127,7 +123,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
         gearNum = 0;
-        //memoryGageMg.memoryCountMg.ConsumeLamp(gearNum);
     }
 
     public void OnDrag(PointerEventData eventData)

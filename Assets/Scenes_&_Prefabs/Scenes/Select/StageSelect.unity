@@ -2292,7 +2292,7 @@ GameObject:
   - component: {fileID: 143914573}
   - component: {fileID: 143914572}
   m_Layer: 5
-  m_Name: Msg_Frame
+  m_Name: TipsEdge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2309,8 +2309,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1174908914}
+  m_Children: []
   m_Father: {fileID: 1605375338}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2335,7 +2334,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6136,7 +6135,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 583, y: 49.5}
+  m_SizeDelta: {x: 590, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &442683545
 MonoBehaviour:
@@ -6154,7 +6153,7 @@ MonoBehaviour:
   m_Color: {r: 0.11372549, g: 0.8, b: 0.627451, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6167,7 +6166,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.2929293
+  m_PixelsPerUnitMultiplier: 1.1636363
 --- !u!222 &442683546
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6188,7 +6187,7 @@ GameObject:
   - component: {fileID: 448831348}
   - component: {fileID: 448831347}
   m_Layer: 5
-  m_Name: Tips-Text
+  m_Name: Pop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6203,7 +6202,7 @@ RectTransform:
   m_GameObject: {fileID: 448831345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.825, y: 0.825, z: 1}
+  m_LocalScale: {x: 1.05, y: 1.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1174908914}
@@ -6230,13 +6229,13 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 42
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 5
@@ -13745,15 +13744,17 @@ MonoBehaviour:
   openType: 6
   lampDuration: 0.25
   lampType: 3
-  msgEdge: {fileID: 143914571}
+  tipsEdge: {fileID: 143914572}
+  backPanel: {fileID: 1174908917}
+  tipsText: {fileID: 2060302314}
   rankLamp: {fileID: 442683545}
-  perTextWide: 38
   characterLimit: 12
+  perTextWide: 42
   scrollSpeed: 0.45
-  msgFadeDuration: 0.15
-  msgFadeType: 6
-  msgOpenDuration: 0.2
-  msgOpenType: 6
+  tipsFadeDuration: 0.15
+  tipsFadeType: 6
+  tipsOpenDuration: 0.2
+  tipsOpenType: 6
   rankColor:
   - {r: 0.11372549, g: 0.8, b: 0.627451, a: 1}
   - {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
@@ -14127,7 +14128,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1174908913}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14135,12 +14136,12 @@ RectTransform:
   - {fileID: 2060302313}
   - {fileID: 448831346}
   - {fileID: 442683544}
-  m_Father: {fileID: 143914571}
+  m_Father: {fileID: 1605375338}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -244.99997}
   m_SizeDelta: {x: 660, y: 140.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174908915
@@ -19554,7 +19555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1605375338}
   m_Layer: 5
-  m_Name: Message
+  m_Name: Tips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19572,6 +19573,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1174908914}
   - {fileID: 143914571}
   m_Father: {fileID: 1066292769}
   m_RootOrder: 1
@@ -25669,7 +25671,7 @@ GameObject:
   - component: {fileID: 2060302314}
   - component: {fileID: 2060302316}
   m_Layer: 5
-  m_Name: Message-Text
+  m_Name: TipsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25717,7 +25719,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 38
+    m_FontSize: 42
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 3

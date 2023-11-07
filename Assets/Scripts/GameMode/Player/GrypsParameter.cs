@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GrypsParameter : MonoBehaviour
 {
-    [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK", "4’iŠK", "5’iŠK", })]
-    [Range(1500, 10000)] public int[] boostPower;
+    [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
+    [Range(1, 150)] public int[] boostPower;
 
     [NamedArrayAttribute(new string[] { "ã", "’†", "‹­", "“Á‹­" })]
-    [Range(1000, 10000)] public int[] dashPower;
+    [Range(1, 150)] public int[] dashPower;
 
     [NamedArrayAttribute(new string[] { "1’iŠK", "2’iŠK", "3’iŠK" })]
-    [Range(3000, 10000)] public int[] jetPower;
+    [Range(1, 200)] public int[] jetPower;
 
     [NamedArrayAttribute(new string[] { "1‰ñ“]", "2‰ñ“]", "3‰ñ“]" })]
     [Range(0.2f, 0.75f)] public float[] saltoTime;

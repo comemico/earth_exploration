@@ -127,7 +127,7 @@ public class GateManager : MonoBehaviour
                     .OnComplete(() =>
                     {
                         CloseHole();
-                        grypsCrl.stageCrl.resultMg.Result(ResultManager.RESULT.clear);
+                        grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
 
                     });
             }

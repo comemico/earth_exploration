@@ -33,20 +33,19 @@ public class StageFrameManager : MonoBehaviour
     const float INITIALANGLE = 4f;
     const float PERANGLE = 9.484f;
 
-    [Header("Message")]
-    public RectTransform msgEdge;
+    [Header("Tips")]
+    public Image tipsEdge;
+    public CanvasGroup backPanel;
+    public Text tipsText;
     public Image rankLamp;
+
+    public int characterLimit = 12;
     public float perTextWide;
-    public int characterLimit = 10;
-    Image msgImg;
-    CanvasGroup backImg;
-    Text tipsText;
-    RectTransform tipsRect;
     [Range(0.1f, 0.5f)] public float scrollSpeed;
-    [Range(0.1f, 0.5f)] public float msgFadeDuration;
-    public Ease msgFadeType;
-    [Range(0.1f, 0.5f)] public float msgOpenDuration;
-    public Ease msgOpenType;
+    [Range(0.1f, 0.5f)] public float tipsFadeDuration;
+    public Ease tipsFadeType;
+    [Range(0.1f, 0.5f)] public float tipsOpenDuration;
+    public Ease tipsOpenType;
     public Color[] rankColor;
 
 
@@ -68,10 +67,6 @@ public class StageFrameManager : MonoBehaviour
     void GetComponent()
     {
         scopeImg = scopeOut.transform.GetComponent<Image>();
-        msgImg = msgEdge.transform.GetComponent<Image>();
-        backImg = msgEdge.transform.GetChild(0).GetComponent<CanvasGroup>();
-        tipsText = msgEdge.transform.GetComponentInChildren<Text>();
-        tipsRect = tipsText.transform.GetComponent<RectTransform>();
     }
 
     private void Update()
@@ -108,6 +103,7 @@ public class StageFrameManager : MonoBehaviour
         tweenList.Add(seq_lv);
         return seq_lv;
     }
+
     public void DisplayLevelMemory(int levelNum)
     {
         for (int i = 0; i < lvLamp.Length; i++)
@@ -118,15 +114,15 @@ public class StageFrameManager : MonoBehaviour
 
     public Sequence OpenTips()
     {
-        backImg.alpha = 0f;
-        msgImg.color = new Color(1, 1, 1, 0);
-        msgEdge.sizeDelta = new Vector2(140.8f, 140.8f);
+        backPanel.alpha = 0f;
+        tipsEdge.color = new Color(1, 1, 1, 0);
+        tipsEdge.rectTransform.sizeDelta = new Vector2(140.8f, 140.8f);
 
         Sequence sq_tips = DOTween.Sequence();
         sq_tips.AppendInterval(0.1f);
-        sq_tips.Append(msgImg.DOFade(1f, msgFadeDuration).SetEase(msgFadeType));
-        sq_tips.Append(msgEdge.DOSizeDelta(new Vector2(660f, 140.8f), msgOpenDuration).SetEase(msgOpenType));
-        sq_tips.Append(backImg.DOFade(1f, msgFadeDuration).SetEase(msgFadeType));
+        sq_tips.Append(tipsEdge.DOFade(1f, tipsFadeDuration).SetEase(tipsFadeType));
+        sq_tips.Append(tipsEdge.rectTransform.DOSizeDelta(new Vector2(660f, 140.8f), tipsOpenDuration).SetEase(tipsOpenType));
+        sq_tips.Append(backPanel.DOFade(1f, tipsFadeDuration).SetEase(tipsFadeType));
 
         tweenList.Add(sq_tips);
         return sq_tips;
@@ -134,19 +130,17 @@ public class StageFrameManager : MonoBehaviour
 
     public void ScrollText()
     {
-
-        tipsRect.anchoredPosition = new Vector2(120, 0f);
-
+        tipsText.rectTransform.anchoredPosition = new Vector2(120, 0f);
         Sequence sq_scroll = DOTween.Sequence();
         sq_scroll.Append(tipsText.DOFade(1f, 0.5f));
-        sq_scroll.Join(tipsRect.DOAnchorPosX(80, 0.5f).SetEase(Ease.Linear));
+        sq_scroll.Join(tipsText.rectTransform.DOAnchorPosX(80, 0.5f).SetEase(Ease.Linear));
         if (tipsText.text.Length <= characterLimit) return;
 
-        sq_scroll.AppendInterval(3f);
+        sq_scroll.AppendInterval(2.5f);
         //・テキスト長さの7.5割を進む、6割からFadeOut ・sequence.Append().SetLoop(-1) ポイントはSetLoops()をsequenceにかけること
-        sq_scroll.Append(tipsRect.DOAnchorPosX(-1 * (tipsText.text.Length * perTextWide) * 0.75f, (tipsText.text.Length * scrollSpeed) * 0.75f).SetRelative(true).SetEase(Ease.Linear));
+        sq_scroll.Append(tipsText.rectTransform.DOAnchorPosX(-1 * (tipsText.text.Length * perTextWide) * 0.75f, (tipsText.text.Length * scrollSpeed) * 0.75f).SetRelative(true).SetEase(Ease.Linear));
         sq_scroll.Join(tipsText.DOFade(0f, 0.75f).SetDelay((tipsText.text.Length * scrollSpeed) * 0.6f).SetEase(Ease.Linear));//テキスト長さの半分を超えたあたりから起動
-        sq_scroll.Append(tipsRect.DOAnchorPosX(120, 0)).SetLoops(-1);
+        sq_scroll.Append(tipsText.rectTransform.DOAnchorPosX(120, 0)).SetLoops(-1);
         sq_scroll.AppendInterval(0.25f);
         tweenList.Add(sq_scroll);
     }

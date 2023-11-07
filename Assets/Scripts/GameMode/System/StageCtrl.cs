@@ -13,8 +13,16 @@ public class StageCtrl : MonoBehaviour
     [Header("このステージのメモリ数")] public int totalMemoryGage;
     #endregion
 
-    [Header("プレイヤー情報とスタート")] public GrypsController grypsCrl;
-    [Header("スタートポジション")] public GateManager gateMg;
+    [Header("プレイヤー情報とスタート")]
+    public GrypsController grypsCrl;
+
+    [Header("スタートポジション")]
+    public GateManager gateMg;
+
+    [Header("ステージ情報")]
+    public string tipsText;
+    [Range(1, 5)] public int stageRank;
+    public Color[] rankColor;
 
     public ControlStatus controlStatus;
     public State state;
