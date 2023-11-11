@@ -97,7 +97,7 @@ public class JetManager : MonoBehaviour
     public void OnButtonDown()
     {
         isDown = true;
-
+        stageCrl.Regeneration();
         grypsCrl.jetAnimator.SetBool("isDown", isDown);
         ChargeRing(limitNumber);
 
@@ -147,6 +147,15 @@ public class JetManager : MonoBehaviour
                 jetGuiMg.ShutDownJetHud();
             }
         }
+
+        //ƒƒ‚ƒŠØ‚êƒ‚[ƒh‹N“®
+        if (stageCrl.memoryGageMg.memoryGage <= 0)
+        {
+            //grypsCrl.rb.velocity = new Vector2(3f, 0f);
+            stageCrl.Lack();
+        }
+
+
     }
 
 

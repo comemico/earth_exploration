@@ -53,7 +53,6 @@ public class FloorManager : MonoBehaviour
         }
 
         return floorNumber;
-        // return floorNumber;
     }
 
     //allCollider = GetComponentsInChildren<Collider2D>();”z—ñŽæ“¾•û–@

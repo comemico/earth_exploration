@@ -54,7 +54,7 @@ public class InformationManager : MonoBehaviour
     public void StartGame()
     {
         var sceneName = "area" + courseNum + "stage" + stageNum;
-        shutterMg.CloseShutter(sceneName);
+        shutterMg.CloseToStart(sceneName);
 
         /*
         if (EditorBuildSettings.scenes.Any(scene => Path.GetFileNameWithoutExtension(scene.path) == sceneName))
@@ -73,7 +73,7 @@ public class InformationManager : MonoBehaviour
 
     public void ToTitleScene()
     {
-        shutterMg.CloseShutter("Title");
+        shutterMg.CloseToHome("Title");
     }
 
 }

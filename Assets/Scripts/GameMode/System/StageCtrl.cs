@@ -24,8 +24,12 @@ public class StageCtrl : MonoBehaviour
     [Range(1, 5)] public int stageRank;
     public Color[] rankColor;
 
+    [Header("エリア範囲")]
+    public float deadLineY;
+
     public ControlStatus controlStatus;
     public State state;
+
 
     SceneTransitionManager sceneTransitionManager;
 
@@ -96,21 +100,13 @@ public class StageCtrl : MonoBehaviour
             grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 1);
             sequenceStart.Kill();
         });
-        /*
-        //shutterMg.ShutterClose(true);
-        sequenceStart.AppendInterval(0.5f);
-        sequenceStart.Append(shutterMg.ShutterOpen(FadeCanvasManager.instance.isFade));//シャッターが開く
-        sequenceStart.AppendInterval(0.5f);//待つ delay
-         */
     }
 
     public void ChangeControlStatus(ControlStatus status)
     {
         controlStatus = status;
         controlScreenMg.ChangeControlLimit(status);
-        //pauseMg.push_Pause.interactable = (controlStatus != ControlStatus.unControl);
     }
-
 
     public void Ready()
     {
@@ -137,29 +133,17 @@ public class StageCtrl : MonoBehaviour
         state = State.Play;
         //目の点滅を戻す
     }
-    /*
-    public void ResultA(ResultManager.RESULT result)
-    {
-        state = State.Clear;
-        ChangeControlStatus(ControlStatus.unControl);
-    }
-     */
 
     public void GameOver()
     {
         state = State.GameOver;
-        //timelineMg.TapeChangeUI(2);
-        //timelineMg.PlayTimeline();
+        grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezeAll;
         //目を暗くする
     }
-
 
     public void StageClear()
     {
         state = State.Clear;
-        //timelineMg.TapeChangeUI(1);
-        //timelineMg.PlayTimeline();
-
         //最大ステージ番号更新(エリアの最大到達番号と同じ)
         if (stageNum == GManager.instance.courseDate[areaNum])
         {
@@ -167,56 +151,51 @@ public class StageCtrl : MonoBehaviour
         }
     }
 
-
     void LateUpdate()
     {
-
         switch (state)
         {
-
             case State.Ready:
                 break;
 
-
             case State.Play:
-                break;
-
-            case State.Lack:
-                if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && controlStatus != ControlStatus.unControl)
+                if (grypsCrl.transform.position.y <= deadLineY)
                 {
-                    //grypsCrl.PausePlayer();
-                    ChangeControlStatus(ControlStatus.unControl);
+                    resultMg.Result(ResultManager.CAUSE.missFall);
                     GameOver();
                     return;
                 }
                 break;
 
+            case State.Lack:
+                if (grypsCrl.transform.position.y <= deadLineY)
+                {
+                    resultMg.Result(ResultManager.CAUSE.missFall);
+                    GameOver();
+                    return;
+                }
+                if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && controlStatus == ControlStatus.control)
+                {
+                    ChangeControlStatus(ControlStatus.unControl);
+                    resultMg.Result(ResultManager.CAUSE.missLack);
+                    GameOver();
+                    return;
+                }
+                break;
         }
 
     }
 
     public void Retry() //ゲームオーバー時、ボタン入力可能
     {
-        //SoundController.instance.PlayMenuSe("button02a");
         FadeCanvasManager.instance.LoadFade(SceneManager.GetActiveScene().name);
         //        Time.timeScale = 1f;
-        //        FadeCanvasManager.instance.LoadScene(SceneManager.GetActiveScene().name);
-        //        FadeCanvasManager.instance.FadeOutTest(() => SceneManager.LoadScene(SceneManager.GetActiveScene().name));
     }
 
-    //ボタン入力
-    public void Next()
-    {
-        stageNum++;
-        sceneTransitionManager.SceneTo("Stage" + stageNum);
-    }
-
-    //ボタン入力
     public void SelectStage()
     {
         FadeCanvasManager.instance.LoadFade("StageSelect");
     }
-
 
     /*
     private void UpdateStageNum()

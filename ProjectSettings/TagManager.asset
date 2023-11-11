@@ -5,10 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Floor00
-  - Floor01
-  - DeadArea
-  - ClearArea
   layers:
   - Default
   - TransparentFX

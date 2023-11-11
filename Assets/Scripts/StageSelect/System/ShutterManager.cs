@@ -11,9 +11,8 @@ public class ShutterManager : MonoBehaviour
     public float initialHomeY;
 
     public RectTransform startPanel;
-    public RectTransform startRingIn;
-    public RectTransform startRingOut;
-    public CanvasGroup startRing;
+    public Image startRingIn;
+    public Image startRingOut;
 
     public float initialStartY;
 
@@ -33,8 +32,8 @@ public class ShutterManager : MonoBehaviour
     public Color normalColor;
 
     [Header("StartRing")]
-    [Range(12f, 72f)] public float ringOutDuration;
-    [Range(12f, 72f)] public float ringInDuration;
+    [Range(12f, 100f)] public float ringOutDuration;
+    [Range(12f, 100f)] public float ringInDuration;
     public float rotateValue;
     public float rotateDuration;
     public Ease rotateType;
@@ -81,8 +80,8 @@ public class ShutterManager : MonoBehaviour
         icon.alpha = 1f;
         iconEmi.color = normalColor;
 
-        ringOut = startRingOut.DOLocalRotate(new Vector3(0, 0, 360f), ringOutDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
-        ringIn = startRingIn.DOLocalRotate(new Vector3(0, 0, 360f), ringInDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
+        ringOut = startRingOut.rectTransform.DOLocalRotate(new Vector3(0, 0, 360f), ringOutDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
+        ringIn = startRingIn.rectTransform.DOLocalRotate(new Vector3(0, 0, 360f), ringInDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
 
     }
 
@@ -110,7 +109,7 @@ public class ShutterManager : MonoBehaviour
         }
     }
 
-    public void CloseShutter(string sceneName)//Scene移動処理
+    public void CloseToHome(string sceneName)
     {
         backPanel.raycastTarget = true;
         iconEmi.color = loadColor;
@@ -118,16 +117,48 @@ public class ShutterManager : MonoBehaviour
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
 
-        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad).SetDelay(0.8f)
+        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad)
         .OnComplete(() =>
         {
-            Tween emi = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
+            Tween emiLoop = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
             .OnStepComplete(() =>
             {
                 CheckLoad();//ループ一回毎に (progress >= 0.9f) か判定する
             }
             );
-            tweenList.Add(emi);//ループをkillことでエラーを出さないようにする
+            tweenList.Add(emiLoop);//ループをkillことでエラーを出さないようにする
+        }
+        );
+
+        Sequence seq_close = DOTween.Sequence();
+        seq_close.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
+        seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
+        seq_close.AppendCallback(() =>
+        {
+            ringOut.Kill(false);
+            ringIn.Kill(false);
+        });
+        tweenList.Add(seq_close);
+    }
+
+    public void CloseToStart(string sceneName)//Scene移動処理
+    {
+        backPanel.raycastTarget = true;
+        iconEmi.color = loadColor;
+
+        async = SceneManager.LoadSceneAsync(sceneName);
+        async.allowSceneActivation = false;
+
+        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad).SetDelay(0.85f)
+        .OnComplete(() =>
+        {
+            Tween emiLoop = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
+            .OnStepComplete(() =>
+            {
+                CheckLoad();//ループ一回毎に (progress >= 0.9f) か判定する
+            }
+            );
+            tweenList.Add(emiLoop);//ループをkillことでエラーを出さないようにする
         }
         );
 
@@ -137,10 +168,11 @@ public class ShutterManager : MonoBehaviour
             ringOut.Kill(false);
             ringIn.Kill(false);
         });
-        seq_close.Append(startRingOut.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
-        seq_close.Join(startRingIn.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
-        seq_close.Join(startRingIn.DOScale(1.1f, scaleDuration).SetEase(scaleType));
-        seq_close.Join(startRing.DOFade(0f, fadeDuration).SetEase(fadeType).SetDelay(intervalTime));
+        seq_close.Append(startRingOut.rectTransform.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
+        seq_close.Join(startRingIn.rectTransform.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
+        seq_close.Join(startRingIn.rectTransform.DOScale(1.1f, scaleDuration).SetEase(scaleType));
+        seq_close.Join(startRingOut.DOFade(0f, fadeDuration).SetEase(fadeType).SetDelay(intervalTime));
+        seq_close.Join(startRingIn.DOFade(0f, fadeDuration).SetEase(fadeType).SetDelay(intervalTime));
 
         seq_close.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
         seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
@@ -155,6 +187,7 @@ public class ShutterManager : MonoBehaviour
             async.allowSceneActivation = true;
         }
     }
+
     /*
     public void ShutterClose(bool isComplete)
     {

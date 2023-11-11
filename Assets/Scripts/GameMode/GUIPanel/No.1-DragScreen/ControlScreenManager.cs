@@ -78,7 +78,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             memoryGageMg.memoryGage = 0;
             //grypsCrl.rb.velocity = new Vector2(3f, 0f);
-            //stageCtrl.Lack();
+            stageCrl.Lack();
             //不足状態→まだスピードが落ちていない、サルトによってメモリが回復する
         }
     }
@@ -95,7 +95,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             maxGage = Mathf.Clamp(memoryGageMg.memoryGage, 0, 3);
         }
         //メモリ切れモードからの復帰
-
+        stageCrl.Regeneration();
     }
 
     public void OnPointerDown(PointerEventData eventData)

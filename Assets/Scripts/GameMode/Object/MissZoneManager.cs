@@ -19,7 +19,7 @@ public class MissZoneManager : MonoBehaviour
             {
                 grypsCrl.rb.velocity = Vector2.zero;
                 grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
-                grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missZone);
+                grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missBomb);
                 //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
                 //stageCrl => result(RESULT.miss)
                 //FalseMask(gateKey);

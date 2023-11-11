@@ -12,24 +12,27 @@ public class ResultManager : MonoBehaviour
     public enum CAUSE
     {
         [InspectorName("クリアおめでとう！")] clear = 0,
-        [InspectorName("落下してしまった！")] missZone = 1,
-        [InspectorName("バッテリー切れ！？")] missLack = 2
+        [InspectorName("落下してしまった！")] missFall = 1,
+        [InspectorName("爆発してしまった！")] missBomb = 2,
+        [InspectorName("バッテリー切れ！？")] missLack = 3
     }
 
+    [Header("Panel")]
     public Image panel;
-    public Text result;
+    public Image icon;
+    public Text causeText;
+    public GameObject jetPanel;
+    public GameObject pausePanel;
+
+    [Header("Button:AddListener")]
     public RectTransform button;
     public Image[] emissionImg;
-    public Color clearColor, missColor;
-    [Range(0.1f, 0.5f)] public float lampDuration;
-    public Ease lampType;
-
-    [Header("AddListener")]
     public Button push_Retry;
     public Button push_World;
 
-
     [Header("miss")]
+    public Color clearColor, missColor;
+    public Text result;
     [Range(0.1f, 0.5f)] public float fadeDuration;
     public Ease fadeType;
     [Range(0.1f, 0.5f)] public float fallDuration;
@@ -42,6 +45,8 @@ public class ResultManager : MonoBehaviour
     public CanvasGroup backPanel;
     public Text tipsText;
     public Image rankLamp;
+    [Range(0.1f, 0.5f)] public float lampDuration;
+    public Ease lampType;
 
     public float perTextWide;
     public int characterLimit = 10;
@@ -51,9 +56,9 @@ public class ResultManager : MonoBehaviour
     [Range(0.1f, 0.5f)] public float tipsOpenDuration;
     public Ease tipsOpenType;
 
-    StageCtrl stageCrl;
-    const string clear = "ミッション失敗";
+    const string clear = "ミッション成功";
     const string miss = "ミッション失敗";
+    StageCtrl stageCrl;
     List<Tween> tweenList = new List<Tween>();
 
     private void OnDestroy()
@@ -77,36 +82,74 @@ public class ResultManager : MonoBehaviour
 
     public void Result(CAUSE cause)
     {
-        OpenPanel();
-        if ((int)cause == 0)
+        switch (cause)
         {
-            result.text = clear;
-            panel.color = missColor;
+            case CAUSE.clear:
+                //panel.color = clearColor;
+                //result.text = clear;
+                panel.gameObject.SetActive(true);
+                pausePanel.SetActive(false);
+                jetPanel.SetActive(false);
+
+                icon.enabled = false;
+                causeText.text = "クリアおめでとう！";
+                OpenClearPanel();
+                break;
+
+            case CAUSE.missFall:
+                panel.color = missColor;
+                result.text = miss;
+                causeText.text = "落下してしまった！";
+                OpenMissPanel();
+                break;
+
+            case CAUSE.missBomb:
+                panel.color = missColor;
+                result.text = miss;
+                causeText.text = "爆発してしまった！";
+                OpenMissPanel();
+                break;
+
+            case CAUSE.missLack:
+                panel.color = missColor;
+                result.text = miss;
+                causeText.text = "バッテリー切れ！？";
+                OpenMissPanel();
+                break;
         }
-        else
-        {
-            result.text = miss;
-            panel.color = missColor;
-        }
+
     }
 
-    public void OpenPanel()
+    public void OpenClearPanel()
+    {
+        //result.rectTransform.anchoredPosition = new Vector3(0f, 100f, 0f);
+
+        Sequence seq_clear = DOTween.Sequence();
+        //seq_clear.Append(panel.DOFade(0.65f, fadeDuration).SetEase(fadeType));
+        //seq_clear.Append(result.rectTransform.DOAnchorPosY(-225f, fallDuration).SetEase(fallType));
+        seq_clear.Append(button.DOAnchorPosX(-160f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        //seq_clear.AppendInterval(0.15f);
+        //seq_clear.Append(result.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
+
+        tweenList.Add(seq_clear);
+    }
+
+    public void OpenMissPanel()
     {
         panel.gameObject.SetActive(true);
         result.rectTransform.anchoredPosition = new Vector3(0f, 100f, 0f);
         tipsText.color = new Color(1, 1, 1, 0);
 
-        Sequence seq_result = DOTween.Sequence();
-        seq_result.Append(panel.DOFade(0.65f, fadeDuration).SetEase(fadeType));
-        seq_result.Append(result.rectTransform.DOAnchorPosY(-225f, fallDuration).SetEase(fallType));
-        seq_result.Append(button.DOAnchorPosX(-160f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
-        seq_result.AppendInterval(0.15f);
-        seq_result.Append(result.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
-        seq_result.Join(OpenTips());
-        seq_result.AppendCallback(() => ScrollText());
+        Sequence seq_miss = DOTween.Sequence();
+        seq_miss.Append(panel.DOFade(0.65f, fadeDuration).SetEase(fadeType));
+        seq_miss.Append(result.rectTransform.DOAnchorPosY(-225f, fallDuration).SetEase(fallType));
+        seq_miss.Append(button.DOAnchorPosX(-160f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        seq_miss.AppendInterval(0.15f);
+        seq_miss.Append(result.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
+        seq_miss.Join(OpenTips());
+        seq_miss.AppendCallback(() => ScrollText());
 
-        tweenList.Add(seq_result);
-
+        tweenList.Add(seq_miss);
     }
 
     public void SwichBloom(bool isEnabled, float fadeTime) //FadeInする場合、PanelAnimeで光源が見えるのを防ぐ目的
