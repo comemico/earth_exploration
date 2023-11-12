@@ -8,6 +8,7 @@ public class JetManager : MonoBehaviour
     //*ボタンを押したときの処理=>JetMg <-ここ
 
     [Header("LimitRing")]
+    public CanvasGroup limitRingCanGrp;
     public Image limitRingImg;
     public float limitDuration = 0.25f;
     public Ease limitType = Ease.InOutQuad;
@@ -16,8 +17,8 @@ public class JetManager : MonoBehaviour
 
     [Header("ChargeRing")]
     public RectTransform chargeRing;
-    public Image buttonMark_Left;
-    public Image buttonMark_Right;
+    public Image buttonLamp_Left;
+    public Image buttonLamp_Right;
     CanvasGroup chargeRingCanGrp;
     Image chargeRingImg;
 
@@ -101,8 +102,8 @@ public class JetManager : MonoBehaviour
         grypsCrl.jetAnimator.SetBool("isDown", isDown);
         ChargeRing(limitNumber);
 
-        buttonMark_Left.enabled = true;
-        buttonMark_Right.enabled = true;
+        buttonLamp_Left.enabled = true;
+        buttonLamp_Right.enabled = true;
 
         if (Time.timeScale > chargeTimeScale)
         {
@@ -120,11 +121,11 @@ public class JetManager : MonoBehaviour
         chargeRingImg.DOKill(false);
         chargeRingImg.fillAmount = 0f;
         chargeRingImg.color = chargeColor[0];
-        buttonMark_Left.color = chargeColor[0];
-        buttonMark_Right.color = chargeColor[0];
+        buttonLamp_Left.color = chargeColor[0];
+        buttonLamp_Right.color = chargeColor[0];
 
-        buttonMark_Left.enabled = false;
-        buttonMark_Right.enabled = false;
+        buttonLamp_Left.enabled = false;
+        buttonLamp_Right.enabled = false;
 
         if (!stageCrl.saltoMg.saltoHudMg.isHud) //if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)//空中時(Salto)はJetHud起× 着地時(Dash)はJetHud起〇
         {

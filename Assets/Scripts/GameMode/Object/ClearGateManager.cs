@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
@@ -12,7 +13,8 @@ public class ClearGateManager : MonoBehaviour
         [InspectorName("Å©ç∂")] left = 1,
         [InspectorName("âEÅ®")] right = -1,
     }
-    GATE_KEY gateKey;//GATE_KEYóvëfÇ©ÇÁÇPÇ¬äiî[Ç≥ÇÍÇƒÇ¢ÇÈ
+
+    //GATE_KEY gateKey;//GATE_KEYóvëfÇ©ÇÁÇPÇ¬äiî[Ç≥ÇÍÇƒÇ¢ÇÈ
 
 
     public enum SUCTION
@@ -34,12 +36,15 @@ public class ClearGateManager : MonoBehaviour
     public Ease fadeType;
 
     GrypsController grypsCrl;
-
-    const int DISTANCE_SUCKEDIN = 5;
+    CinemachineController cinemachineCrl;
+    BoxCollider2D boxCol;
+    const int DISTANCE_SUCKEDIN = 6;
 
     private void Start()
     {
         FalseMask(GATE_KEY.both);
+        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        boxCol = GetComponent<BoxCollider2D>();
     }
 
     public void FalseMask(GATE_KEY entranceKey)
@@ -54,11 +59,13 @@ public class ClearGateManager : MonoBehaviour
             case GATE_KEY.left:
                 left.enabled = false;
                 right.enabled = true;
+                cinemachineCrl.ClearDirection(0.43f);
                 break;
 
             case GATE_KEY.right:
                 left.enabled = true;
                 right.enabled = false;
+                cinemachineCrl.ClearDirection(0.08f);
                 break;
         }
     }
@@ -83,16 +90,19 @@ public class ClearGateManager : MonoBehaviour
                 FalseMask((GATE_KEY)gateKey);//ë¨ìxÇÃê≥ïâ(1,-1)Ç©ÇÁenum å^Ç÷ÇÃïœä∑ => à¯êîÇ…ì¸ÇÍÇÈ
             }
 
+            boxCol.enabled = false; //1âÒÇµÇ©åƒÇŒÇÍÇ»Ç≠Ç»ÇÈ ÅEçÇë¨Ç≈êNì¸Ç∑ÇÈÇ∆2âÒà»è„åƒÇŒÇÍÇƒDOMoveXÇ™ê≥ÇÃï˚å¸Ç…ÇµÇ©çsÇ©Ç»Ç≠Ç»ÇÈ (Sign(0)Ç≈1Ç…Ç»ÇÈÇΩÇﬂ)
+
+            grypsCrl.stageCrl.StageClear();
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
 
             grypsCrl.rb.velocity = Vector2.zero;
+            grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
 
-            grypsCrl.transform.DOMoveX(gateKey * DISTANCE_SUCKEDIN, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(false).SetRelative(true)
-            .OnComplete(() =>
-            {
-                RaiseFlag();
-            });
+            grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
+            grypsCrl.stageCrl.jetMg.limitRingCanGrp.DOFade(0f, 0.25f).SetDelay(0.1f);
+            grypsCrl.stageCrl.jetMg.jetGuiMg.ShutDownJetHud();
 
+            grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
         }
     }
 
@@ -102,7 +112,6 @@ public class ClearGateManager : MonoBehaviour
 
         Sequence seq_raise = DOTween.Sequence();
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
-        seq_raise.AppendInterval(0.15f);
         seq_raise.AppendCallback(() => grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear));
     }
 
@@ -115,22 +124,5 @@ public class ClearGateManager : MonoBehaviour
             sprite.DOFade(Convert.ToInt32(isEnabled), fadeTime).SetEase(fadeType);
         }
     }
-
-    /*
-    public Tween OpenHole()
-    {
-        rock.DOComplete();
-        Tween t = rock.DOScale(endValue, easeDuration).SetEase(easeTypeOpen).SetUpdate(false);
-        return t;
-    }
-
-    public void CloseHole()
-    {
-        rock.DOComplete();
-        rock.DOScale(Vector3.zero, easeDuration).SetEase(easeTypeClose);
-    }
-     */
-
-
 
 }

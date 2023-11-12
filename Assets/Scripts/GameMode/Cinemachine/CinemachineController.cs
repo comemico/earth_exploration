@@ -63,6 +63,10 @@ public class CinemachineController : MonoBehaviour
         //tween_screenX.Kill(true);
         tween_turn = DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f - (key * range), turnDuration).SetEase(turnType);
     }
+    public void ClearDirection(float screenX)
+    {
+        tween_turn = DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, screenX, 1.5f).SetEase(Ease.InOutSine);
+    }
 
     public void Zoom(int fov)
     {
