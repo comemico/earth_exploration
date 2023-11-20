@@ -46,7 +46,7 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     private void Start()
     {
         GetComponent();
-        InitializedStagePosition(informationMg.data.recentCourseNum);
+        InitializedStagePosition(informationMg.data.recentCourseAdress);
         factorDistance = 1 / rangeOfInfluence_Distance;
         factorScale = 1 / rangeOfInfluence_Scale;
     }
@@ -69,7 +69,7 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
         SelectionEnable(initialValue); //コースランプ点灯
 
-        informationMg.courseNum = informationMg.data.recentCourseNum;
+        informationMg.courseNum = informationMg.data.recentCourseAdress;
 
         /*
         //開始時に選択したコース番号へ移動する処理
@@ -200,7 +200,6 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
     public void MoveCourse(int courseNum, float duration = DEFAULT)
     {
-        Debug.Log("MoveCourse");
         nearestNumber = courseNum;
         areaCtrl.MoveArea(courseNum);
         SelectionEnable(courseNum);

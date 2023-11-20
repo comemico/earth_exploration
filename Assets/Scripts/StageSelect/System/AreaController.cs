@@ -22,7 +22,7 @@ public class AreaController : MonoBehaviour
     private void Start()
     {
         GetComponent();
-        InitializedAreaPosition(informationMg.data.recentCourseNum);
+        InitializedAreaPosition(informationMg.data.recentCourseAdress);
     }
 
     void GetComponent()
@@ -57,7 +57,7 @@ public class AreaController : MonoBehaviour
         stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
 
         tweenList.KillAllAndClear();
-        informationMg.UpdateStageInformation(stageInfo);
+        informationMg.UpdateStageInformation(stageInfo, stageCtrlList[courseNum].stageInfoList.IndexOf(stageInfo));
         informationMg.UpdateCourseNumber(courseNum);
 
         float target = stageCtrlList[courseNum].RectTransform.anchoredPosition.y;

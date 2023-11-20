@@ -54,11 +54,11 @@ public class TitleManager : MonoBehaviour
 
     public void SetSaveData(SaveData data)
     {
-        GManager.instance.courseDate = data.courseDate;
-        GManager.instance.isRerease = data.isRerease;
+        GManager.instance.courseDate = data.linearData;
+        GManager.instance.isRerease = data.scatterData;
         GManager.instance.maxLifeNum = data.maxLifeNum;
-        GManager.instance.recentCourseNum = data.recentCourseNum;
-        GManager.instance.recentStageNum = data.recentStageNum;
+        GManager.instance.recentCourseNum = data.recentCourseAdress;
+        GManager.instance.recentStageNum = data.recentStageAdress;
     }
 
 
@@ -66,21 +66,21 @@ public class TitleManager : MonoBehaviour
     public void ResetData() //‰Šú‰»
     {
         Debug.Log("‰Šú‰»");
-        data.courseDate = new int[6];
-        for (int i = 0; i < data.courseDate.Length; i++)
+        data.linearData = new int[6];
+        for (int i = 0; i < data.linearData.Length; i++)
         {
-            data.courseDate[i] = 0;
+            data.linearData[i] = 0;
         }
 
-        data.isRerease = new bool[37];
-        for (int i = 0; i < data.isRerease.Length; i++)
+        data.scatterData = new bool[37];
+        for (int i = 0; i < data.scatterData.Length; i++)
         {
-            data.isRerease[i] = false;
+            data.scatterData[i] = false;
         }
 
         data.maxLifeNum = 3;
-        data.recentCourseNum = 0;
-        data.recentStageNum = 0;
+        data.recentCourseAdress = 0;
+        data.recentStageAdress = 0;
 
         SetSaveData(data);
     }

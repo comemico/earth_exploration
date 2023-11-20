@@ -8,27 +8,15 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 {
     public List<StageInformation> linearList;
     public List<StageInformation> scatterList;
-
     public List<StageInformation> stageInfoList;
 
-    [Header("このエリアの最大到達値")]
-    public int reachStageNumber;
+    InformationManager informationMg;
 
-    public enum AreaNumber
-    {
-        Area_01 = 0,
-        Area_02,
-        Area_03,
-        Area_04,
-        Area_05,
-        Area_06,
-        Area_07,
-        Area_08,
-        Area_09,
-        Area_10
-    }
     [Header("エリア番号")]
-    public AreaNumber areaNumber;
+    [Range(0, 9)] public int areaNum;
+    public int stageAdress; //選択されたステージがstageInfoListの何番目にあるか
+    //public int reachStageNumber; //このエリアの最大到達値
+    StageInformation nearStageInfo;
 
     [Header("ステージパネル:機種考慮版")]
     public float dragSensitivity; //[Header("操作感度")]    
@@ -49,10 +37,8 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     [Header("ドラッグ～アニメーション中かどうか")]
     public bool isDragging;
 
-    InformationManager informationMg;
 
     public RectTransform RectTransform => this.transform as RectTransform;
-    private int nearestStageNumber;
     private List<Tween> tweenList = new List<Tween>();
     private void OnDestroy() => tweenList.KillAllAndClear();
 
@@ -63,9 +49,9 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     private void Start()
     {
-        reachStageNumber = informationMg.data.courseDate[(int)areaNumber];
-        nearestStageNumber = reachStageNumber;//1/24:最初のドラッグ時に、ChangeTarget()を起動させないようにするための処理
-        InitializedStagePosition(informationMg.data.recentStageNum);
+        //reachStageNumber = informationMg.data.linearData[areaNum];
+        InitializedStagePosition(informationMg.data.recentStageAdress);
+        nearStageInfo = stageInfoList[informationMg.data.recentStageAdress];//1/24:最初のドラッグ時に、ChangeTarget()を起動させないようにするための処理
 
         factorScale = 1 / Mathf.Pow(rangeOfInfluence_Scale, 2);
         screenFactor = new Vector2(1f / Screen.width, 1f / Screen.height);
@@ -76,20 +62,20 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     private void Update()
     {
-        Debug.Log(NearestStageInfo());
-        //UpdateItemsScale();
+        UpdateItemsScale();
         if (!isDragging)
         {
             return;
         }
 
-        if (nearestStageNumber != NearestStageInfo().stageNum)
+        if (nearStageInfo != NearestStageInfo())
         {
             StageInformation stageInfo = NearestStageInfo();
-            informationMg.UpdateStageInformation(stageInfo);
+            stageAdress = stageInfoList.IndexOf(stageInfo);
+            informationMg.UpdateStageInformation(stageInfo, stageAdress);
             informationMg.stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
 
-            nearestStageNumber = stageInfo.stageNum;
+            nearStageInfo = stageInfo;
             return;
         }
         informationMg.stageFrameMg.RectTransform.anchoredPosition = NearestStageInfo().RectTransform.anchoredPosition;//追従
@@ -151,13 +137,12 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     public void OnEndDrag(PointerEventData e)//＊離した後近い位置に引き寄せるロジック
     {
         StageInformation nearStageInfo = NearestStageInfo();
-        informationMg.UpdateStageInformation(nearStageInfo);
+        stageAdress = stageInfoList.IndexOf(nearStageInfo);
+        informationMg.UpdateStageInformation(nearStageInfo, stageAdress);
         informationMg.stageFrameMg.RectTransform.anchoredPosition = nearStageInfo.RectTransform.anchoredPosition;//2023.03.27:目的posまで移動
         MagnetItems(nearStageInfo.RectTransform.anchoredPosition);
 
     }
-
-    private void DragComplete() => isDragging = false;
 
     public StageInformation NearestStageInfo()// マグネット中心に最も近い要素を選択する
     {
@@ -173,7 +158,7 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
             }
             else
             {
-                if (Vector2.SqrMagnitude(stageInfoList[i].RectTransform.anchoredPosition) < Vector2.SqrMagnitude(nearestRect.anchoredPosition))//絶対値的な
+                if (Vector2.SqrMagnitude(stageInfoList[i].RectTransform.anchoredPosition) < Vector2.SqrMagnitude(nearestRect.anchoredPosition) && stageInfoList[i].isDiscover == true)//絶対値的な
                 {
                     nearestRect = stageInfoList[i].RectTransform; // より中心に近いほうを選択、更新
                     stageInfo = stageInfoList[i];
@@ -185,8 +170,9 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void MoveStage(StageInformation stageInfo)
     {
-        nearestStageNumber = stageInfo.stageNum;
-        informationMg.UpdateStageInformation(stageInfo);
+        nearStageInfo = stageInfo;
+        stageAdress = stageInfoList.IndexOf(stageInfo);
+        informationMg.UpdateStageInformation(stageInfo, stageAdress);
         informationMg.stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
         informationMg.stageFrameMg.RectTransform.DOComplete();
         informationMg.stageFrameMg.RectTransform.anchoredPosition = stageInfo.RectTransform.anchoredPosition;
@@ -213,18 +199,26 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
             }
         }
     }
+    private void DragComplete() => isDragging = false;
 
-    public void InitializedStagePosition(int initialValue) //引数:ステージ最大到達値
+    public void InitializedStagePosition(int stageAdress) //引数:ステージ最大到達値
     {
-        /*
         stageInfoList.AddRange(linearList);
         stageInfoList.AddRange(scatterList);
-         */
 
-        if (informationMg.data.recentCourseNum == (int)areaNumber)
+        for (int i = 0; i <= informationMg.data.linearData[areaNum]; i++)
         {
-            //直近のコースエリアを選択=>直近のステージ位置へ移動
-            Vector2 target = stageInfoList[informationMg.data.recentStageNum].RectTransform.anchoredPosition;
+            linearList[i].isDiscover = true;
+        }
+        foreach (StageInformation stageInfo in stageInfoList)
+        {
+            stageInfo.JudgeLamp();
+        }
+
+        if (informationMg.data.recentCourseAdress == areaNum)
+        {
+            //直近のコースエリアを選択=>直近のステージ位置へ移動=>recent
+            Vector2 target = stageInfoList[informationMg.data.recentStageAdress].RectTransform.anchoredPosition;
             for (int i = 0; i < stageInfoList.Count; i++)
             {
                 stageInfoList[i].RectTransform.anchoredPosition -= target;
@@ -232,15 +226,15 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
         else
         {
-            //その他コースエリアは最大到達ステージ位置へ移動
-            Vector2 target = stageInfoList[initialValue].RectTransform.anchoredPosition;
+            //その他コースエリアは最大到達ステージ位置へ移動=>course[areaNum] 
+            Vector2 target = stageInfoList[stageAdress].RectTransform.anchoredPosition;
             for (int i = 0; i < stageInfoList.Count; i++)
             {
                 stageInfoList[i].RectTransform.anchoredPosition -= target;
             }
         }
 
-        informationMg.UpdateStageInformation(stageInfoList[informationMg.data.recentStageNum]);
+        informationMg.UpdateStageInformation(stageInfoList[informationMg.data.recentStageAdress], stageAdress);
     }
 
 }

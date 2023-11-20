@@ -97,8 +97,7 @@ public class ShutterManager : MonoBehaviour
         seq_open.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
 
         seq_open.AppendInterval(0.3f);
-        seq_open.AppendCallback(() => courseCtrl.MoveCourse(informationMg.data.recentCourseNum, courseCtrl.fadeDuration));
-        Debug.Log("OpenShutter");
+        seq_open.AppendCallback(() => courseCtrl.MoveCourse(informationMg.data.recentCourseAdress, courseCtrl.fadeDuration));
 
         seq_open.AppendInterval(0.55f);
         seq_open.Append(homePanel.DOAnchorPosY(0f, firstDuration).SetEase(firstType));

@@ -1222,7 +1222,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2151,7 +2151,7 @@ GameObject:
   - component: {fileID: 152285666}
   - component: {fileID: 152285667}
   m_Layer: 5
-  m_Name: Normal-5
+  m_Name: Linear-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2192,8 +2192,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 6
   stageLevel: 6
@@ -2632,8 +2634,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 0
   stageLevel: 8
@@ -2925,7 +2929,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3671,8 +3675,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 6
   stageLevel: 33
@@ -3966,10 +3972,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
+  m_Color: {r: 0.09019608, g: 0.5764706, b: 0.6, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4832,7 +4838,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5096,7 +5102,7 @@ GameObject:
   - component: {fileID: 341111681}
   - component: {fileID: 341111680}
   m_Layer: 5
-  m_Name: Area-2
+  m_Name: Area-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5145,16 +5151,9 @@ MonoBehaviour:
   - {fileID: 1404003511}
   - {fileID: 259850116}
   scatterList: []
-  stageInfoList:
-  - {fileID: 198090764}
-  - {fileID: 559681603}
-  - {fileID: 1117397228}
-  - {fileID: 1204904472}
-  - {fileID: 1205137981}
-  - {fileID: 1404003511}
-  - {fileID: 259850116}
-  reachStageNumber: 0
-  areaNumber: 1
+  stageInfoList: []
+  areaNum: 1
+  stageAdress: 0
   dragSensitivity: 5000
   maxValue_Scale: 1.1
   rangeOfInfluence_Scale: 400
@@ -5345,7 +5344,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6979,7 +6978,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7052,10 +7051,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
+  m_Color: {r: 0.08999999, g: 0.575122, b: 0.6, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7167,7 +7166,7 @@ GameObject:
   - component: {fileID: 483437458}
   - component: {fileID: 483437460}
   m_Layer: 5
-  m_Name: Area-1
+  m_Name: Area-0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7240,7 +7239,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483437456}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
@@ -7270,18 +7269,9 @@ MonoBehaviour:
   scatterList:
   - {fileID: 1342852632}
   - {fileID: 800626881}
-  stageInfoList:
-  - {fileID: 1039094240}
-  - {fileID: 538086216}
-  - {fileID: 926655453}
-  - {fileID: 1963601339}
-  - {fileID: 1046954868}
-  - {fileID: 152285667}
-  - {fileID: 1701215200}
-  - {fileID: 1342852632}
-  - {fileID: 800626881}
-  reachStageNumber: 0
-  areaNumber: 0
+  stageInfoList: []
+  areaNum: 0
+  stageAdress: 0
   dragSensitivity: 5000
   maxValue_Scale: 1.1
   rangeOfInfluence_Scale: 400
@@ -8099,7 +8089,7 @@ GameObject:
   - component: {fileID: 538086215}
   - component: {fileID: 538086216}
   m_Layer: 5
-  m_Name: Normal-1
+  m_Name: Linear-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8140,8 +8130,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 1
   stageLevel: 2
@@ -8409,8 +8401,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 1
   stageLevel: 9
@@ -10241,7 +10235,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10698,7 +10692,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10968,7 +10962,7 @@ GameObject:
   - component: {fileID: 800626880}
   - component: {fileID: 800626881}
   m_Layer: 5
-  m_Name: Exceed-2
+  m_Name: Scatter-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11009,12 +11003,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 1
+  stageMode: 1
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
-  stageNum: 3
-  stageLevel: 6
-  tips: "\u3053\u306E\u30DE\u30FC\u30AF\u306F\u30B4\u30FC\u30EB\u3067\u4E0A\u9650\u30A2\u30C3\u30D7\uFF01"
+  stageNum: 1
+  stageLevel: 20
+  tips: "\u3053\u3053\u306F\u96E3\u3057\u3044\u30B9\u30C6\u30FC\u30B8\u3060\u3088"
 --- !u!1 &803557494
 GameObject:
   m_ObjectHideFlags: 0
@@ -12029,7 +12025,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12995,7 +12991,7 @@ GameObject:
   - component: {fileID: 926655452}
   - component: {fileID: 926655453}
   m_Layer: 5
-  m_Name: Normal-2
+  m_Name: Linear-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13036,8 +13032,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 2
   stageLevel: 3
@@ -13806,7 +13804,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13915,7 +13913,7 @@ GameObject:
   - component: {fileID: 1039094239}
   - component: {fileID: 1039094240}
   m_Layer: 5
-  m_Name: Normal-0
+  m_Name: Linear-0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13956,8 +13954,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
-  isDiscover: 1
+  stageMode: 0
+  isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 0
   stageLevel: 1
@@ -14108,7 +14108,7 @@ GameObject:
   - component: {fileID: 1046954867}
   - component: {fileID: 1046954868}
   m_Layer: 5
-  m_Name: Normal-4
+  m_Name: Linear-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14149,8 +14149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 5
   stageLevel: 5
@@ -14532,7 +14534,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14728,7 +14730,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14896,7 +14898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1107923562
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14924,7 +14926,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107923561}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -14933,7 +14935,7 @@ MonoBehaviour:
   m_Color: {r: 0.08999999, g: 0.575122, b: 0.6, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15007,8 +15009,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 2
   stageLevel: 15
@@ -15067,7 +15071,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15559,7 +15563,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15635,7 +15639,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15937,8 +15941,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 3
   stageLevel: 16
@@ -15995,8 +16001,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 4
   stageLevel: 17
@@ -16207,7 +16215,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -16284,7 +16292,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -17657,7 +17665,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -18213,7 +18221,7 @@ GameObject:
   - component: {fileID: 1342852631}
   - component: {fileID: 1342852632}
   m_Layer: 5
-  m_Name: Exceed-0
+  m_Name: Scatter-0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18254,11 +18262,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 1
+  stageMode: 1
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
-  stageNum: 3
-  stageLevel: 6
+  stageNum: 0
+  stageLevel: 12
   tips: "\u3053\u306E\u30DE\u30FC\u30AF\u306F\u30B4\u30FC\u30EB\u3067\u4E0A\u9650\u30A2\u30C3\u30D7\uFF01"
 --- !u!1 &1350994094
 GameObject:
@@ -19087,8 +19097,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 5
   stageLevel: 32
@@ -20244,7 +20256,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -20321,7 +20333,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -21283,7 +21295,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -22275,7 +22287,7 @@ GameObject:
   - component: {fileID: 1701215199}
   - component: {fileID: 1701215200}
   m_Layer: 5
-  m_Name: Normal-6
+  m_Name: Linear-6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22316,8 +22328,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageType: 0
+  stageMode: 0
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 7
   stageLevel: 7
@@ -22716,7 +22730,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -23059,7 +23073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1755048821
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23096,7 +23110,7 @@ MonoBehaviour:
   m_Color: {r: 0.08999999, g: 0.575122, b: 0.6, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -23172,7 +23186,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -25925,12 +25939,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    maxLifeNum: 0
-    recentCourseNum: 0
-    recentStageNum: 0
-    courseDate: 
-    isRerease: 
+    maxLifeNum: 3
+    recentCourseAdress: 0
+    recentStageAdress: 0
+    linearData: 0200000001000000
+    scatterData: 0000
+  scatterList:
+  - {fileID: 1342852632}
+  - {fileID: 800626881}
+  stageAdress: 0
   courseNum: 8
+  stageType: 0
   stageNum: 8
   stageLevel: 8
   stageFrameMg: {fileID: 0}
@@ -26153,7 +26172,7 @@ GameObject:
   - component: {fileID: 1963601338}
   - component: {fileID: 1963601339}
   m_Layer: 5
-  m_Name: Normal-3
+  m_Name: Linear-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26193,9 +26212,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 445b976b512725b44966c2ab3778a651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageType: 1
+  stageType: 0
+  stageMode: 1
   isDiscover: 0
   isClear: 0
+  button: {fileID: 0}
   stageLamp: {fileID: 0}
   stageNum: 4
   stageLevel: 4
@@ -26255,7 +26276,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -27757,7 +27778,7 @@ MonoBehaviour:
   m_Color: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

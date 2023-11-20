@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 public class InformationManager : MonoBehaviour
@@ -9,9 +10,20 @@ public class InformationManager : MonoBehaviour
     string filepath;                            // jsonファイルのパス
     string fileName = "Data.json";              // jsonファイル名
 
+    [Header("全エリアのScatterTypeを入れておく")]
+    public List<StageInformation> scatterList; //コースエリアをまたいで全部入れる（ScatterTypeステージ）
+
+    public int stageAdress;//最後に選択したステージの情報（）
+    public enum StageType
+    {
+        Linear = 0,
+        Scatter
+    }
+    [Header("選択されたステージ情報")]
     public int courseNum;
+    public StageType stageType;
     public int stageNum;
-    public int stageLevel;
+    [Range(1, 37)] public int stageLevel;
 
     [HideInInspector] public StageFrameManager stageFrameMg;
     ShutterManager shutterMg;
@@ -21,7 +33,7 @@ public class InformationManager : MonoBehaviour
         GetComponent();
 
 #if   UNITY_EDITOR
-        Debug.Log("UniryEditorから起動");
+        //Debug.Log("UniryEditorから起動");
         filepath = Application.dataPath + "/" + fileName;// パス名取得
 #elif UNITY_ANDROID
         Debug.Log("UniryAndroidから起動");
@@ -34,6 +46,21 @@ public class InformationManager : MonoBehaviour
             Debug.Log("ファイルが見つかりません");// ファイルがないとき、ファイル作成  
         }
         data = Load(filepath); // ファイルを読み込んでdataに格納
+
+        for (int i = 0; i < scatterList.Count; i++)
+        {
+            scatterList[i].isDiscover = data.scatterData[i]; //Scatterデータをロードする
+        }
+        stageAdress = data.recentStageAdress;
+    }
+    void GetComponent()
+    {
+        shutterMg = GetComponent<ShutterManager>();
+        stageFrameMg = GetComponentInChildren<StageFrameManager>();
+    }
+
+    private void Start()
+    {
     }
 
     void Save(SaveData data)
@@ -52,17 +79,13 @@ public class InformationManager : MonoBehaviour
         return JsonUtility.FromJson<SaveData>(json);            // jsonファイルを型に戻して返す
     }
 
-    void GetComponent()
-    {
-        shutterMg = GetComponent<ShutterManager>();
-        stageFrameMg = GetComponentInChildren<StageFrameManager>();
-    }
 
-    public void UpdateStageInformation(StageInformation stageInfo)
+    public void UpdateStageInformation(StageInformation stageInfo, int stageAdress)
     {
         this.stageNum = stageInfo.stageNum;
-        GManager.instance.recentStageNum = this.stageNum;
         this.stageLevel = stageInfo.stageLevel;
+        this.stageType = (StageType)stageInfo.stageType;
+        this.stageAdress = stageAdress;
     }
 
     public void UpdateCourseNumber(int courseNumber = 0)
@@ -74,11 +97,11 @@ public class InformationManager : MonoBehaviour
 
     public void StartGame()
     {
-        var sceneName = "area" + courseNum + "stage" + stageNum;
+        var sceneName = "Area" + courseNum + stageType + "Stage" + stageNum;
         shutterMg.CloseToStart(sceneName);
 
-        data.recentCourseNum = courseNum;
-        data.recentStageNum = stageNum;
+        data.recentCourseAdress = courseNum;
+        data.recentStageAdress = stageAdress;
 
         Save(data);
 
