@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
@@ -101,6 +100,7 @@ public class ClearGateManager : MonoBehaviour
             grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
             grypsCrl.stageCrl.jetMg.limitRingCanGrp.DOFade(0f, 0.25f).SetDelay(0.1f);
             grypsCrl.stageCrl.jetMg.jetGuiMg.ShutDownJetHud();
+            grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(GManager.instance.maxLifeNum);
 
             grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
         }
@@ -112,7 +112,11 @@ public class ClearGateManager : MonoBehaviour
 
         Sequence seq_raise = DOTween.Sequence();
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
-        seq_raise.AppendCallback(() => grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear));
+        seq_raise.AppendCallback(() =>
+        {
+            grypsCrl.stageCrl.memoryGageMg.ExceedLimit();
+            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
+        });
     }
 
     public void SwichBloom(bool isEnabled, float fadeTime) //FadeIn‚·‚éê‡APanelAnime‚ÅŒõŒ¹‚ªŒ©‚¦‚é‚Ì‚ğ–h‚®–Ú“I

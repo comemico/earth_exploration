@@ -6,14 +6,14 @@ using UnityEngine.EventSystems;
 
 public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    public List<StageInformation> linearList;
+    public List<StageInformation> scatterList;
+
     public List<StageInformation> stageInfoList;
 
     [Header("このエリアの最大到達値")]
     public int reachStageNumber;
-    // public int maxAreaLevel; [Header("このエリア最大レベル数")]
 
-    [Header("エリア番号")]
-    public AreaNumber areaNumber;
     public enum AreaNumber
     {
         Area_01 = 0,
@@ -27,6 +27,8 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         Area_09,
         Area_10
     }
+    [Header("エリア番号")]
+    public AreaNumber areaNumber;
 
     [Header("ステージパネル:機種考慮版")]
     public float dragSensitivity; //[Header("操作感度")]    
@@ -61,9 +63,10 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     private void Start()
     {
-        reachStageNumber = GManager.instance.courseDate[(int)areaNumber];
-        InitializedStagePosition(reachStageNumber);
+        reachStageNumber = informationMg.data.courseDate[(int)areaNumber];
         nearestStageNumber = reachStageNumber;//1/24:最初のドラッグ時に、ChangeTarget()を起動させないようにするための処理
+        InitializedStagePosition(informationMg.data.recentStageNum);
+
         factorScale = 1 / Mathf.Pow(rangeOfInfluence_Scale, 2);
         screenFactor = new Vector2(1f / Screen.width, 1f / Screen.height);
 
@@ -73,20 +76,20 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     private void Update()
     {
-        UpdateItemsScale();
+        Debug.Log(NearestStageInfo());
+        //UpdateItemsScale();
         if (!isDragging)
         {
             return;
         }
 
-        if (nearestStageNumber != (int)NearestStageInfo().stageNumber)
+        if (nearestStageNumber != NearestStageInfo().stageNum)
         {
             StageInformation stageInfo = NearestStageInfo();
-
             informationMg.UpdateStageInformation(stageInfo);
             informationMg.stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
 
-            nearestStageNumber = (int)stageInfo.stageNumber;
+            nearestStageNumber = stageInfo.stageNum;
             return;
         }
         informationMg.stageFrameMg.RectTransform.anchoredPosition = NearestStageInfo().RectTransform.anchoredPosition;//追従
@@ -160,7 +163,7 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     {
         StageInformation stageInfo = null;
         RectTransform nearestRect = null;
-        for (int i = 0; i <= reachStageNumber; i++)
+        for (int i = 0; i < stageInfoList.Count; i++)
         {
             if (nearestRect == null)
             {
@@ -182,7 +185,7 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void MoveStage(StageInformation stageInfo)
     {
-        nearestStageNumber = (int)stageInfo.stageNumber;
+        nearestStageNumber = stageInfo.stageNum;
         informationMg.UpdateStageInformation(stageInfo);
         informationMg.stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
         informationMg.stageFrameMg.RectTransform.DOComplete();
@@ -213,23 +216,15 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void InitializedStagePosition(int initialValue) //引数:ステージ最大到達値
     {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            stageInfoList.Add(transform.GetChild(i).GetComponent<StageInformation>());
-        }
-        foreach (var item in stageInfoList)//全てのButtonのInteractableをOff
-        {
-            item.CheckInteractible(false);
-        }
-        for (int i = 0; i <= initialValue; i++)//最大到達値までのButtonのInteractableをOn
-        {
-            stageInfoList[i].CheckInteractible(true);
-        }
+        /*
+        stageInfoList.AddRange(linearList);
+        stageInfoList.AddRange(scatterList);
+         */
 
-        if (GManager.instance.recentCourseNum == (int)areaNumber)
+        if (informationMg.data.recentCourseNum == (int)areaNumber)
         {
             //直近のコースエリアを選択=>直近のステージ位置へ移動
-            Vector2 target = stageInfoList[GManager.instance.recentStageNum].RectTransform.anchoredPosition;
+            Vector2 target = stageInfoList[informationMg.data.recentStageNum].RectTransform.anchoredPosition;
             for (int i = 0; i < stageInfoList.Count; i++)
             {
                 stageInfoList[i].RectTransform.anchoredPosition -= target;
@@ -244,9 +239,8 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
                 stageInfoList[i].RectTransform.anchoredPosition -= target;
             }
         }
-        informationMg.UpdateStageInformation(stageInfoList[GManager.instance.recentStageNum]);
+
+        informationMg.UpdateStageInformation(stageInfoList[informationMg.data.recentStageNum]);
     }
-
-
 
 }

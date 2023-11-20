@@ -109,5 +109,9 @@ public class MemoryGageManager : MonoBehaviour
         }
     }
 
+    public void ExceedLimit()
+    {
+        Debug.Log("ExceedLimit");
+    }
 
 }

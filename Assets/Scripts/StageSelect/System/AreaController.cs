@@ -22,7 +22,7 @@ public class AreaController : MonoBehaviour
     private void Start()
     {
         GetComponent();
-        InitializedAreaPosition(GManager.instance.recentCourseNum);
+        InitializedAreaPosition(informationMg.data.recentCourseNum);
     }
 
     void GetComponent()

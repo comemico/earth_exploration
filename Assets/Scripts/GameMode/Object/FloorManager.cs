@@ -3,18 +3,22 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    [Header("フロア配列")] public Transform[] floor;
-    CinemachineController camCrl;
-    private void Awake()
+    [Header("フロア配列")]
+    public Transform[] colBox;
+    CinemachineController cinemachineCrl;
+
+    private void Start()
     {
+        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        /*
         floor = new Transform[transform.childCount];
-        camCrl = Camera.main.GetComponent<CinemachineController>();
         for (int i = 0; i < transform.childCount; i++)
         {
             floor[i] = transform.GetChild(i);
         }
+         */
     }
-
+    /*
     public void AllUnenableCollider()
     {
         for (int x = 0; x < floor.Length; x++)
@@ -25,31 +29,42 @@ public class FloorManager : MonoBehaviour
             }
         }
     }
+     */
+
+    public void FalseCollider()
+    {
+        for (int x = 0; x < colBox.Length; x++)
+        {
+            for (int i = 0; i < colBox[x].childCount; i++)
+            {
+                colBox[x].GetChild(i).GetComponent<Collider2D>().enabled = false;
+            }
+        }
+    }
 
     public int ActiveFloor(Transform gateObject, int key)
     {
-        AllUnenableCollider();
-        int floorNumber = Array.IndexOf(floor, gateObject);
+        FalseCollider();
+        int floorNumber = Array.IndexOf(colBox, gateObject);
 
-        for (int i = 0; i < floor[floorNumber].GetChild(0).childCount; i++)
+        for (int i = 0; i < colBox[floorNumber].childCount; i++)
         {
-            floor[floorNumber].GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = true;
+            colBox[floorNumber].GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
 
-        camCrl.ToFloorVcam(floorNumber, key);//不完全
+        cinemachineCrl.ToFloorVcam(floorNumber, key);//不完全
 
         return floorNumber;
-        // return floorNumber;
     }
 
     public int TurnFloor(Transform gateObject)
     {
-        AllUnenableCollider();
-        int floorNumber = Array.IndexOf(floor, gateObject);
+        FalseCollider();
+        int floorNumber = Array.IndexOf(colBox, gateObject);
 
-        for (int i = 0; i < floor[floorNumber].GetChild(0).childCount; i++)
+        for (int i = 0; i < colBox[floorNumber].childCount; i++)
         {
-            floor[floorNumber].GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = true;
+            colBox[floorNumber].GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
 
         return floorNumber;

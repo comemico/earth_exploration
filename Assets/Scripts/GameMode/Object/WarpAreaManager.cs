@@ -84,7 +84,7 @@ public class WarpAreaManager : MonoBehaviour
                            grypsCrl.transform.position = new Vector3(destination.transform.position.x + (DISTANCE_WARP * (int)destination.entranceKey), destination.transform.position.y + 2.5f, destination.transform.position.z);
                            grypsCrl.transform.localScale = new Vector3(-1 * (int)destination.entranceKey, transform.localScale.y, transform.localScale.z);
 
-                           var floorNum = GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent.parent.transform, -1 * (int)destination.entranceKey);
+                           var floorNum = GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent, -1 * (int)destination.entranceKey);
                            //Camera.main.GetComponent<CinemachineController>().ToFloorVcam(floorNum, (int)destination.entranceKey * (-1));
 
                            DOVirtual.DelayedCall(Camera.main.GetComponent<CinemachineController>().brain.m_CustomBlends.m_CustomBlends[floorNum].m_Blend.m_Time, () =>

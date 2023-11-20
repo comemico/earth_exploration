@@ -54,7 +54,7 @@ public class ShutterManager : MonoBehaviour
     [Header("シーンに移れるかのシグナル")]
     public bool isCompleteShutter;
     AsyncOperation async;
-
+    public InformationManager informationMg;
     public CourseController courseCtrl;
     private List<Tween> tweenList = new List<Tween>();
 
@@ -73,6 +73,8 @@ public class ShutterManager : MonoBehaviour
 
     void Initialize()
     {
+        informationMg = GetComponent<InformationManager>();
+
         homePanel.anchoredPosition = new Vector2(0f, initialHomeY);
         startPanel.anchoredPosition = new Vector2(0f, initialStartY);
 
@@ -95,7 +97,8 @@ public class ShutterManager : MonoBehaviour
         seq_open.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
 
         seq_open.AppendInterval(0.3f);
-        seq_open.AppendCallback(() => courseCtrl.MoveCourse(GManager.instance.recentCourseNum, courseCtrl.fadeDuration));
+        seq_open.AppendCallback(() => courseCtrl.MoveCourse(informationMg.data.recentCourseNum, courseCtrl.fadeDuration));
+        Debug.Log("OpenShutter");
 
         seq_open.AppendInterval(0.55f);
         seq_open.Append(homePanel.DOAnchorPosY(0f, firstDuration).SetEase(firstType));

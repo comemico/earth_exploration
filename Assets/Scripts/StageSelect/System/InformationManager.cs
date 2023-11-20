@@ -1,27 +1,17 @@
 using System;
+using System.IO;
 using UnityEngine;
-using UnityEditor;
 
 
 public class InformationManager : MonoBehaviour
 {
-    /*
-    [Header("選択コース")]
-    public AreaType courseName;
-    public enum AreaType
-    {
-        [InspectorName("入門")] 入門,
-        [InspectorName("峠")] 峠,
-        [InspectorName("屋上")] 屋上,
-        [InspectorName("遊園地")] 遊園地
-    }
-    public int maxAreaLevel;[Header("このエリアのレベル上限")]
-     */
+    public SaveData data;     // json変換するデータのクラス
+    string filepath;                            // jsonファイルのパス
+    string fileName = "Data.json";              // jsonファイル名
 
     public int courseNum;
-    public int stageNum;//[Header("ステージ番号")]
-    public int stageLevel;//[Header("ステージレベル")]
-    //public int stageLifeNum;//[Header("ライフメモリ数")]
+    public int stageNum;
+    public int stageLevel;
 
     [HideInInspector] public StageFrameManager stageFrameMg;
     ShutterManager shutterMg;
@@ -29,6 +19,37 @@ public class InformationManager : MonoBehaviour
     private void Awake()
     {
         GetComponent();
+
+#if   UNITY_EDITOR
+        Debug.Log("UniryEditorから起動");
+        filepath = Application.dataPath + "/" + fileName;// パス名取得
+#elif UNITY_ANDROID
+        Debug.Log("UniryAndroidから起動");
+        filepath = Application.persistentDataPath + "/" + fileName;
+#endif
+
+        if (!File.Exists(filepath))
+        {
+            Save(data);
+            Debug.Log("ファイルが見つかりません");// ファイルがないとき、ファイル作成  
+        }
+        data = Load(filepath); // ファイルを読み込んでdataに格納
+    }
+
+    void Save(SaveData data)
+    {
+        string json = JsonUtility.ToJson(data);                 // jsonとして変換
+        StreamWriter wr = new StreamWriter(filepath, false);    // ファイル書き込み指定 開く
+        wr.WriteLine(json);                                     // json変換した情報を書き込み
+        wr.Close();                                             // ファイル閉じる
+    }
+
+    SaveData Load(string path)// jsonファイル読み込み
+    {
+        StreamReader rd = new StreamReader(path);               // ファイル読み込み指定　開く
+        string json = rd.ReadToEnd();                           // ファイル内容全て読み込む
+        rd.Close();                                             // ファイル閉じる
+        return JsonUtility.FromJson<SaveData>(json);            // jsonファイルを型に戻して返す
     }
 
     void GetComponent()
@@ -39,9 +60,9 @@ public class InformationManager : MonoBehaviour
 
     public void UpdateStageInformation(StageInformation stageInfo)
     {
-        this.stageNum = (int)stageInfo.stageNumber;
+        this.stageNum = stageInfo.stageNum;
         GManager.instance.recentStageNum = this.stageNum;
-        this.stageLevel = (int)stageInfo.stageLevel;
+        this.stageLevel = stageInfo.stageLevel;
     }
 
     public void UpdateCourseNumber(int courseNumber = 0)
@@ -55,6 +76,11 @@ public class InformationManager : MonoBehaviour
     {
         var sceneName = "area" + courseNum + "stage" + stageNum;
         shutterMg.CloseToStart(sceneName);
+
+        data.recentCourseNum = courseNum;
+        data.recentStageNum = stageNum;
+
+        Save(data);
 
         /*
         if (EditorBuildSettings.scenes.Any(scene => Path.GetFileNameWithoutExtension(scene.path) == sceneName))

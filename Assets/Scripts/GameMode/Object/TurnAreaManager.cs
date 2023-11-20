@@ -47,7 +47,7 @@ public class TurnAreaManager : MonoBehaviour
 
                 grypsCrl.transform.rotation = Quaternion.Euler(Vector3.zero);
                 grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, destination.transform.position.y, grypsCrl.transform.position.z);
-                GetComponentInParent<FloorManager>().TurnFloor(destination.transform.parent.parent.transform);
+                GetComponentInParent<FloorManager>().TurnFloor(destination.transform.parent);
 
                 destination.isTurn = true;
                 isTurn = true;

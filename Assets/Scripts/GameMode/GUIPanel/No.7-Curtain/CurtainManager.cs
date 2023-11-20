@@ -85,7 +85,7 @@ public class CurtainManager : MonoBehaviour
     {
         Sequence seq_hide = DOTween.Sequence();
 
-        seq_hide.AppendInterval(0.65f);
+        seq_hide.AppendInterval(1.5f);
         seq_hide.Append(stage.DOAnchorPosY(HEIGHT, nameDuration).SetEase(nameType));
         seq_hide.Join(course.DOAnchorPosY(-HEIGHT, nameDuration).SetEase(nameType));
         seq_hide.AppendInterval(0.1f);

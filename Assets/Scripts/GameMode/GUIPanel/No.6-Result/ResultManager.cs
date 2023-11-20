@@ -21,7 +21,7 @@ public class ResultManager : MonoBehaviour
     public Image panel;
     public Text result;
     public Text causeText;
-    public Image icon;
+    public Image[] icon;
     public GameObject jetPanel;
     public RectTransform pauseButton;
 
@@ -75,9 +75,14 @@ public class ResultManager : MonoBehaviour
     {
         panel.gameObject.SetActive(false);
         stageCrl = GetComponentInParent<StageCtrl>();
+        AddListener();
+        causeText.enabled = false;
         tipsText.text = stageCrl.tipsText;
         rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
-        AddListener();
+        for (int i = 0; i < icon.Length; i++)
+        {
+            icon[i].enabled = false;
+        }
     }
 
     private void AddListener()
@@ -96,16 +101,22 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case CAUSE.missFall:
+                for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
+                icon[0].enabled = true;
                 causeText.text = "落下してしまった！";
                 OpenMissPanel();
                 break;
 
             case CAUSE.missBomb:
+                for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
+                icon[1].enabled = true;
                 causeText.text = "爆発してしまった！";
                 OpenMissPanel();
                 break;
 
             case CAUSE.missLack:
+                for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
+                icon[2].enabled = true;
                 causeText.text = "バッテリー切れ！？";
                 OpenMissPanel();
                 break;
@@ -115,7 +126,6 @@ public class ResultManager : MonoBehaviour
 
     public void OpenClearPanel()
     {
-        icon.gameObject.SetActive(false);
         panel.gameObject.SetActive(true);
 
         result.text = clear;
@@ -139,6 +149,8 @@ public class ResultManager : MonoBehaviour
         result.text = miss;
         result.color = missColor;
         result.rectTransform.anchoredPosition = new Vector3(0f, 100f, 0f);
+
+        causeText.enabled = true;
 
         Sequence seq_miss = DOTween.Sequence();
         seq_miss.Append(panel.DOFade(0.65f, fadeDuration).SetEase(fadeType));
