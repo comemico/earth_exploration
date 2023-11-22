@@ -2641,7 +2641,7 @@ MonoBehaviour:
   stageLamp: {fileID: 0}
   stageNum: 0
   stageLevel: 8
-  tips: 
+  tips: "\u30A8\u30EA\u30A202\u3078\u3088\u3046\u3053\u305D\uFF01"
 --- !u!1 &200504799
 GameObject:
   m_ObjectHideFlags: 0
@@ -2821,7 +2821,7 @@ RectTransform:
   m_GameObject: {fileID: 201228866}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2500001, y: 1.25, z: 1}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1807204449}
@@ -2830,7 +2830,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 0.52}
 --- !u!114 &201228868
 MonoBehaviour:
@@ -2865,7 +2865,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 00
 --- !u!222 &201228869
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7839,6 +7839,8 @@ MonoBehaviour:
   - {fileID: 1305724468}
   followDuration: 0.2
   easeType: 9
+  exceedDuration: 0
+  exceedType: 0
   memoryCountMg: {fileID: 860043565}
   memoryGage: 0
 --- !u!222 &528197926
@@ -8408,7 +8410,7 @@ MonoBehaviour:
   stageLamp: {fileID: 0}
   stageNum: 1
   stageLevel: 9
-  tips: 
+  tips: "\u30B8\u30E3\u30F3\u30D7\u30DB\u30C3\u30D7\uFF01"
 --- !u!1 &582992664
 GameObject:
   m_ObjectHideFlags: 0
@@ -25752,7 +25754,7 @@ RectTransform:
   m_GameObject: {fileID: 1934731238}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2500001, y: 1.2500001, z: 1}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1807204449}
@@ -25761,7 +25763,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 0.52}
 --- !u!114 &1934731240
 MonoBehaviour:
@@ -25796,7 +25798,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 00
 --- !u!222 &1934731241
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25943,7 +25945,8 @@ MonoBehaviour:
     recentCourseAdress: 0
     recentStageAdress: 0
     linearData: 0200000001000000
-    scatterData: 0000
+    scatterDiscover: 
+    scatterClear: 
   scatterList:
   - {fileID: 1342852632}
   - {fileID: 800626881}
@@ -27950,7 +27953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 80, y: 0}
+  m_AnchoredPosition: {x: 100, y: 0}
   m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2060302314

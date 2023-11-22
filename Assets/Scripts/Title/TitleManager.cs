@@ -55,7 +55,7 @@ public class TitleManager : MonoBehaviour
     public void SetSaveData(SaveData data)
     {
         GManager.instance.courseDate = data.linearData;
-        GManager.instance.isRerease = data.scatterData;
+        GManager.instance.isRerease = data.scatterClear;
         GManager.instance.maxLifeNum = data.maxLifeNum;
         GManager.instance.recentCourseNum = data.recentCourseAdress;
         GManager.instance.recentStageNum = data.recentStageAdress;
@@ -66,21 +66,17 @@ public class TitleManager : MonoBehaviour
     public void ResetData() //初期化
     {
         Debug.Log("初期化");
-        data.linearData = new int[6];
-        for (int i = 0; i < data.linearData.Length; i++)
-        {
-            data.linearData[i] = 0;
-        }
-
-        data.scatterData = new bool[37];
-        for (int i = 0; i < data.scatterData.Length; i++)
-        {
-            data.scatterData[i] = false;
-        }
-
         data.maxLifeNum = 3;
         data.recentCourseAdress = 0;
         data.recentStageAdress = 0;
+
+        data.linearData = new int[2]; //コースエリア数
+        data.scatterDiscover = new bool[2]; //ScatterStageの数
+        data.scatterClear = new bool[2]; //上記の数量に揃える
+
+        for (int i = 0; i < data.linearData.Length; i++) data.linearData[i] = 0;
+        for (int i = 0; i < data.scatterDiscover.Length; i++) data.scatterDiscover[i] = false;
+        for (int i = 0; i < data.scatterClear.Length; i++) data.scatterClear[i] = false;
 
         SetSaveData(data);
     }

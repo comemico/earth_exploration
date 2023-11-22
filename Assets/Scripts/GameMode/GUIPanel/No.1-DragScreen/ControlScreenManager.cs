@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     MovingMaskManager movingMaskMg;
-    BowManager speedPowerMg;
+    [HideInInspector] public BowManager bowMg;
     MemoryGageManager memoryGageMg;
     Image crlImage;
 
@@ -46,7 +46,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
         cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
         movingMaskMg = transform.parent.GetComponentInChildren<MovingMaskManager>();
-        speedPowerMg = transform.parent.GetComponentInChildren<BowManager>();
+        bowMg = transform.parent.GetComponentInChildren<BowManager>();
         memoryGageMg = transform.root.GetComponentInChildren<MemoryGageManager>();
         crlImage = GetComponent<Image>();
     }
@@ -60,7 +60,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         if (status == StageCtrl.ControlStatus.unControl)//Uncontrol時に切替時
         {
             gearNum = 0;
-            speedPowerMg.Release();
+            bowMg.Release();
         }
     }
 
@@ -85,7 +85,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void ProduceMemory(int produceNum)
     {
-        if (memoryGageMg.memoryGage >= GManager.instance.maxLifeNum) return;
+        if (memoryGageMg.memoryGage >= stageCrl.data.maxLifeNum) return;
         memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage + produceNum);
         memoryGageMg.memoryGage += produceNum;
         memoryGageMg.memoryCountMg.ProduceLamp();
@@ -101,13 +101,13 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         startPosition = eventData.position * screenFactor;
-        speedPowerMg.StartDrawBow(key);
+        bowMg.StartDrawBow(key);
         //movingMaskMg.FadeInMovingMask(startPosition);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        speedPowerMg.Release();
+        bowMg.Release();
         //movingMaskMg.FadeOutMovingMask();
     }
 
@@ -159,11 +159,11 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
             float medianValue = power - gearNum;
 
-            speedPowerMg.DrawingBow(gearNum, medianValue);
+            bowMg.DrawingBow(gearNum, medianValue);
 
             if (oldGearNum != gearNum)//メモリが変わった時だけ、メモリ表示の処理を行なってもらう
             {
-                speedPowerMg.DisplaySpeedArrow(gearNum);
+                bowMg.DisplaySpeedArrow(gearNum);
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
                 memoryGageMg.memoryCountMg.ConsumeLamp();
                 grypsCrl.wheelMg.Judge(gearNum);
@@ -176,7 +176,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     public void KeyChange(int key)
     {
         this.key = key;
-        speedPowerMg.StartDrawBow(key);
+        bowMg.StartDrawBow(key);
         cinemachineCrl.ChangeDirection(key);
         stageCrl.saltoMg.transform.localScale = new Vector3(key, 1f, 1f);
         oldKey = key;//更新

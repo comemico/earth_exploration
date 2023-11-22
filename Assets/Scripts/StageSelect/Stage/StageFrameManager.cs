@@ -133,7 +133,7 @@ public class StageFrameManager : MonoBehaviour
         tipsText.rectTransform.anchoredPosition = new Vector2(120, 0f);
         Sequence sq_scroll = DOTween.Sequence();
         sq_scroll.Append(tipsText.DOFade(1f, 0.5f));
-        sq_scroll.Join(tipsText.rectTransform.DOAnchorPosX(80, 0.5f).SetEase(Ease.Linear));
+        sq_scroll.Join(tipsText.rectTransform.DOAnchorPosX(90, 0.5f).SetEase(Ease.Linear));
         if (tipsText.text.Length <= characterLimit) return;
 
         sq_scroll.AppendInterval(2.5f);

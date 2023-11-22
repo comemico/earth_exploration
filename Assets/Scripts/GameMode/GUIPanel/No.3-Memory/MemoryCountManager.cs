@@ -15,8 +15,6 @@ public class MemoryCountManager : MonoBehaviour
     public Image produceLamp;
     public Image consumeLamp;
 
-
-
     private int num;
     private Text aheadNumberText;
     private Text lateNumberText;

@@ -64,15 +64,15 @@ public class StageInformation : MonoBehaviour
         }
         else
         {
-            if (stageMode == StageMode.Normal)
+            if (stageType == StageType.Linear)
             {
-                stageLamp.enabled = false;
                 //黒
+                stageLamp.enabled = false;
             }
             else
             {
-                this.gameObject.SetActive(false);
                 //ボタンごと非表示
+                this.gameObject.SetActive(false);
             }
             //ボタンも押せなくしたい
             button.interactable = false;

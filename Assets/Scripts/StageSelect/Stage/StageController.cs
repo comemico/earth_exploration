@@ -208,8 +208,14 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
         for (int i = 0; i <= informationMg.data.linearData[areaNum]; i++)
         {
+            if (i < informationMg.data.linearData[areaNum])
+            {
+                linearList[i].isClear = true;
+            }
+            if (i > linearList.Count - 1) break;
             linearList[i].isDiscover = true;
         }
+
         foreach (StageInformation stageInfo in stageInfoList)
         {
             stageInfo.JudgeLamp();

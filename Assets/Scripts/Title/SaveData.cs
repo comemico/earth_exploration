@@ -7,5 +7,6 @@ public class SaveData
     public int recentCourseAdress;
     public int recentStageAdress;
     public int[] linearData;
-    public bool[] scatterData;
+    public bool[] scatterDiscover;
+    public bool[] scatterClear;
 }

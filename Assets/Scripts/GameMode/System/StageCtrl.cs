@@ -11,15 +11,31 @@ public class StageCtrl : MonoBehaviour
     string filepath;                            // jsonファイルのパス
     string fileName = "Data.json";              // jsonファイル名
 
-    #region//StageSelectシーンから受け取ってくる
-    [Header("エリア番号")] public int areaNum;
-    [Header("ステージ番号")] public int stageNum;
-    [Header("このステージのメモリ数")] public int totalMemoryGage;
-    #endregion
+    public enum StageType
+    {
+        Linear = 0,
+        Scatter
+    }
+    public enum StageMode
+    {
+        Normal = 0,
+        Exceed
+    }
 
-    [Header("プレイヤー情報とスタート")]
-    public GrypsController grypsCrl;
-    public StartGateManager startGateMg;
+    [Header("ステージ情報 -保存-")]
+    public StageType stageType; //リニアルートかスキャッター(分散した)か
+    public StageMode stageMode; //ノーマル(特に無し)かエクシード(上限追加)か
+    [Range(0, 5)] public int areaNum; //今のエリア番号
+    [Range(0, 19)] public int stageNum; //今のステージ番号
+
+    [Header("分散ステージを開放させるか")]
+    public bool isReleaseScatter; //リニアルート以外の分岐ステージを開放させるか
+    public int releaseScatterNum; //開放するスキャッターステージ番号
+
+    [Header("ステージ情報 -表示-")]
+    public string tipsText;
+    [Range(1, 5)] public int stageRank;
+    public Color[] rankColor;
 
     public enum ControlStatus
     {
@@ -27,8 +43,6 @@ public class StageCtrl : MonoBehaviour
         [InspectorName("操作可能")] control,
         [InspectorName("操作一部可能")] restrictedControl
     }
-    public ControlStatus controlStatus;
-
     public enum State
     {
         Ready,
@@ -37,12 +51,12 @@ public class StageCtrl : MonoBehaviour
         GameOver,
         Clear
     }
-    public State state;
 
-    [Header("ステージ情報")]
-    public string tipsText;
-    [Range(1, 5)] public int stageRank;
-    public Color[] rankColor;
+    [Header("プレイヤー情報とスタートフラッグ")]
+    public GrypsController grypsCrl;
+    public StartGateManager startGateMg;
+    public ControlStatus controlStatus;
+    public State state;
 
     [Header("落下判定位置")]
     public float deadLineY;
@@ -54,16 +68,11 @@ public class StageCtrl : MonoBehaviour
     [Header("No.5")] [HideInInspector] public PauseManager pauseMg;
     [Header("No.6")] [HideInInspector] public ResultManager resultMg;
     [Header("No.7")] [HideInInspector] public CurtainManager curtainMg;
-
     private List<Tween> tweenList = new List<Tween>();
     private void OnDestroy() => tweenList.KillAllAndClear();
 
-
     private void Awake()
     {
-        GetAllComponent();
-        Application.targetFrameRate = 50;
-
 #if   UNITY_EDITOR
         Debug.Log("UniryEditorから起動");
         filepath = Application.dataPath + "/" + fileName;// パス名取得
@@ -78,9 +87,13 @@ public class StageCtrl : MonoBehaviour
             Debug.Log("ファイルが見つかりません");// ファイルがないとき、ファイル作成  
         }
         data = Load(filepath); // ファイルを読み込んでdataに格納
+
+        Application.targetFrameRate = 50;
+        GetAllComponent();
+        memoryGageMg.InitializeMemoryGage(data.maxLifeNum);
     }
 
-    void Save(SaveData data)
+    public void Save(SaveData data)
     {
         string json = JsonUtility.ToJson(data);                 // jsonとして変換
         StreamWriter wr = new StreamWriter(filepath, false);    // ファイル書き込み指定 開く
@@ -95,7 +108,6 @@ public class StageCtrl : MonoBehaviour
         rd.Close();                                             // ファイル閉じる
         return JsonUtility.FromJson<SaveData>(json);            // jsonファイルを型に戻して返す
     }
-
 
     void GetAllComponent()
     {
@@ -164,15 +176,47 @@ public class StageCtrl : MonoBehaviour
 
     public void StageClear()
     {
-        data.maxLifeNum++;
-        Save(data);
-
         state = State.Clear;
-        //最大ステージ番号更新(エリアの最大到達番号と同じ)
-        if (stageNum == GManager.instance.courseDate[areaNum])
+    }
+
+    public void JudgeStageData()
+    {
+        if (stageType == StageType.Linear)
         {
-            GManager.instance.courseDate[areaNum]++;
+            if (stageNum >= data.linearData[areaNum]) //初回ステージクリア時
+            {
+                data.linearData[areaNum]++;
+                if (stageMode == StageMode.Exceed)
+                {
+                    data.maxLifeNum++;
+                    memoryGageMg.ExceedLimit(data.maxLifeNum);
+                }
+            }
         }
+        else if (stageType == StageType.Scatter)
+        {
+            if (!data.scatterClear[stageNum]) //初回ステージクリア時
+            {
+                data.scatterClear[stageNum] = true;
+                if (stageMode == StageMode.Exceed)
+                {
+                    data.maxLifeNum++;
+                    memoryGageMg.ExceedLimit(data.maxLifeNum);
+                }
+            }
+        }
+
+        if (isReleaseScatter) //分散ステージ＆隠しステージ開放させるか
+        {
+            if (data.scatterDiscover[releaseScatterNum] == false)
+            {
+                data.scatterDiscover[releaseScatterNum] = true;
+            }
+        }
+
+        data.maxLifeNum++; //デバック用
+        memoryGageMg.ExceedLimit(data.maxLifeNum); //デバック用
+        Save(data);
     }
 
     void LateUpdate()

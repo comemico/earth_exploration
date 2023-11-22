@@ -18,18 +18,20 @@ public class MemoryGageManager : MonoBehaviour
     public float followDuration;
     public Ease easeType;
 
+    [Header("ExceedLimit")]
+    [Range(0.2f, 1f)] public float exceedDuration;
+    public Ease exceedType;
+    public Ease exceedLampType;
+    public Color bloomColor;
+    public Material bloom;
+    Tween tweenLamp;
+
     [Header("その他")]
     public MemoryCountManager memoryCountMg;
     public int memoryGage = 0;
 
     int oldMemory = 0;
     Tween decreaseTween;
-
-    private void Start()
-    {
-        InitializeMemoryGage();
-        //DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 500, sequencesCapacity: 50);
-    }
 
     private void Update()
     {
@@ -40,7 +42,7 @@ public class MemoryGageManager : MonoBehaviour
         }
     }
 
-    public void InitializeMemoryGage()
+    public void InitializeMemoryGage(int maxLifeNum)
     {
         for (int i = 0; i < MEMORY_LENGTH; i++)
         {
@@ -50,34 +52,34 @@ public class MemoryGageManager : MonoBehaviour
             lifeMemoryBox[i].enabled = false;
         }
 
-        for (int i = 0; i < GManager.instance.maxLifeNum; i++)
+        for (int i = 0; i < maxLifeNum; i++)
         {
             maxLifeBox[i].enabled = true;
             lifeMemoryFollowerBox[i].enabled = true;
             lifeMemoryBox[i].enabled = true;
         }
 
-        if (GManager.instance.maxLifeNum > MEMORY_LENGTH)
+        if (maxLifeNum > MEMORY_LENGTH)
         {
             //上限メモリ表示制限
-            GManager.instance.maxLifeNum = MEMORY_LENGTH;
+            memoryGage = MEMORY_LENGTH;
         }
 
         //メモリパネルの長さ設定
-        if (GManager.instance.maxLifeNum > MEMORY_LENGTH / 2)
+        if (maxLifeNum > MEMORY_LENGTH / 2)
         {
             //下部パネルの増設
             lifePanelDown.gameObject.SetActive(true);
-            lifePanelDown.sizeDelta = new Vector2(initialValue + ((GManager.instance.maxLifeNum - (MEMORY_LENGTH / 2)) * memorySpace), lifePanelDown.sizeDelta.y);
+            lifePanelDown.sizeDelta = new Vector2(initialValue + ((maxLifeNum - (MEMORY_LENGTH / 2)) * memorySpace), lifePanelDown.sizeDelta.y);
         }
         else
         {
             //上部パネルの増設
             lifePanelDown.gameObject.SetActive(false);
-            lifePanelUp.sizeDelta = new Vector2(initialValue + (GManager.instance.maxLifeNum * memorySpace), lifePanelUp.sizeDelta.y);
+            lifePanelUp.sizeDelta = new Vector2(initialValue + (maxLifeNum * memorySpace), lifePanelUp.sizeDelta.y);
         }
 
-        memoryGage = GManager.instance.maxLifeNum;
+        memoryGage = maxLifeNum;
         memoryCountMg.InitializeMemoryCount(memoryGage);
     }
 
@@ -109,9 +111,35 @@ public class MemoryGageManager : MonoBehaviour
         }
     }
 
-    public void ExceedLimit()
+    public void ExceedLimit(int LifeNum)
     {
         Debug.Log("ExceedLimit");
-    }
+        //メモリパネルの長さ設定
+        if (LifeNum > MEMORY_LENGTH / 2)
+        {
+            //下部パネルの増設
+            lifePanelDown.gameObject.SetActive(true);
+            lifePanelDown.DOSizeDelta(new Vector2(initialValue + ((LifeNum - (MEMORY_LENGTH / 2)) * memorySpace), lifePanelDown.sizeDelta.y), exceedDuration).SetEase(exceedType);
+        }
+        else
+        {
+            //上部パネルの増設
+            lifePanelDown.gameObject.SetActive(false);
+            lifePanelUp.DOSizeDelta(new Vector2(initialValue + (LifeNum * memorySpace), lifePanelUp.sizeDelta.y), exceedDuration).SetEase(exceedType);
+        }
 
+        maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition = new Vector2(maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition.x - memorySpace, maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition.y);
+        maxLifeBox[LifeNum - 1].enabled = true;
+        maxLifeBox[LifeNum - 1].color = bloomColor;
+        maxLifeBox[LifeNum - 1].material = bloom;
+
+        tweenLamp = maxLifeBox[LifeNum - 1].rectTransform.DOAnchorPosX(memorySpace, 0.25f).SetRelative(true).SetDelay(0.5f);
+        tweenLamp = maxLifeBox[LifeNum - 1].DOFade(1f, 0.7f).SetLoops(-1, LoopType.Yoyo).SetEase(exceedLampType).SetDelay(0.75f);
+
+        memoryCountMg.InitializeMemoryCount(LifeNum);
+    }
+    private void OnDestroy()
+    {
+        tweenLamp.Kill(true);
+    }
 }

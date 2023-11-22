@@ -52,11 +52,9 @@ public class AreaController : MonoBehaviour
             Debug.Log("ƒGƒŠƒA‚ª’Ç‰Á‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
             return;
         }
+
         StageInformation stageInfo = stageCtrlList[courseNum].NearestStageInfo();
-
         stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
-
-        tweenList.KillAllAndClear();
         informationMg.UpdateStageInformation(stageInfo, stageCtrlList[courseNum].stageInfoList.IndexOf(stageInfo));
         informationMg.UpdateCourseNumber(courseNum);
 

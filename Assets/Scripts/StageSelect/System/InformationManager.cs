@@ -27,19 +27,17 @@ public class InformationManager : MonoBehaviour
 
     [HideInInspector] public StageFrameManager stageFrameMg;
     ShutterManager shutterMg;
+    MemoryGageManager memoryGageMg;
 
     private void Awake()
     {
-        GetComponent();
-
 #if   UNITY_EDITOR
         //Debug.Log("UniryEditorから起動");
         filepath = Application.dataPath + "/" + fileName;// パス名取得
 #elif UNITY_ANDROID
-        Debug.Log("UniryAndroidから起動");
+        //Debug.Log("UniryAndroidから起動");
         filepath = Application.persistentDataPath + "/" + fileName;
 #endif
-
         if (!File.Exists(filepath))
         {
             Save(data);
@@ -47,20 +45,22 @@ public class InformationManager : MonoBehaviour
         }
         data = Load(filepath); // ファイルを読み込んでdataに格納
 
+        GetComponent();
+
         for (int i = 0; i < scatterList.Count; i++)
         {
-            scatterList[i].isDiscover = data.scatterData[i]; //Scatterデータをロードする
+            scatterList[i].isDiscover = data.scatterDiscover[i]; //全ScatterStageのisDiacoverをロードする
+            scatterList[i].isClear = data.scatterClear[i]; //全ScatterStageのisClearをロードする
         }
+        memoryGageMg.InitializeMemoryGage(data.maxLifeNum);
         stageAdress = data.recentStageAdress;
     }
+
     void GetComponent()
     {
         shutterMg = GetComponent<ShutterManager>();
         stageFrameMg = GetComponentInChildren<StageFrameManager>();
-    }
-
-    private void Start()
-    {
+        memoryGageMg = GetComponentInChildren<MemoryGageManager>();
     }
 
     void Save(SaveData data)

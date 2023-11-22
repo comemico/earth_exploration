@@ -90,12 +90,12 @@ public class CurtainManager : MonoBehaviour
         seq_hide.Join(course.DOAnchorPosY(-HEIGHT, nameDuration).SetEase(nameType));
         seq_hide.AppendInterval(0.1f);
         seq_hide.Append(slider.DOSizeDelta(new Vector2(0f, 2f), sliderDuration).SetEase(sliderType));
-        seq_hide.AppendCallback(DisplayInfo);
+        seq_hide.AppendCallback(ResetStageInfo);
         tweenList.Add(seq_hide);
         return seq_hide;
     }
 
-    public void DisplayInfo()
+    public void ResetStageInfo()
     {
         slider.sizeDelta = new Vector2(SLIDER, 2f);
         course.anchoredPosition = Vector2.zero;
@@ -107,6 +107,7 @@ public class CurtainManager : MonoBehaviour
     {
         backPanel.raycastTarget = true;
         iconEmi.color = loadColor;
+        ResetStageInfo();
 
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;

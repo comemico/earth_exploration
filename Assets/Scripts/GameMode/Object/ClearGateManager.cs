@@ -100,7 +100,7 @@ public class ClearGateManager : MonoBehaviour
             grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
             grypsCrl.stageCrl.jetMg.limitRingCanGrp.DOFade(0f, 0.25f).SetDelay(0.1f);
             grypsCrl.stageCrl.jetMg.jetGuiMg.ShutDownJetHud();
-            grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(GManager.instance.maxLifeNum);
+            grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(grypsCrl.stageCrl.data.maxLifeNum);
 
             grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
         }
@@ -114,7 +114,7 @@ public class ClearGateManager : MonoBehaviour
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
         seq_raise.AppendCallback(() =>
         {
-            grypsCrl.stageCrl.memoryGageMg.ExceedLimit();
+            grypsCrl.stageCrl.JudgeStageData();
             grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
         });
     }

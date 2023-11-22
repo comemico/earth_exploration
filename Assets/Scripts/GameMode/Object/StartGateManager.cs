@@ -92,7 +92,11 @@ public class StartGateManager : MonoBehaviour
         Sequence seq_raise = DOTween.Sequence();
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
         seq_raise.AppendInterval(0.35f);
-        seq_raise.AppendCallback(() => grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 1));
+        seq_raise.AppendCallback(() =>
+        {
+            grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 1);
+            grypsCrl.stageCrl.controlScreenMg.bowMg.canvasGroup.alpha = 0f;
+        });
     }
 
 
