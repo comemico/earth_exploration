@@ -188,8 +188,11 @@ public class StageCtrl : MonoBehaviour
                 data.linearData[areaNum]++;
                 if (stageMode == StageMode.Exceed)
                 {
-                    data.maxLifeNum++;
-                    memoryGageMg.ExceedLimit(data.maxLifeNum);
+                    if (data.maxLifeNum >= 40)
+                    {
+                        data.maxLifeNum++;
+                        memoryGageMg.ExceedLimit(data.maxLifeNum);
+                    }
                 }
             }
         }
@@ -200,8 +203,11 @@ public class StageCtrl : MonoBehaviour
                 data.scatterClear[stageNum] = true;
                 if (stageMode == StageMode.Exceed)
                 {
-                    data.maxLifeNum++;
-                    memoryGageMg.ExceedLimit(data.maxLifeNum);
+                    if (data.maxLifeNum >= 40)
+                    {
+                        data.maxLifeNum++;
+                        memoryGageMg.ExceedLimit(data.maxLifeNum);
+                    }
                 }
             }
         }

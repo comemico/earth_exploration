@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class MemoryGageManager : MonoBehaviour
 {
@@ -19,12 +20,13 @@ public class MemoryGageManager : MonoBehaviour
     public Ease easeType;
 
     [Header("ExceedLimit")]
-    [Range(0.2f, 1f)] public float exceedDuration;
-    public Ease exceedType;
-    public Ease exceedLampType;
-    public Color bloomColor;
+    public CanvasGroup exceedCanvas;
+    public Image lampImg;
+    [Range(0.2f, 1f)] public float panelDuration;
+    public Ease panelType;
+    public Ease lampLoopType;
+    public Color lampColor;
     public Material bloom;
-    Tween tweenLamp;
 
     [Header("その他")]
     public MemoryCountManager memoryCountMg;
@@ -32,6 +34,7 @@ public class MemoryGageManager : MonoBehaviour
 
     int oldMemory = 0;
     Tween decreaseTween;
+    List<Tween> tweenList = new List<Tween>();
 
     private void Update()
     {
@@ -113,33 +116,44 @@ public class MemoryGageManager : MonoBehaviour
 
     public void ExceedLimit(int LifeNum)
     {
-        Debug.Log("ExceedLimit");
+        maxLifeBox[LifeNum - 1].enabled = true;
+        maxLifeBox[LifeNum - 1].color = lampColor;
+        maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition = new Vector2(maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition.x - memorySpace, maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition.y);
+        maxLifeBox[LifeNum - 1].material = bloom;
+
+        exceedCanvas.transform.localRotation = Quaternion.Euler(0f, 0f, 60f);
+
+        Sequence seq_exceed = DOTween.Sequence();
         //メモリパネルの長さ設定
         if (LifeNum > MEMORY_LENGTH / 2)
         {
             //下部パネルの増設
             lifePanelDown.gameObject.SetActive(true);
-            lifePanelDown.DOSizeDelta(new Vector2(initialValue + ((LifeNum - (MEMORY_LENGTH / 2)) * memorySpace), lifePanelDown.sizeDelta.y), exceedDuration).SetEase(exceedType);
+            seq_exceed.Append(lifePanelDown.DOSizeDelta(new Vector2(initialValue + ((LifeNum - (MEMORY_LENGTH / 2)) * memorySpace), lifePanelDown.sizeDelta.y), panelDuration).SetEase(panelType));
         }
         else
         {
             //上部パネルの増設
             lifePanelDown.gameObject.SetActive(false);
-            lifePanelUp.DOSizeDelta(new Vector2(initialValue + (LifeNum * memorySpace), lifePanelUp.sizeDelta.y), exceedDuration).SetEase(exceedType);
+            seq_exceed.Append(lifePanelUp.DOSizeDelta(new Vector2(initialValue + (LifeNum * memorySpace), lifePanelUp.sizeDelta.y), panelDuration).SetEase(panelType));
         }
 
-        maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition = new Vector2(maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition.x - memorySpace, maxLifeBox[LifeNum - 1].rectTransform.anchoredPosition.y);
-        maxLifeBox[LifeNum - 1].enabled = true;
-        maxLifeBox[LifeNum - 1].color = bloomColor;
-        maxLifeBox[LifeNum - 1].material = bloom;
+        seq_exceed.Join(maxLifeBox[LifeNum - 1].rectTransform.DOAnchorPosX(memorySpace, panelDuration).SetRelative(true).SetEase(panelType));
+        seq_exceed.Join(exceedCanvas.DOFade(1f, 0.5f).SetEase(Ease.OutBack));
+        seq_exceed.Join(exceedCanvas.transform.DOLocalRotate(Vector3.zero, 0.55f).SetEase(Ease.OutBack));
+        seq_exceed.AppendCallback(() =>
+        {
+            Tween loop = maxLifeBox[LifeNum - 1].DOFade(1f, 0.65f).SetLoops(-1, LoopType.Yoyo).SetEase(lampLoopType);
+            memoryCountMg.DisplayMemoryNumber(LifeNum);
+            tweenList.Add(loop);
+            lampImg.enabled = true;
+        });
 
-        tweenLamp = maxLifeBox[LifeNum - 1].rectTransform.DOAnchorPosX(memorySpace, 0.25f).SetRelative(true).SetDelay(0.5f);
-        tweenLamp = maxLifeBox[LifeNum - 1].DOFade(1f, 0.7f).SetLoops(-1, LoopType.Yoyo).SetEase(exceedLampType).SetDelay(0.75f);
-
-        memoryCountMg.InitializeMemoryCount(LifeNum);
+        tweenList.Add(seq_exceed);
     }
+
     private void OnDestroy()
     {
-        tweenLamp.Kill(true);
+        tweenList.KillAllAndClear();
     }
 }

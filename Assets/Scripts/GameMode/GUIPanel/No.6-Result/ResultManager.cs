@@ -135,7 +135,9 @@ public class ResultManager : MonoBehaviour
         Sequence seq_clear = DOTween.Sequence();
         seq_clear.Append(result.rectTransform.DOAnchorPosX(0f, slideDuration).SetEase(slideType, 3));
         seq_clear.Join(result.DOFade(1f, appDuration).SetEase(appType));
-        seq_clear.Append(pauseButton.DOAnchorPosY(160f, 0.35f));
+        seq_clear.Join(pauseButton.DOAnchorPosY(160f, 0.35f));
+        seq_clear.AppendCallback(() => stageCrl.JudgeStageData());
+        seq_clear.AppendInterval(0.75f);
         seq_clear.Append(button.DOAnchorPosX(-160f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
 
         tweenList.Add(seq_clear);

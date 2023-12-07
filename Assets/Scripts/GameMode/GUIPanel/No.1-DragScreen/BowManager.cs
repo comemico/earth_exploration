@@ -49,7 +49,7 @@ public class BowManager : MonoBehaviour
         tweenList.KillAllAndClear();
 
         canvasGroup.alpha = 1f;
-        transform.localScale = new Vector3(key * 1.25f, 1.25f, 1f);
+        transform.localScale = new Vector3(key * 1.2f, 1.2f, 1f);
         handle.anchoredPosition = Vector2.zero;
         shaft.sizeDelta = new Vector2(0f, shaft.sizeDelta.y);
 

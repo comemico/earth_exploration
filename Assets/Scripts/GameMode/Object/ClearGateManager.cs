@@ -114,7 +114,6 @@ public class ClearGateManager : MonoBehaviour
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
         seq_raise.AppendCallback(() =>
         {
-            grypsCrl.stageCrl.JudgeStageData();
             grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
         });
     }
