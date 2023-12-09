@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     MovingMaskManager movingMaskMg;
+    [HideInInspector] public TutorialManager tutorialMg;
     [HideInInspector] public BowManager bowMg;
     MemoryGageManager memoryGageMg;
     Image crlImage;
@@ -46,6 +47,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
         cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
         movingMaskMg = transform.parent.GetComponentInChildren<MovingMaskManager>();
+        tutorialMg = transform.parent.GetComponentInChildren<TutorialManager>();
         bowMg = transform.parent.GetComponentInChildren<BowManager>();
         memoryGageMg = transform.root.GetComponentInChildren<MemoryGageManager>();
         crlImage = GetComponent<Image>();

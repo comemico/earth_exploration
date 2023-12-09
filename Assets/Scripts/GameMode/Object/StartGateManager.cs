@@ -13,7 +13,7 @@ public class StartGateManager : MonoBehaviour
         [InspectorName("©¶")] left = 1,
         [InspectorName("‰E¨")] right = -1,
     }
-    public GATE_KEY gateKey;//GATE_KEY—v‘f‚©‚ç‚P‚ÂŠi”[‚³‚ê‚Ä‚¢‚é
+    [Header("”­i•ûŒü")] public GATE_KEY gateKey;//GATE_KEY—v‘f‚©‚ç‚P‚ÂŠi”[‚³‚ê‚Ä‚¢‚é
     [Range(0, 2)] public int dashLevel;
 
     public SpriteMask left, right;
@@ -63,13 +63,13 @@ public class StartGateManager : MonoBehaviour
             case GATE_KEY.left:
                 left.enabled = false;
                 right.enabled = true;
-                cinemachineCrl.ClearDirection(0.75f);
+                cinemachineCrl.StartDirection(0.75f);
                 break;
 
             case GATE_KEY.right:
                 left.enabled = true;
                 right.enabled = false;
-                cinemachineCrl.ClearDirection(0.08f);
+                cinemachineCrl.StartDirection(0.1f);
                 break;
         }
     }
@@ -98,8 +98,17 @@ public class StartGateManager : MonoBehaviour
             grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, dashLevel);
             grypsCrl.stageCrl.controlScreenMg.bowMg.canvasGroup.alpha = 0f;
         });
+        seq_raise.AppendInterval(1.5f);
+        seq_raise.AppendCallback(() => LowerFlag());
     }
 
+    public void LowerFlag()
+    {
+        SwichBloom(false, fadeDuration);
+
+        Sequence seq_lower = DOTween.Sequence();
+        seq_lower.Append(mark.DOLocalRotate(new Vector3(0, 0, -90), fadeDuration, RotateMode.Fast).SetEase(fadeType));
+    }
 
     public void SwichBloom(bool isEnabled, float fadeTime) //FadeIn‚·‚éê‡APanelAnime‚ÅŒõŒ¹‚ªŒ©‚¦‚é‚Ì‚ğ–h‚®–Ú“I
     {

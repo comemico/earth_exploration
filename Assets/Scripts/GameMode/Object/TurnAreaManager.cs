@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,28 +9,36 @@ public class TurnAreaManager : MonoBehaviour
     [Header("ターン後の位置")]
     public TurnAreaManager destination;
 
-    [Header("入口方向と侵入時の向き")]
-    public ENTRANCE_KEY entranceKey;
+    [Header("Tween : Sprite.Move")]
+    [Range(0f, 0.5f)] public float easeDuration = 0.2f;
+    public Ease easeType = Ease.OutSine;
 
     GrypsController grypsCrl;
     [HideInInspector] public bool isTurn;
     float distanceHeight;
-    //public float distanceMoving;
-
-    [Header("Tween : Sprite.Move")]
-    [Range(0f, 0.5f)] public float easeDuration;
-    public Ease easeType;
-
 
     public enum ENTRANCE_KEY
     {
         [InspectorName("左：1")] left = 1,
         [InspectorName("右：-1")] right = -1,
     }
+    [Header("侵入時の速度の向き")]
+    public ENTRANCE_KEY entranceKey;
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+        if (collision.tag == "Player")
+        {
+            if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+            if (Enum.IsDefined(typeof(ENTRANCE_KEY), (int)Mathf.Sign(grypsCrl.rb.velocity.x)))// 事前に定義が存在するかどうか確認する
+            {
+                entranceKey = (ENTRANCE_KEY)(int)Mathf.Sign(grypsCrl.rb.velocity.x);
+            }
+        }
+        /*
+         */
     }
 
     private void OnTriggerStay2D(Collider2D collision)

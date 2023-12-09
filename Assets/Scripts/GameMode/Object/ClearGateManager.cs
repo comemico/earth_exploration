@@ -15,7 +15,6 @@ public class ClearGateManager : MonoBehaviour
 
     //GATE_KEY gateKey;//GATE_KEY—v‘f‚©‚ç‚P‚ÂŠi”[‚³‚ê‚Ä‚¢‚é
 
-
     public enum SUCTION
     {
         [InspectorName("Žã")] week = 0,

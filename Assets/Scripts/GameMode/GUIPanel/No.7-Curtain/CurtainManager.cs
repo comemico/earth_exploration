@@ -74,7 +74,7 @@ public class CurtainManager : MonoBehaviour
         seq_start.AppendInterval(0.1f);
         seq_start.Append(stage.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
         seq_start.Join(course.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
-        seq_start.AppendInterval(0.4f);
+        seq_start.AppendInterval(0.25f);
         seq_start.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
         seq_start.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
         tweenList.Add(seq_start);

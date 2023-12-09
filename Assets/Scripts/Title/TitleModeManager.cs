@@ -61,6 +61,8 @@ public class TitleModeManager : MonoBehaviour
         closeCreditButton.onClick.AddListener(CloseCredit);
 
         settingCanvas.alpha = 0f;
+        settingCanvas.blocksRaycasts = false;
+
         creditCanvas.alpha = 0f;
 
         exitText.color = new Color(0.894f, 0.894f, 0.894f, 0f);
@@ -127,6 +129,7 @@ public class TitleModeManager : MonoBehaviour
     public void OpenSetting()
     {
         settingCanvas.gameObject.SetActive(true);
+        settingCanvas.blocksRaycasts = true;
         //サウンド (BGM & SE)
         //データ初期化 (ほんとにいいの？ => 爆発BOOM)
 
@@ -140,6 +143,8 @@ public class TitleModeManager : MonoBehaviour
 
     public void CloseSetting()
     {
+        settingCanvas.blocksRaycasts = false;
+
         Sequence seq_closeSet = DOTween.Sequence();
         //バンドボタン待機
         seq_closeSet.Append(closeSetRect.DOAnchorPosX(INIPOSX_CLOSE, MoveTime).SetEase(MoveType));

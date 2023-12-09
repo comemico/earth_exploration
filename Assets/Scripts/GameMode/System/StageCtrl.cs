@@ -220,8 +220,8 @@ public class StageCtrl : MonoBehaviour
             }
         }
 
-        data.maxLifeNum++; //デバック用
-        memoryGageMg.ExceedLimit(data.maxLifeNum); //デバック用
+        //data.maxLifeNum++; //デバック用
+        //memoryGageMg.ExceedLimit(data.maxLifeNum); //デバック用
         Save(data);
     }
 
