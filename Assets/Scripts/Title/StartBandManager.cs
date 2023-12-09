@@ -119,7 +119,7 @@ public class StartBandManager : MonoBehaviour
 
         //ƒpƒlƒ‹ÁŽ¸
         seq_wakeUp.Append(screen.DOAnchorPosY(-182.5f, screenMoveTime).SetEase(screenMoveType));
-        seq_wakeUp.AppendCallback(() => titleMg.selectBandMg.StartUp());
+        seq_wakeUp.Append(titleMg.selectBandMg.StartUp());
 
         tweenList.Add(seq_wakeUp);
     }

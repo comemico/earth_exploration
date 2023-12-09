@@ -93,5 +93,12 @@ public class TitleCurtainManager : MonoBehaviour
         }
     }
 
+    public Sequence EndGameCurtain()
+    {
+        Sequence seq_end = DOTween.Sequence();
+        seq_end.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
+        tweenList.Add(seq_end);
+        return seq_end;
+    }
 
 }

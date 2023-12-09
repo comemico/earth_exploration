@@ -6,9 +6,10 @@ using DG.Tweening;
 
 public class TitleManager : MonoBehaviour
 {
-    public TitleCurtainManager curtainMg;
     public StartBandManager startBandMg;
     public SelectBandManager selectBandMg;
+    public TitleModeManager modeMg;
+    public TitleCurtainManager curtainMg;
     public TitleCinemachine cinemachineMg;
 
     [Header("LaunchButton")]
@@ -19,12 +20,14 @@ public class TitleManager : MonoBehaviour
     public Button settingButton;
     public Button creditButton;
 
-
     List<Tween> tweenList = new List<Tween>();
 
     private void Awake()
     {
         launchButton.onClick.AddListener(() => curtainMg.CloseCurtain("StageSelect"));
+        exitButton.onClick.AddListener(() => modeMg.OpenExit());
+        settingButton.onClick.AddListener(() => modeMg.OpenSetting());
+        creditButton.onClick.AddListener(() => modeMg.OpenCredit());
     }
 
     void Start()
@@ -33,9 +36,16 @@ public class TitleManager : MonoBehaviour
         seq_start.Append(curtainMg.OpenCurtain());
         seq_start.AppendInterval(0f);
         seq_start.Append(startBandMg.StartUp());
-
     }
 
+    public void EndGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;//ゲームプレイ終了
+#else
+        Application.Quit();//ゲームプレイ終了
+#endif
+    }
 
 
 

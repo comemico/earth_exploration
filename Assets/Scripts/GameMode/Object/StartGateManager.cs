@@ -14,6 +14,7 @@ public class StartGateManager : MonoBehaviour
         [InspectorName("‰E¨")] right = -1,
     }
     public GATE_KEY gateKey;//GATE_KEY—v‘f‚©‚ç‚P‚ÂŠi”[‚³‚ê‚Ä‚¢‚é
+    [Range(0, 2)] public int dashLevel;
 
     public SpriteMask left, right;
 
@@ -94,7 +95,7 @@ public class StartGateManager : MonoBehaviour
         seq_raise.AppendInterval(0.35f);
         seq_raise.AppendCallback(() =>
         {
-            grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 1);
+            grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, dashLevel);
             grypsCrl.stageCrl.controlScreenMg.bowMg.canvasGroup.alpha = 0f;
         });
     }

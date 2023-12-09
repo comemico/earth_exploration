@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 using DG.Tweening;
 
 public class SelectBandManager : MonoBehaviour
@@ -20,15 +20,23 @@ public class SelectBandManager : MonoBehaviour
     public RectTransform exitButton;
     public RectTransform settingButton;
     public RectTransform creditButton;
-    [Range(0.15f, 0.5f)] public float trafficMoveTime;
-    public Ease trafficMoveType;
+
+
+
+    [Header("Time/Type")]
+    [Range(0.15f, 0.5f)] public float buttonMoveTime;
+    public Ease buttonMoveType;
+
 
     const int INIPOSX_TRAFFIC = -280;
     const int INIPOSY_TRAFFIC = 250;
 
+    TitleManager titleMg;
+
     private void Start()
     {
         Initialize();
+        titleMg = transform.root.GetComponent<TitleManager>();
     }
 
     void Initialize()
@@ -49,14 +57,55 @@ public class SelectBandManager : MonoBehaviour
         seq_startUp.AppendInterval(0.2f);
 
         //信号ボタン出現
-        seq_startUp.Append(exitButton.DOAnchorPosX(280, trafficMoveTime).SetEase(trafficMoveType));
-        seq_startUp.Join(settingButton.DOAnchorPosX(680, trafficMoveTime).SetEase(trafficMoveType));
-        seq_startUp.Join(creditButton.DOAnchorPosX(1080, trafficMoveTime).SetEase(trafficMoveType));
+        seq_startUp.Append(exitButton.DOAnchorPosX(280, buttonMoveTime).SetEase(buttonMoveType));
+        seq_startUp.Join(settingButton.DOAnchorPosX(680, buttonMoveTime).SetEase(buttonMoveType));
+        seq_startUp.Join(creditButton.DOAnchorPosX(1080, buttonMoveTime).SetEase(buttonMoveType));
 
         //発進ボタン出現
-        seq_startUp.Append(launchButton.DOAnchorPosX(-INIPOSX_LAUNCH, trafficMoveTime).SetEase(trafficMoveType));
+        seq_startUp.Append(launchButton.DOAnchorPosX(-INIPOSX_LAUNCH, buttonMoveTime).SetEase(buttonMoveType));
 
         return seq_startUp;
     }
+
+    public Sequence HideBandButton(bool isBandup)
+    {
+        Sequence seq_hide = DOTween.Sequence();
+
+        //信号ボタン待機
+        seq_hide.Append(exitButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
+        seq_hide.Join(settingButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
+        seq_hide.Join(creditButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
+        //発進ボタン待機
+        seq_hide.Join(launchButton.DOAnchorPosX(INIPOSX_LAUNCH, buttonMoveTime).SetEase(buttonMoveType));
+
+        if (isBandup)
+        {
+            seq_hide.Append(screenRect.DOSizeDelta(new Vector2(2160f, 900f), 0.2f).SetEase(Ease.OutSine));
+        }
+
+        return seq_hide;
+    }
+
+    public Sequence ShowBandButton(bool isBandup)
+    {
+        Sequence seq_show = DOTween.Sequence();
+
+        if (isBandup)
+        {
+            seq_show.Append(screenRect.DOSizeDelta(new Vector2(2160f, 250f), 0.2f).SetEase(Ease.OutSine));
+            //seq_show.Append(closeButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
+        }
+
+        //信号ボタン待機
+        seq_show.Append(exitButton.DOAnchorPosX(280, buttonMoveTime).SetEase(buttonMoveType));
+        seq_show.Join(settingButton.DOAnchorPosX(680, buttonMoveTime).SetEase(buttonMoveType));
+        seq_show.Join(creditButton.DOAnchorPosX(1080, buttonMoveTime).SetEase(buttonMoveType));
+        //発進ボタン待機
+        seq_show.Join(launchButton.DOAnchorPosX(-INIPOSX_LAUNCH, buttonMoveTime).SetEase(buttonMoveType));
+
+        return seq_show;
+    }
+
+
 
 }
