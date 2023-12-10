@@ -9,15 +9,15 @@ public class TitleCurtainManager : MonoBehaviour
 {
     [Header("BackPanel")]
     public Image backPanel;
-    [Range(0.1f, 1f)] public float fadeInDuration;
-    public Ease fadeInType;
-    [Range(0.1f, 1f)] public float fadeOutDuration;
-    public Ease fadeOutType;
+    [Range(0.1f, 1f)] public float fadeInDuration = 0.75f;
+    public Ease fadeInType = Ease.OutSine;
+    [Range(0.1f, 1f)] public float fadeOutDuration = 0.5f;
+    public Ease fadeOutType = Ease.OutQuad;
 
     [Header("Icon")]
     public CanvasGroup icon;
-    [Range(0.1f, 0.5f)] public float iconDuration;
-    public Ease iconType;
+    [Range(0.1f, 0.5f)] public float iconDuration = 0.15f;
+    public Ease iconType = Ease.OutQuint;
     public Image iconEmi;
     public Color loadColor;
     public Color normalColor;
@@ -47,7 +47,7 @@ public class TitleCurtainManager : MonoBehaviour
         //    .SetUpdate() : trueを指定した場合、TimeScaleを無視して動作します(デフォルトはfalse)現在、trueにしている
         Sequence seq_fadeIn = DOTween.Sequence();//TimeScaleを無視している
 
-        seq_fadeIn.AppendInterval(0.25f);
+        seq_fadeIn.AppendInterval(0.2f);
         seq_fadeIn.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
         seq_fadeIn.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
 

@@ -233,7 +233,7 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         else
         {
             //その他コースエリアは最大到達ステージ位置へ移動=>course[areaNum] 
-            Vector2 target = stageInfoList[stageAdress].RectTransform.anchoredPosition;
+            Vector2 target = stageInfoList[informationMg.data.linearData[areaNum]].RectTransform.anchoredPosition;
             for (int i = 0; i < stageInfoList.Count; i++)
             {
                 stageInfoList[i].RectTransform.anchoredPosition -= target;

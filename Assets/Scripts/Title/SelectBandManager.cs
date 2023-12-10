@@ -10,7 +10,7 @@ public class SelectBandManager : MonoBehaviour
     public RectTransform screenRect;
     [Range(0.15f, 0.5f)] public float screenMoveTime;
     public Ease screenMoveType;
-    const int INIPOSY = -255;
+    const int INIPOSY = -260;
 
     [Header("LaunchButton")]
     public RectTransform launchButton;

@@ -9,4 +9,7 @@ public class SaveData
     public int[] linearData;
     public bool[] scatterDiscover;
     public bool[] scatterClear;
+
+    public bool isBGM;
+    public bool isSE;
 }

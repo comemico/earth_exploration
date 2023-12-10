@@ -22,7 +22,6 @@ public class StartBandManager : MonoBehaviour
     public Ease titleFadeInType;
     [Range(0.1f, 0.5f)] public float titleFadeOutDuration;
     public Ease titleFadeOutType;
-    const int INIPOSX_title = 225;
 
     [Header("Tips")]
     public Image tipsEdge;
@@ -74,7 +73,6 @@ public class StartBandManager : MonoBehaviour
         tipsEdge.color = new Color(1, 1, 1, 0);
         tipsEdge.rectTransform.sizeDelta = new Vector2(192f, 192f);
 
-        title.anchoredPosition = new Vector2(INIPOSX_title, 0f);
         textPress.rectTransform.anchoredPosition = new Vector2(textPress.rectTransform.anchoredPosition.x + INIDISX_PressStart, 0f);
         textStart.rectTransform.anchoredPosition = new Vector2(textStart.rectTransform.anchoredPosition.x - INIDISX_PressStart, 0f);
     }
@@ -83,11 +81,6 @@ public class StartBandManager : MonoBehaviour
     {
         Sequence seq_startUp = DOTween.Sequence();
         seq_startUp.AppendInterval(0.125f);
-
-        //タイトル出現
-        seq_startUp.Append(title.DOAnchorPosX(-INIPOSX_title, titleFadeInDuration).SetEase(titleFadeInType));
-
-        seq_startUp.AppendInterval(0.25f);
 
         //Tips出現
         seq_startUp.Append(tipsEdge.DOFade(1f, tipsFadeDuration).SetEase(tipsFadeType));
