@@ -65,7 +65,8 @@ public class TitleSoundManager : MonoBehaviour
             bgmReel.anchoredPosition = new Vector2(0, REEL_DISTANCE);
             bgmReel.DOAnchorPosY(0f, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f);
 
-            isBgm = true;
+            this.isBgm = true;
+            SoundManager.Instance.bgmAudioSource.mute = false;
             dataMg.data.isBGM = this.isBgm;
             dataMg.Save(dataMg.data);
         }
@@ -76,7 +77,8 @@ public class TitleSoundManager : MonoBehaviour
             bgmReel.anchoredPosition = Vector2.zero;
             bgmReel.DOAnchorPosY(REEL_DISTANCE, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f);
 
-            isBgm = false;
+            this.isBgm = false;
+            SoundManager.Instance.bgmAudioSource.mute = true;
             dataMg.data.isBGM = this.isBgm;
             dataMg.Save(dataMg.data);
         }
@@ -103,7 +105,8 @@ public class TitleSoundManager : MonoBehaviour
             seReel.anchoredPosition = new Vector2(0, REEL_DISTANCE);
             seReel.DOAnchorPosY(0f, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f);
 
-            isSe = true;
+            this.isSe = true;
+            SoundManager.Instance.seAudioSource.mute = false;
             dataMg.data.isSE = this.isSe;
             dataMg.Save(dataMg.data);
         }
@@ -114,7 +117,8 @@ public class TitleSoundManager : MonoBehaviour
             seReel.anchoredPosition = Vector2.zero;
             seReel.DOAnchorPosY(REEL_DISTANCE, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f);
 
-            isSe = false;
+            this.isSe = false;
+            SoundManager.Instance.seAudioSource.mute = true;
             dataMg.data.isSE = this.isSe;
             dataMg.Save(dataMg.data);
         }

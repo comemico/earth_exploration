@@ -30,13 +30,6 @@ public class TitleManager : MonoBehaviour
         creditButton.onClick.AddListener(() => modeMg.OpenCredit());
     }
 
-    void Start()
-    {
-        Sequence seq_start = DOTween.Sequence();
-        seq_start.Append(curtainMg.OpenCurtain());
-        seq_start.AppendInterval(0f);
-        seq_start.Append(startBandMg.StartUp());
-    }
 
     public void EndGame()
     {

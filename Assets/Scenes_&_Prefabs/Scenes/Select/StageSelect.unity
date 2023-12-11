@@ -7209,7 +7209,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_RaycastPadding: {x: 50, y: 50, z: 50, w: 35}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7839,8 +7839,13 @@ MonoBehaviour:
   - {fileID: 1305724468}
   followDuration: 0.2
   easeType: 9
-  exceedDuration: 0
-  exceedType: 0
+  exceedCanvas: {fileID: 0}
+  lampImg: {fileID: 0}
+  panelDuration: 0
+  panelType: 0
+  lampLoopType: 0
+  lampColor: {r: 0, g: 0, b: 0, a: 0}
+  bloom: {fileID: 0}
   memoryCountMg: {fileID: 860043565}
   memoryGage: 0
 --- !u!222 &528197926
@@ -25947,6 +25952,8 @@ MonoBehaviour:
     linearData: 0200000001000000
     scatterDiscover: 
     scatterClear: 
+    isBGM: 0
+    isSE: 0
   scatterList:
   - {fileID: 1342852632}
   - {fileID: 800626881}

@@ -69,7 +69,7 @@ public class TitleCinemachine : MonoBehaviour
         tween_turn = DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, screenX, 1.5f).SetEase(Ease.InOutSine);
     }
 
-    public void Zoom(int fov)
+    public Tween Zoom(int fov)
     {
         //tween_fov.Kill(false);
         activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
@@ -79,6 +79,8 @@ public class TitleCinemachine : MonoBehaviour
             nearestVC = activeVC;
         }
         tween_fov = DOTween.To(() => activeVC.m_Lens.FieldOfView, x => activeVC.m_Lens.FieldOfView = x, fov, fovDuration).SetEase(fovType);
+
+        return tween_fov;
     }
 
     public void DefaultZoom()

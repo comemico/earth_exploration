@@ -158,6 +158,7 @@ public class TitleModeManager : MonoBehaviour
     public void OpenCredit()
     {
         creditCanvas.gameObject.SetActive(true);
+        creditCanvas.blocksRaycasts = true;
         //作者名
         //権利表記
         Sequence seq_openCredit = DOTween.Sequence();
@@ -170,6 +171,8 @@ public class TitleModeManager : MonoBehaviour
 
     public void CloseCredit()
     {
+        creditCanvas.blocksRaycasts = false;
+
         Sequence seq_closeSet = DOTween.Sequence();
         //バンドボタン待機
         seq_closeSet.Append(closeCreditRect.DOAnchorPosX(INIPOSX_CLOSE, MoveTime).SetEase(MoveType));

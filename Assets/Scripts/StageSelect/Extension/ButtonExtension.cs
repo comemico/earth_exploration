@@ -1,3 +1,4 @@
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
@@ -5,8 +6,14 @@ using DG.Tweening;
 public class ButtonExtension : MonoBehaviour,
     IPointerDownHandler,
     IPointerUpHandler
-
 {
+    Button button;
+    private void Awake()
+    {
+        button = GetComponent<Button>();
+        button.onClick.AddListener(() => SoundManager.Instance.PlaySE(SESoundData.SE.Button01));
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         transform.DOScale(0.95f, 0.1f).SetEase(Ease.OutQuint);

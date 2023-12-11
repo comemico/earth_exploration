@@ -33,6 +33,7 @@ public class TitleCurtainManager : MonoBehaviour
     private void Start()
     {
         Initialize();
+        OpenCurtain();
     }
 
     void Initialize()

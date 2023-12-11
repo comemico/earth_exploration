@@ -5,11 +5,18 @@ using DG.Tweening;
 
 public class ButtonExtension_Mark2 : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    Button button;
 
     [Header("É{É^Éìèkè¨")]
     [Range(0.75f, 1f)] public float pressSize;
     [Range(0.05f, 0.25f)] public float duration;
     public Ease easeType;
+
+    private void Awake()
+    {
+        button = GetComponent<Button>();
+        button.onClick.AddListener(() => SoundManager.Instance.PlaySE(SESoundData.SE.Button01));
+    }
 
     /*
     [Space(PreHeader)]
