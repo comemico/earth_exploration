@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class TurnAreaManager : MonoBehaviour
 {
@@ -49,10 +50,9 @@ public class TurnAreaManager : MonoBehaviour
             {
                 distanceHeight = grypsCrl.transform.position.y - destination.transform.position.y;
                 //grypsCrl.TurnCorner(distanceHeight, distanceMoving);
-
-                grypsCrl.transform.GetChild(0).position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y + distanceHeight, grypsCrl.transform.position.z);
+                grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder;
+                grypsCrl.transform.GetChild(0).position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y + distanceHeight, destination.transform.parent.position.z);
                 grypsCrl.transform.GetChild(0).DOLocalMoveY(0f, easeDuration).SetEase(easeType);
-
 
                 grypsCrl.transform.rotation = Quaternion.Euler(Vector3.zero);
                 grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, destination.transform.position.y, grypsCrl.transform.position.z);

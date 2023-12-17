@@ -31,10 +31,10 @@ public class StartGateManager : MonoBehaviour
     FloorManager floorMg;
     GrypsController grypsCrl;
 
-    const int DISTANCE_GATE = 6;
+    const int DISTANCE_GATE = 4;
     const int APPEARENCE_HEIGHT = 1;
 
-    private void Start()
+    private void Awake()
     {
         cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
         FalseMask(gateKey);

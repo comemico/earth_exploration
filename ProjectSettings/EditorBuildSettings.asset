@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage1.unity
     guid: df6240f53f7af2d49838ff1bad05a54f
+  - enabled: 1
+    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage2.unity
+    guid: a81e57169b69298458b43b82e1034cfc
+  - enabled: 1
+    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage3.unity
+    guid: b8f6eaa87af4b8d4f94774905ba6f149
   m_configObjects: {}

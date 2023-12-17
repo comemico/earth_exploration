@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using DG.Tweening;
 using SoundSystem;
 
@@ -25,6 +26,7 @@ public class GrypsController : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb = null;
     public Animator jetAnimator;
     public Animator saltoAnimator;
+    public SortingGroup sortingGroup;
     CapsuleCollider2D capsuleCol;
 
     [Header("ブーストのリロード基準")]
@@ -96,8 +98,8 @@ public class GrypsController : MonoBehaviour
     void AllGetComponent()
     {
         rb = GetComponent<Rigidbody2D>();
+        sortingGroup = GetComponentInChildren<SortingGroup>();
         capsuleCol = GetComponent<CapsuleCollider2D>();
-        //jetAnimator = GetComponent<Animator>();
         grypsParameter = GetComponent<GrypsParameter>();
         wheelMg = GetComponentInChildren<WheelManager>();
         effectManager = GetComponentInChildren<EffectManager>();

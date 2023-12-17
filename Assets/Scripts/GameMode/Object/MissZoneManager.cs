@@ -15,11 +15,14 @@ public class MissZoneManager : MonoBehaviour
                 grypsCrl = collision.gameObject.GetComponent<GrypsController>();
             }
 
+            Debug.Log("fall");
+            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missFall);
+            grypsCrl.rb.velocity = Vector2.zero;
+            //grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
             if (grypsCrl.stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
             {
-                grypsCrl.rb.velocity = Vector2.zero;
-                grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
-                grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missBomb);
+                //grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missBomb);
+
                 //grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
                 //stageCrl => result(RESULT.miss)
                 //FalseMask(gateKey);

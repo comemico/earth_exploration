@@ -9,8 +9,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Boost")]
     public RectTransform boostMark;
     CanvasGroup boostCanvas;
-
-
+    Sequence sequence; //ŠO‚Åkill‚·‚é—p
 
     void Start()
     {
@@ -22,7 +21,6 @@ public class TutorialManager : MonoBehaviour
         boostCanvas = boostMark.GetComponent<CanvasGroup>();
         boostCanvas.alpha = 0f;
     }
-
     public void LeadBoost()
     {
         Sequence seq_leadBoost = DOTween.Sequence().SetLoops(-1, LoopType.Restart);
@@ -33,11 +31,14 @@ public class TutorialManager : MonoBehaviour
         seq_leadBoost.AppendInterval(0.25f);
         seq_leadBoost.Append(boostMark.DOScale(1.0f, 0.25f));
         seq_leadBoost.Join(boostCanvas.DOFade(0f, 0.25f).SetEase(Ease.OutSine));
+        sequence = seq_leadBoost;
     }
 
     public void HideLeadMark()
     {
-        boostMark.transform.gameObject.SetActive(false);
+        boostCanvas.alpha = 0f;
+        sequence.Kill(true);
+        //boostMark.transform.gameObject.SetActive(false);
     }
 
 }

@@ -39,7 +39,7 @@ public class JetManager : MonoBehaviour
 
     StageCtrl stageCrl;
     CinemachineController cinemachineCrl;
-    public GrypsController grypsCrl;
+    //public GrypsController grypsCrl;
     public JetGUIManager jetGuiMg;
 
 
@@ -99,7 +99,7 @@ public class JetManager : MonoBehaviour
     {
         isDown = true;
         stageCrl.Regeneration();
-        grypsCrl.jetAnimator.SetBool("isDown", isDown);
+        stageCrl.grypsCrl.jetAnimator.SetBool("isDown", isDown);
         ChargeRing(limitNumber);
 
         buttonLamp_Left.enabled = true;
@@ -115,7 +115,7 @@ public class JetManager : MonoBehaviour
     {
         isDown = false;
 
-        grypsCrl.jetAnimator.SetBool("isDown", isDown);
+        stageCrl.grypsCrl.jetAnimator.SetBool("isDown", isDown);
         Release(consumeNum);
 
         chargeRingImg.DOKill(false);
@@ -142,7 +142,7 @@ public class JetManager : MonoBehaviour
         if (consumeNum >= 1)
         {
             stageCrl.saltoMg.Release(); //‹ó’†‚ÅJet‚µ‚½Û‚ÉASaltoHud‚ğShutdown‚³‚¹‚é‚½‚ß‚ÉŒÄ‚Ô
-            grypsCrl.ForceJet(consumeNum - 1);
+            stageCrl.grypsCrl.ForceJet(consumeNum - 1);
             if (limitNumber <= 0)
             {
                 jetGuiMg.ShutDownJetHud();

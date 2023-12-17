@@ -35,9 +35,9 @@ public class FadeCanvasManager : MonoBehaviour
     [Header("バックパネル")]
     [Header("-----------------------------")]
     [Header("イージング")]
-    public Ease easeType_BackPanel;
-    [Range(0.25f, 1f)] public float fadeInTime;
-    [Range(0.25f, 1f)] public float fadeOutTime;
+    public Ease easeType_BackPanel = Ease.OutSine;
+    [Range(0.25f, 1f)] public float fadeInTime = 0.25f;
+    [Range(0.25f, 1f)] public float fadeOutTime = 0.25f;
 
     CanvasGroup backPanel;
     LoadingAnimPlayer loadingAnimPlayer;

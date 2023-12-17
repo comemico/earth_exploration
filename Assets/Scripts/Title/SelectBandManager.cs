@@ -20,16 +20,19 @@ public class SelectBandManager : MonoBehaviour
     public RectTransform exitButton;
     public RectTransform settingButton;
     public RectTransform creditButton;
+    const int INIPOSX_TRAFFIC = -280;
+    const int INIPOSY_TRAFFIC = 250;
 
-
+    [Header("HowToPlayButton")]
+    public RectTransform howtoButton;
+    const int INIPOSX_HOW = 275;
+    const int INIPOSY_HOW = 125;
 
     [Header("Time/Type")]
     [Range(0.15f, 0.5f)] public float buttonMoveTime;
     public Ease buttonMoveType;
 
 
-    const int INIPOSX_TRAFFIC = -280;
-    const int INIPOSY_TRAFFIC = 250;
 
     TitleManager titleMg;
 
@@ -46,6 +49,7 @@ public class SelectBandManager : MonoBehaviour
         exitButton.anchoredPosition = new Vector2(INIPOSX_TRAFFIC, INIPOSY_TRAFFIC);
         settingButton.anchoredPosition = new Vector2(INIPOSX_TRAFFIC, INIPOSY_TRAFFIC);
         creditButton.anchoredPosition = new Vector2(INIPOSX_TRAFFIC, INIPOSY_TRAFFIC);
+        howtoButton.anchoredPosition = new Vector2(INIPOSX_HOW, INIPOSY_HOW);
     }
 
     public Sequence StartUp()
@@ -57,9 +61,10 @@ public class SelectBandManager : MonoBehaviour
         seq_startUp.AppendInterval(0.2f);
 
         //信号ボタン出現
-        seq_startUp.Append(exitButton.DOAnchorPosX(280, buttonMoveTime).SetEase(buttonMoveType));
-        seq_startUp.Join(settingButton.DOAnchorPosX(680, buttonMoveTime).SetEase(buttonMoveType));
-        seq_startUp.Join(creditButton.DOAnchorPosX(1080, buttonMoveTime).SetEase(buttonMoveType));
+        seq_startUp.Append(ShowBandButton(true));
+        //seq_startUp.Append(exitButton.DOAnchorPosX(280, buttonMoveTime).SetEase(buttonMoveType));
+        //seq_startUp.Join(settingButton.DOAnchorPosX(680, buttonMoveTime).SetEase(buttonMoveType));
+        //seq_startUp.Join(creditButton.DOAnchorPosX(1080, buttonMoveTime).SetEase(buttonMoveType));
 
         //発進ボタン出現
         seq_startUp.Append(launchButton.DOAnchorPosX(-INIPOSX_LAUNCH, buttonMoveTime).SetEase(buttonMoveType));
@@ -75,6 +80,8 @@ public class SelectBandManager : MonoBehaviour
         seq_hide.Append(exitButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
         seq_hide.Join(settingButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
         seq_hide.Join(creditButton.DOAnchorPosX(INIPOSX_TRAFFIC, buttonMoveTime).SetEase(buttonMoveType));
+        seq_hide.Join(howtoButton.DOAnchorPosY(INIPOSY_HOW, buttonMoveTime).SetEase(buttonMoveType).SetDelay(0.175f));
+
         //発進ボタン待機
         seq_hide.Join(launchButton.DOAnchorPosX(INIPOSX_LAUNCH, buttonMoveTime).SetEase(buttonMoveType));
 
@@ -100,6 +107,8 @@ public class SelectBandManager : MonoBehaviour
         seq_show.Append(exitButton.DOAnchorPosX(280, buttonMoveTime).SetEase(buttonMoveType));
         seq_show.Join(settingButton.DOAnchorPosX(680, buttonMoveTime).SetEase(buttonMoveType));
         seq_show.Join(creditButton.DOAnchorPosX(1080, buttonMoveTime).SetEase(buttonMoveType));
+        seq_show.Join(howtoButton.DOAnchorPosY(-INIPOSY_HOW, buttonMoveTime).SetEase(buttonMoveType).SetDelay(0.175f));
+
         //発進ボタン待機
         seq_show.Join(launchButton.DOAnchorPosX(-INIPOSX_LAUNCH, buttonMoveTime).SetEase(buttonMoveType));
 

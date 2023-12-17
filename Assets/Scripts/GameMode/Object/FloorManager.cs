@@ -52,7 +52,7 @@ public class FloorManager : MonoBehaviour
             colBox[floorNumber].GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
 
-        cinemachineCrl.ToFloorVcam(floorNumber, key);//不完全
+        // cinemachineCrl.ToFloorVcam(floorNumber, key);//不完全
 
         return floorNumber;
     }

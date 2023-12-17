@@ -19,7 +19,10 @@ public class TutorialAreaManager : MonoBehaviour
         switch (tutorial)
         {
             case TUTORIAL.boost:
-                grypsCrl.stageCrl.controlScreenMg.tutorialMg.LeadBoost();
+                if (grypsCrl.stageCrl.controlScreenMg.tutorialMg.transform.gameObject.activeSelf)
+                {
+                    grypsCrl.stageCrl.controlScreenMg.tutorialMg.LeadBoost();
+                }
                 break;
 
             case TUTORIAL.jet:
@@ -37,9 +40,7 @@ public class TutorialAreaManager : MonoBehaviour
         if (collision.tag == "Player")
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
-            {
-                DisplayLead(tutorial);
-            }
+            DisplayLead(tutorial);
         }
     }
 
@@ -48,9 +49,7 @@ public class TutorialAreaManager : MonoBehaviour
         if (collision.tag == "Player")
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
-            {
-                grypsCrl.stageCrl.controlScreenMg.tutorialMg.HideLeadMark();
-            }
+            grypsCrl.stageCrl.controlScreenMg.tutorialMg.HideLeadMark();
         }
     }
 

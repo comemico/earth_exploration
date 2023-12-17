@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class ClearGateManager : MonoBehaviour
 {
@@ -89,6 +90,7 @@ public class ClearGateManager : MonoBehaviour
             }
 
             boxCol.enabled = false; //1‰ñ‚µ‚©ŒÄ‚Î‚ê‚È‚­‚È‚é E‚‘¬‚ÅN“ü‚·‚é‚Æ2‰ñˆÈãŒÄ‚Î‚ê‚ÄDOMoveX‚ª³‚Ì•ûŒü‚É‚µ‚©s‚©‚È‚­‚È‚é (Sign(0)‚Å1‚É‚È‚é‚½‚ß)
+            transform.GetComponentInParent<SortingGroup>().enabled = false; //SpriteMask‚ÌŒø‰Ê‚ğo‚·‚½‚ß
 
             grypsCrl.stageCrl.StageClear();
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
