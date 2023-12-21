@@ -36,7 +36,7 @@ public class SaltoAreaManager : MonoBehaviour
         {
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
             {
-                Camera.main.GetComponent<CinemachineController>().Zoom(fov);
+                Camera.main.GetComponent<CinemachineManager>().Zoom(fov);
                 grypsCrl.stageCrl.saltoMg.JugeSaltoMode(flightDuration);
                 isSalto = true;
             }

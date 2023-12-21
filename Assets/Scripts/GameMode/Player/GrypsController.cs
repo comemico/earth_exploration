@@ -48,13 +48,13 @@ public class GrypsController : MonoBehaviour
     private Vector2 nowVector;
     public bool isSomersault = false;
 
+    /*
     private bool isTurning;
     private float distanceFactor;
     private float heightFactor;
     private float goalHeight;
     private float moveDistance;
     private float turnPoint;
-    /*
     private bool isForce = false;
     //[Header("JetLevel")] public int[] jetLevel;
     //[Header("1メモリ当たりのスワイプ距離")] public float distancePerMemory;
@@ -189,7 +189,7 @@ public class GrypsController : MonoBehaviour
             if (time >= reloadTime)
             {
                 stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-                wheelMg.TurnLamp(false, true);
+                wheelMg.WheelLamp(false, true);
                 time = 0.0f;
             }
             else
@@ -387,7 +387,7 @@ public class GrypsController : MonoBehaviour
             rb.velocity = Vector2.zero;
             Turn(key, false);
         }
-        wheelMg.TurnLamp(true, true);
+        wheelMg.WheelLamp(true, true);
         stageCrl.controlScreenMg.KeyChange(key);
         Vector2 force = transform.localScale.x * transform.right * grypsParameter.dashPower[power];
         rb.AddForce(force, ForceMode2D.Impulse);
@@ -449,7 +449,7 @@ public class GrypsController : MonoBehaviour
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
         stageCrl.saltoMg.Release(); //Salto中着地した場合SaltoHudをShutdownさせるために呼ぶ
-        wheelMg.TurnLamp(false, true);
+        wheelMg.WheelLamp(false, true);
     }
 
     private void TakeOff()
@@ -459,6 +459,7 @@ public class GrypsController : MonoBehaviour
         //rb.DORotate(-1 * (int)transform.localScale.x * 10f, 0.5f).SetEase(Ease.OutSine);
     }
 
+    /*
     public void TurnCorner(float distanceHeight, float distanceMoving)
     {
         turnPoint = transform.position.x;
@@ -467,7 +468,7 @@ public class GrypsController : MonoBehaviour
         transform.GetChild(0).position = new Vector3(transform.position.x, transform.position.y + distanceHeight, transform.position.z);
         isTurning = true;
     }
-
+     */
 
     /*
     private void JetCount(int somersaultCount)

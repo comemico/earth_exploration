@@ -6,24 +6,27 @@ using System.Collections.Generic;
 
 public class InformationManager : MonoBehaviour
 {
-    public SaveData data;     // json変換するデータのクラス
-    string filepath;                            // jsonファイルのパス
-    string fileName = "Data.json";              // jsonファイル名
+    [Header("選択されたステージ情報")]
+    public int courseNum;
+    public StageType stageType;
+    public int stageNum;
+    [Range(1, 37)] public int stageLevel;
+
 
     [Header("全エリアのScatterTypeを入れておく")]
     public List<StageInformation> scatterList; //コースエリアをまたいで全部入れる（ScatterTypeステージ）
-
     public int stageAdress;//最後に選択したステージの情報（）
     public enum StageType
     {
         Linear = 0,
         Scatter
     }
-    [Header("選択されたステージ情報")]
-    public int courseNum;
-    public StageType stageType;
-    public int stageNum;
-    [Range(1, 37)] public int stageLevel;
+
+    [Header("セーブデータ")]
+    public SaveData data;     // json変換するデータのクラス
+    string filepath;                            // jsonファイルのパス
+    string fileName = "Data.json";              // jsonファイル名
+
 
     [HideInInspector] public StageFrameManager stageFrameMg;
     ShutterManager shutterMg;
@@ -91,14 +94,13 @@ public class InformationManager : MonoBehaviour
     public void UpdateCourseNumber(int courseNumber = 0)
     {
         this.courseNum = courseNumber;
-        GManager.instance.recentCourseNum = this.courseNum;
         //courseName = (AreaType)Enum.ToObject(typeof(AreaType), courseNumber);
     }
 
     public void StartGame()
     {
-        var sceneName = "Area" + courseNum + stageType + "Stage" + stageNum;
-        shutterMg.CloseToStart(sceneName);
+        var sceneName = "Course[" + courseNum + "]" + stageType + "[" + stageNum + "]";
+        shutterMg.StartGame(sceneName);
 
         data.recentCourseAdress = courseNum;
         data.recentStageAdress = stageAdress;
@@ -122,7 +124,7 @@ public class InformationManager : MonoBehaviour
 
     public void ToTitleScene()
     {
-        shutterMg.CloseToHome("Title");
+        shutterMg.BackHome("Title");
     }
 
 }

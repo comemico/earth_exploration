@@ -10,7 +10,6 @@ public class WheelManager : MonoBehaviour
     [Header("バーナウト値")]
     [NamedArrayAttribute(new string[] { "1段階", "2段階", "3段階", "4段階", "5段階", })]
     [Range(500, 2000)] public int[] burnPower;
-    public int powerLevel;
 
     [Header("前輪 ")]
     public Transform frontTransform;
@@ -23,21 +22,23 @@ public class WheelManager : MonoBehaviour
     public float radiusRear; //CircleCollider2Dコンポーネントをアタッチして、Radiusを確認する
     public Renderer matRear;
     public SpriteRenderer breakPad;
+
+    [Header("WheelLamp")]
+    public float lampDuration;
+    public Ease lampType;
     Tween tween_lampRear;
     bool isGain;
     bool oldJudge;
 
-    [Header("Lamp")]
-    //public float startValue_Lamp;
-    public float lampDuration;
-    public Ease lampType;
+    [Header("ArchedBack : バーナウト時車体を傾ける")]
+    public float arched_Value;
+    public float arched_Time;
+    public float arched_overshoot;
 
-    [Header("ArchedBack")]
-    public float archedValue;
-    public float archedDuration;
-    public Ease archedType;
+    public float arched_Return_Time;
+    public Ease arched_Return_Type;
 
-    [Header("WheelBlade")]
+    [Header("WheelBlade : ブレーキ中タイヤの爪が展開する")]
     public float endValue;
     public float easeDuration;
     public Ease easeType;
@@ -60,21 +61,25 @@ public class WheelManager : MonoBehaviour
 
     private void Update()
     {
-        //後輪のみ
-        if (Mathf.Abs(grypsCrl.rb.velocity.x) <= 20f)
-        {
-            if (grypsCrl.stageCrl.controlScreenMg.gearNum >= 1)
-            {
-                BurnOutWheel(grypsCrl.stageCrl.controlScreenMg.gearNum);
-            }
-        }
-
+        //前輪
         if (Mathf.Abs(grypsCrl.rb.velocity.x) >= 0.5f)
         {
             SpinWheel(frontTransform, factorFront);//前輪
-            if (grypsCrl.stageCrl.controlScreenMg.gearNum >= 1) return;
-            SpinWheel(transform, factorRear);//後輪
         }
+
+        //後輪
+        if (grypsCrl.stageCrl.controlScreenMg.gearNum >= 1)
+        {
+            BurnOutWheel(grypsCrl.stageCrl.controlScreenMg.gearNum);
+        }
+        else
+        {
+            if (Mathf.Abs(grypsCrl.rb.velocity.x) >= 0.5f)
+            {
+                SpinWheel(transform, factorRear);//後輪
+            }
+        }
+
     }
 
     public void SpinWheel(Transform wheel, float factor)
@@ -96,7 +101,15 @@ public class WheelManager : MonoBehaviour
 
     public void BurnOutWheel(int gearNum)
     {
-        transform.Rotate(0f, 0f, -1 * burnPower[gearNum - 1] * Time.deltaTime);
+        Quaternion rot = Quaternion.Euler(0f, 0f, -1 * burnPower[gearNum - 1] * Time.deltaTime);
+        // 現在の自信の回転の情報を取得する。
+        Quaternion q = transform.rotation;
+        // 合成して、自身に設定
+        transform.rotation = rot * q;
+        /*
+        transform.Rotate(new Vector3(0f, 0f, burnPower[gearNum - 1]) * Time.deltaTime);
+        //Quaternion rot = Quaternion.AngleAxis(-1 * burnPower[gearNum - 1] * Time.deltaTime, Vector3.forward);
+         */
     }
 
     public void Judge(int gearNum)
@@ -105,13 +118,13 @@ public class WheelManager : MonoBehaviour
 
         if (oldJudge != isGain)
         {
-            TurnLamp(isGain, false);
+            WheelLamp(isGain, false);
             ArchedBack(isGain);
             oldJudge = isGain;
         }
     }
 
-    public void TurnLamp(bool isGain, bool isFront)
+    public void WheelLamp(bool isGain, bool isFront)
     {
         tween_lampRear = DOTween.To(() => matRear.material.GetFloat("_Power"), x => matRear.material.SetFloat("_Power", x), Convert.ToInt32(isGain), lampDuration).SetEase(lampType);
         if (isFront) tween_lampFront = DOTween.To(() => matFront.material.GetFloat("_Power"), x => matFront.material.SetFloat("_Power", x), Convert.ToInt32(isGain), lampDuration).SetEase(lampType);
@@ -120,8 +133,18 @@ public class WheelManager : MonoBehaviour
 
     public void ArchedBack(bool isGain)
     {
-        grypsCrl.transform.GetChild(0).DOLocalRotate(new Vector3(0f, 0f, archedValue * Convert.ToInt32(isGain)), archedDuration).SetEase(archedType);
+        grypsCrl.transform.GetChild(0).DOKill(true);
 
+        if (isGain)
+        {
+            grypsCrl.transform.GetChild(0).DOLocalRotate(new Vector3(0f, 0f, arched_Value), arched_Time).SetEase(Ease.OutBack, arched_overshoot);
+        }
+        else if (!isGain)
+        {
+            grypsCrl.transform.GetChild(0).DOLocalRotate(Vector3.zero, arched_Return_Time).SetEase(arched_Return_Type);
+        }
+
+        //grypsCrl.transform.GetChild(0).DOLocalRotate(new Vector3(0f, 0f, archedValue * Convert.ToInt32(isGain)), archedDuration).SetEase(Ease.InBack, overshoot);
         //if (isGain)grypsCrl.transform.GetChild(0).DORotate(new Vector3(0f, 0f, 0.25f), 0.05f).SetEase(Ease.OutSine).SetRelative(true).SetLoops(-1, LoopType.Yoyo).SetDelay(archedDuration);
     }
 

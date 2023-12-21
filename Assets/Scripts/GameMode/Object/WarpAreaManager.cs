@@ -86,11 +86,12 @@ public class WarpAreaManager : MonoBehaviour
 
                            var floorNum = GetComponentInParent<FloorManager>().ActiveFloor(destination.transform.parent, -1 * (int)destination.entranceKey);
                            //Camera.main.GetComponent<CinemachineController>().ToFloorVcam(floorNum, (int)destination.entranceKey * (-1));
-
-                           DOVirtual.DelayedCall(Camera.main.GetComponent<CinemachineController>().brain.m_CustomBlends.m_CustomBlends[floorNum].m_Blend.m_Time, () =>
+                           /*
+                           DOVirtual.DelayedCall(Camera.main.GetComponent<CinemachineManager>().brain.m_CustomBlends.m_CustomBlends[floorNum].m_Blend.m_Time, () =>
                            {
                                grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, destination.dashPower);
                            }, false);
+                            */
                        });
             }
         }

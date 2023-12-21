@@ -12,7 +12,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     StageCtrl stageCrl;
     GrypsController grypsCrl;
-    CinemachineController cinemachineCrl;
+    CinemachineManager cinemachineMg;
 
     [Header("デバックモード切替ボタン")]
     public bool isDebugMode;
@@ -45,7 +45,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         stageCrl = transform.root.GetComponent<StageCtrl>();
         grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
-        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
         movingMaskMg = transform.parent.GetComponentInChildren<MovingMaskManager>();
         tutorialMg = transform.parent.GetComponentInChildren<TutorialManager>();
         bowMg = transform.parent.GetComponentInChildren<BowManager>();
@@ -179,7 +179,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         this.key = key;
         bowMg.StartDrawBow(key);
-        cinemachineCrl.ChangeDirection(key);
+        cinemachineMg.ChangeDirection(key);
         stageCrl.saltoMg.transform.localScale = new Vector3(key, 1f, 1f);
         oldKey = key;//更新
     }

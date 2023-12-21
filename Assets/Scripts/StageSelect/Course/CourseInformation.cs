@@ -3,23 +3,9 @@ using UnityEngine.UI;
 
 public class CourseInformation : MonoBehaviour
 {
-    public enum CourseNumber
-    {
-        Course_01 = 0,
-        Course_02,
-        Course_03,
-        Course_04,
-        Course_05,
-        Course_06,
-        Course_07,
-        Course_08,
-        Course_09,
-        Course_10
-    }
+    [Range(0, 10)] public int courseNumber;
 
-    public CourseNumber courseNumber;
     public string courseName;
-
 
     public RectTransform RectTransform => transform as RectTransform;
     private CourseController courseCtrl;

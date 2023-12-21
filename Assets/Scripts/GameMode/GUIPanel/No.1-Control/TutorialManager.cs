@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -18,7 +16,7 @@ public class TutorialManager : MonoBehaviour
 
     void Initialize()
     {
-        boostCanvas = boostMark.GetComponent<CanvasGroup>();
+        boostCanvas = GetComponent<CanvasGroup>();
         boostCanvas.alpha = 0f;
     }
     public void LeadBoost()
@@ -36,7 +34,7 @@ public class TutorialManager : MonoBehaviour
 
     public void HideLeadMark()
     {
-        boostCanvas.alpha = 0f;
+        // boostCanvas.alpha = 0f;
         sequence.Kill(true);
         //boostMark.transform.gameObject.SetActive(false);
     }

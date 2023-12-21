@@ -5,11 +5,11 @@ public class FloorManager : MonoBehaviour
 {
     [Header("フロア配列")]
     public Transform[] colBox;
-    CinemachineController cinemachineCrl;
+    CinemachineManager cinemachineMg;
 
     private void Start()
     {
-        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
         /*
         floor = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
@@ -47,12 +47,13 @@ public class FloorManager : MonoBehaviour
         FalseCollider();
         int floorNumber = Array.IndexOf(colBox, gateObject);
 
+        cinemachineMg.ChangeDirection(key);
+
         for (int i = 0; i < colBox[floorNumber].childCount; i++)
         {
             colBox[floorNumber].GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
 
-        // cinemachineCrl.ToFloorVcam(floorNumber, key);//不完全
 
         return floorNumber;
     }

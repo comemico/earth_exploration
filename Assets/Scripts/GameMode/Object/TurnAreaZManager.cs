@@ -5,14 +5,14 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Rendering;
 
-public class TurnAreaManager : MonoBehaviour
+public class TurnAreaZManager : MonoBehaviour
 {
     [Header("ターン後の位置")]
-    public TurnAreaManager destination;
+    public TurnAreaZManager destination;
 
     [Header("Tween : Sprite.Move")]
-    [Range(0f, 0.5f)] public float easeDuration = 0.2f;
-    public Ease easeType = Ease.OutSine;
+    [Range(0f, 10f)] public float easeDuration;
+    public Ease easeType;
 
     GrypsController grypsCrl;
     [HideInInspector] public bool isTurn;
@@ -38,8 +38,6 @@ public class TurnAreaManager : MonoBehaviour
                 entranceKey = (ENTRANCE_KEY)(int)Mathf.Sign(grypsCrl.rb.velocity.x);
             }
         }
-        /*
-         */
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -48,16 +46,23 @@ public class TurnAreaManager : MonoBehaviour
         {
             if ((int)entranceKey != (int)grypsCrl.transform.localScale.x && !isTurn)//侵入時の向きから変わった場合
             {
-                distanceHeight = grypsCrl.transform.position.y - destination.transform.position.y;
-                //grypsCrl.TurnCorner(distanceHeight, distanceMoving);
-                grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder;
-                grypsCrl.transform.GetChild(0).position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y + distanceHeight, destination.transform.parent.position.z);
-                grypsCrl.transform.GetChild(0).DOLocalMoveY(0f, easeDuration).SetEase(easeType);
-
-                grypsCrl.transform.rotation = Quaternion.Euler(Vector3.zero);
-                grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, destination.transform.position.y, grypsCrl.transform.position.z);
                 GetComponentInParent<FloorManager>().TurnFloor(destination.transform.parent);
 
+                distanceHeight = grypsCrl.transform.position.z - destination.transform.parent.position.z;
+                Debug.Log(distanceHeight);
+                //.colが0 => 0.5 ,spriteは => -0.5 (0 - 0.5 = -0.5 ) => (col - sprite = distance) => distance値をspriteに貼り付ける
+                //.colが0.5 => 0 ,spriteは => +0.5 (0.5 - 0 = 0.5 )
+                //sprite => 0へ
+
+                grypsCrl.transform.rotation = Quaternion.Euler(Vector3.zero);
+                grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y, destination.transform.position.z); // new Vector3(grypsCrl.transform.position.x, destination.transform.position.y, grypsCrl.transform.position.z);
+
+                grypsCrl.transform.GetChild(0).position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y, grypsCrl.transform.position.z + distanceHeight);
+
+                grypsCrl.transform.GetChild(0).DOKill(true);
+                grypsCrl.transform.GetChild(0).DOLocalMoveZ(0f, easeDuration).SetEase(easeType);
+
+                grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder;
                 destination.isTurn = true;
                 isTurn = true;
             }

@@ -35,14 +35,14 @@ public class ClearGateManager : MonoBehaviour
     public Ease fadeType;
 
     GrypsController grypsCrl;
-    CinemachineController cinemachineCrl;
+    CinemachineManager cinemachineCrl;
     BoxCollider2D boxCol;
     const int DISTANCE_SUCKEDIN = 6;
 
     private void Start()
     {
         FalseMask(GATE_KEY.both);
-        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        cinemachineCrl = Camera.main.GetComponent<CinemachineManager>();
         boxCol = GetComponent<BoxCollider2D>();
     }
 

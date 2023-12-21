@@ -12,15 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes_&_Prefabs/Scenes/Select/StageSelect.unity
     guid: 567ae31a569176743811c63b56683093
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage0.unity
-    guid: 1741fbe45c3b2284ba3e55c65b55cb78
+    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[0].unity
+    guid: b8e17cb607febb146944559efeacc3f9
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage1.unity
+    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[1].unity
     guid: df6240f53f7af2d49838ff1bad05a54f
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage2.unity
+    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[2].unity
     guid: a81e57169b69298458b43b82e1034cfc
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Area0LinearStage3.unity
+    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[3].unity
     guid: b8f6eaa87af4b8d4f94774905ba6f149
   m_configObjects: {}

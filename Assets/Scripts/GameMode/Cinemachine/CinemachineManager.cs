@@ -1,99 +1,109 @@
 using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
-using UnityEngine.UI;
 
 public class CinemachineManager : MonoBehaviour
 {
-    [Header("VirtualCamera配列")] public CinemachineVirtualCamera[] vcamFloor;//編集不可
-    [Header("ターゲット")] public Transform player;
-    [Header("ScreenX:中央からの距離")] public float screenX;
-    [Header("Screen:遷移時間")] public float time = 1.0f;
-    [Header("イージングの種類")] public Ease easeType;
-    [Header("field of view")] public Text fieldOfView;
-    [Header("fieldOfViewBox")] public int[] fieldOfViewBox;
+    [Header("ScreenRange : 進行方向へカメラをずらす設定")]
+    [Range(0.1f, 0.5f)] public float range = 0.15f;
+    public float turnDuration = 0.5f;
+    public Ease turnType = Ease.OutQuad;
+    Tween tween_turn;
 
-    private CinemachineBrain brain;
-    private CinemachineVirtualCamera vcamTransition;
-    private CinemachineFramingTransposer framingTransposer;
-    private CinemachineFramingTransposer framingTransposerTransition;
-    private int vcamNum;
-    private int vcamKey;
+    [Header("ScreenZoom : カメラのズーム設定")]
+    [Range(0.25f, 1.0f)] public float fovDuration = 0.35f;
+    public Ease fovType = Ease.Linear;
+    public int defaultFov = 110;
+    [Range(1f, 3f)] public float fovDeDuration = 1.25f;
+    public Ease fovDeType = Ease.Linear;
+    Tween tween_fov;
 
-    void Start()
+    public CinemachineVirtualCamera cinemachineVirtualCamera; //m_Lens.～ の変更に使用する
+
+    public CinemachineFramingTransposer framingTransposer; //Screen Xの変更に使用する
+
+    /*
+    public CinemachineBrain brain; //多分使わない
+    public CinemachineVirtualCamera[] vcamFloor;//編集不可
+    public CinemachineVirtualCamera nearestVC;
+     */
+
+    private void Awake()
     {
-        brain = GetComponent<CinemachineBrain>();
-        vcamFloor = GetComponentsInChildren<CinemachineVirtualCamera>();
-        vcamTransition = transform.GetChild(1).GetChild(0).GetComponent<CinemachineVirtualCamera>();
+        cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+        framingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+    }
+    private void Start()
+    {
 
-        framingTransposer = vcamFloor[1].GetCinemachineComponent<CinemachineFramingTransposer>();
-        framingTransposerTransition = vcamTransition.GetCinemachineComponent<CinemachineFramingTransposer>();
-
+        //framingTransposer.m_ScreenX = 0.5f - (-1 * range);
+        //  brain = GetComponent<CinemachineBrain>();
+        //  vcamFloor = GetComponentsInChildren<CinemachineVirtualCamera>();
+        //  framingTransposer = vcamFloor[1].GetCinemachineComponent<CinemachineFramingTransposer>();
+        //  activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
     }
 
-    void FixedUpdate()
-    {
-        if (brain.IsLive(vcamTransition))//遷移カメラがLiveになった時
-        {
-            if (brain.ActiveBlend.BlendWeight >= 0.55f)
-            {
-                ToFloorVcam(vcamNum);
-                //player.GetComponent<GrypsManager>().ExitWarp(1);
-            }
-        }
-
-        //fieldOfView.text = "field_of_view : " + (int)brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView;
-        //↑負荷が大きいので実装時は消す
-    }
-
+    /*
     public void AttachFramingTransposer(int floorNum)//Timelineで開始カメラがLive状態の時に発火させる
     {
         framingTransposer = null;
         framingTransposer = vcamFloor[floorNum].GetCinemachineComponent<CinemachineFramingTransposer>();
     }
-
-    public void ToTransitionVcam(int floorNum, Transform destination)
-    {
-        brain.ActiveVirtualCamera.Follow = null;
-        brain.ActiveVirtualCamera.Priority = 0;
-        vcamTransition.Follow = player;
-        vcamTransition.Priority = 10;
-        vcamNum = floorNum;
-        vcamKey = (int)destination.localScale.x;//出口の向き
-        framingTransposerTransition.m_ScreenX = 0.5f - (vcamKey * screenX);
-    }
-
-    private void ToFloorVcam(int floorNum)
+    public void ToFloorVcam(int floorNum, int destinationKey)
     {
         AttachFramingTransposer(floorNum);
-        framingTransposer.m_ScreenX = 0.5f - (vcamKey * screenX);
+        framingTransposer.m_ScreenX = 0.5f - (destinationKey * range);
 
-        brain.ActiveVirtualCamera.Follow = null;
-        brain.ActiveVirtualCamera.Priority = 0;
-        vcamFloor[floorNum].Follow = player;
+        for (int i = 0; i < vcamFloor.Length; i++)
+        {
+            vcamFloor[i].Priority = 0;
+            vcamFloor[i].Follow = null;
+        }
         vcamFloor[floorNum].Priority = 10;
+        vcamFloor[floorNum].Follow = grypsSprite;
     }
-
+     */
 
     public void ChangeDirection(int key)
     {
-        DOTween.To(() => framingTransposer.m_ScreenX,
-            x => framingTransposer.m_ScreenX = x,
-            0.5f - (key * screenX), time)
-            .SetEase(easeType);
+        //tween_screenX.Kill(true);
+        //tween_turn =
+        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f - (key * range), turnDuration).SetEase(turnType);
     }
 
-
-    public void ZoomCamera(int boxNum = 0, float time = 1.0f, Ease type = 0)
+    public void StartDirection(float screenX)
     {
-        CinemachineVirtualCamera activeVC;
-        activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-
-        DOTween.To(() => activeVC.m_Lens.FieldOfView,
-       x => activeVC.m_Lens.FieldOfView = x,
-        fieldOfViewBox[boxNum], time)
-       .SetEase(type);
+        //tween_turn =
+        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, screenX, 1.5f).SetEase(Ease.InOutSine);
     }
 
+    public void ClearDirection(float screenX)
+    {
+        //tween_turn = 
+        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, screenX, 1.5f).SetEase(Ease.InOutSine);
+        //tween_turn = 
+        DOTween.To(() => framingTransposer.m_DeadZoneHeight, x => framingTransposer.m_DeadZoneHeight = x, 0f, 1.5f).SetEase(Ease.OutSine);
+    }
+
+    public void Zoom(int fov)
+    {
+        tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.FieldOfView, x => cinemachineVirtualCamera.m_Lens.FieldOfView = x, fov, fovDuration).SetEase(fovType);
+        /*
+        //tween_fov.Kill(false);
+        //cinemachineVirtualCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+        if (nearestVC != cinemachineVirtualCamera)
+        {
+            //Debug.Log("activeVC変更");
+            nearestVC = cinemachineVirtualCamera;
+        }
+         */
+    }
+
+    public void DefaultZoom()
+    {
+        tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.FieldOfView, x => cinemachineVirtualCamera.m_Lens.FieldOfView = x, defaultFov, fovDeDuration).SetEase(fovDeType);
+        //tween_fov.Kill(false);
+        //cinemachineVirtualCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+    }
 
 }

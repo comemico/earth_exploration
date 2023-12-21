@@ -38,7 +38,7 @@ public class JetManager : MonoBehaviour
     Tween tween_time;
 
     StageCtrl stageCrl;
-    CinemachineController cinemachineCrl;
+    CinemachineManager cinemachineCrl;
     //public GrypsController grypsCrl;
     public JetGUIManager jetGuiMg;
 
@@ -53,7 +53,7 @@ public class JetManager : MonoBehaviour
         chargeRingCanGrp = chargeRing.GetComponent<CanvasGroup>();
         chargeRingImg = chargeRing.GetChild(1).GetComponent<Image>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
-        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        cinemachineCrl = Camera.main.GetComponent<CinemachineManager>();
     }
 
     private void Start()

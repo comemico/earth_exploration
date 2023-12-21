@@ -26,7 +26,7 @@ public class StartGateManager : MonoBehaviour
     public float fadeDuration;
     public Ease fadeType;
 
-    CinemachineController cinemachineCrl;
+    CinemachineManager cinemachineMg;
     BoxCollider2D boxCol;
     FloorManager floorMg;
     GrypsController grypsCrl;
@@ -34,12 +34,12 @@ public class StartGateManager : MonoBehaviour
     const int DISTANCE_GATE = 4;
     const int APPEARENCE_HEIGHT = 1;
 
-    private void Awake()
+    private void Start()
     {
-        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
-        FalseMask(gateKey);
+        cinemachineMg = Camera.main.GetComponent<CinemachineManager>();
         floorMg = GetComponentInParent<FloorManager>();
         boxCol = GetComponent<BoxCollider2D>();
+        FalseMask(gateKey);
     }
 
     public void SetStartPosition(GameObject gryps) //StageCrlÇ©ÇÁç≈èâÇ…åƒÇŒÇÍÇÈÅEà íuÇ®Ç´
@@ -63,13 +63,13 @@ public class StartGateManager : MonoBehaviour
             case GATE_KEY.left:
                 left.enabled = false;
                 right.enabled = true;
-                cinemachineCrl.StartDirection(0.75f);
+                // cinemachineCrl.StartDirection(0.75f);
                 break;
 
             case GATE_KEY.right:
                 left.enabled = true;
                 right.enabled = false;
-                cinemachineCrl.StartDirection(0.1f);
+                // cinemachineCrl.StartDirection(0.1f);
                 break;
         }
     }

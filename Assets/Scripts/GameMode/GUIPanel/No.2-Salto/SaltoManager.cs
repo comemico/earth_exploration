@@ -32,13 +32,13 @@ public class SaltoManager : MonoBehaviour
     int saltoNum;
     public bool isSalto;
     StageCtrl stageCrl;
-    CinemachineController cinemachineCrl;
+    CinemachineManager cinemachineCrl;
     //GrypsController grypsCrl;
 
     private void Start()
     {
         stageCrl = transform.root.GetComponent<StageCtrl>();
-        cinemachineCrl = Camera.main.GetComponent<CinemachineController>();
+        cinemachineCrl = Camera.main.GetComponent<CinemachineManager>();
     }
 
     public void JugeSaltoMode(float gageTime)

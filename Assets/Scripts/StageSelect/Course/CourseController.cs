@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 
 public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    [Header("取得&確認")]
-    public GameObject Course;
+    [Header("コース番号と位置情報を使用する")]
     public List<CourseInformation> courseInfoList;
 
     [Header("ドラッグ～アニメーション中かどうか")]
@@ -60,10 +59,12 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
     public void InitializedStagePosition(int initialValue)
     {
+        /*
         for (int i = 0; i < Course.transform.childCount; i++)
         {
             courseInfoList.Add(Course.transform.GetChild(i).GetComponent<CourseInformation>());
         }
+         */
 
         courseFrameMg.RectTransform.anchoredPosition = new Vector2(maxValue_Distance, courseInfoList[initialValue].RectTransform.anchoredPosition.y);
 
@@ -84,10 +85,9 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     private void Update()
     {
         UpdateSelection();
-        if (!isDragging)
-        {
-            return;
-        }
+
+        if (!isDragging) return;
+
         if (nearestNumber != (int)NearestCourseInfo().courseNumber)
         {
             CourseInformation courseInfo = NearestCourseInfo();
@@ -135,7 +135,7 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
     public void OnBeginDrag(PointerEventData e)
     {
-        tweenList.KillAllAndClear();
+        //tweenList.KillAllAndClear();
         isDragging = true;
     }
 
@@ -144,7 +144,6 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         MagnetItems(NearestCourseInfo().RectTransform.anchoredPosition.y, DEFAULT);
     }
 
-    private void DragCompleted() => isDragging = false;
 
     private CourseInformation NearestCourseInfo()// マグネット中心に最も近い要素を選択する
     {
@@ -183,6 +182,7 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
              */
         }
     }
+
     public void MoveDownArea()
     {
         int nearestNum = (int)NearestCourseInfo().courseNumber;
@@ -213,24 +213,38 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         courseFrameMg.RectTransform.DOAnchorPosY(-targetY, duration).SetRelative(true).SetEase(courseType);
         courseFrameMg.SelectCourse();
 
+
         for (int i = 0; i < courseInfoList.Count; i++)
         {
             Tween t = courseInfoList[i].RectTransform.DOAnchorPosY(-targetY, duration).SetRelative(true).SetEase(courseType);
 
             if (i <= courseInfoList.Count)
             {
-                Sequence sequence = DOTween.Sequence();
-                sequence.Append(t);
-                sequence.AppendCallback(DragCompleted);
-                tweenList.Add(sequence);
+                Sequence move = DOTween.Sequence();
+                move.Append(t);
+                move.OnComplete(DragComplete);
+                tweenList.Add(move);
             }
             else
             {
                 tweenList.Add(t);
             }
+
         }
     }
+    private void DragComplete() => isDragging = false;
 
+    public void SelectionEnable(int courseNum)
+    {
+        foreach (var item in courseInfoList)//全てのImageのenableをOff
+        {
+            item.CheckEnable(false);
+        }
+        courseInfoList[courseNum].CheckEnable(true);
+
+    }
+
+    /*
     public void FadeOutItems()
     {
         courseFrameMg.RectTransform.DOAnchorPosY(650f, fadeDuration).SetRelative(true).SetEase(courseType);
@@ -251,16 +265,6 @@ public class CourseController : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             }
         }
     }
-
-    public void SelectionEnable(int courseNum)
-    {
-        foreach (var item in courseInfoList)//全てのImageのenableをOff
-        {
-            item.CheckEnable(false);
-        }
-        courseInfoList[courseNum].CheckEnable(true);
-
-    }
-
+     */
 
 }

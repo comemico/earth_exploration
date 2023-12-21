@@ -18,7 +18,7 @@ public class ZoomManager : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            cinemachineMg.ZoomCamera(boxNum, time, easeType);
+            //cinemachineMg.Zoom(boxNum, time, easeType);
         }
 
     }

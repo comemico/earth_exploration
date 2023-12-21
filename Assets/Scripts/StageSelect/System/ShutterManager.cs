@@ -7,178 +7,179 @@ using DG.Tweening;
 
 public class ShutterManager : MonoBehaviour
 {
-    public RectTransform homePanel;
-    public float initialHomeY;
+    [Header("StartUp : 開始時の演出")] //開始時の演出
+    [Space(10)]
+    [Range(0.1f, 0.5f)]
+    public float startUp_FadeIn_Time = 0.2f;
+    public Ease startUp_FadeIn_Type = Ease.OutSine;
+    [Space(10)]
+    [Range(0.1f, 0.25f)]
+    public float startUp_Button_Time = 0.25f;
+    public Ease startUp_Button_Type = Ease.OutQuint;
+    [Space(10)]
+    [Range(12f, 100f)]
+    public float startUp_ringIn_Speed = 20;
 
-    public RectTransform startPanel;
-    public Image startRingIn;
-    public Image startRingOut;
 
-    public float initialStartY;
+    [Header("StartGame : スタートボタン押下時の演出")]
+    [Space(10)]
+    public float startGame_Ring_Distance = 100; //回転量
+    public float startGame_Ring_Scale = 0.5f; //拡大・縮小値
+    public float startGame_Ring_Time = 0.5f; //回転時間
+    public Ease startGame_Ring_Type_Rotate = Ease.OutSine;
+    public float intervalTime;
+    [Space(10)]
+    public float startGame_Ring_FadeTime = 0.2f; //消失時間
+    public Ease startGame_Ring_Type_FadeTime = Ease.OutQuad;
+    [Space(10)]
+    [Range(0.1f, 0.5f)]
+    public float startGame_FadeOut_Time = 0.2f;
+    public Ease startGame_FadeOut_Type = Ease.OutQuad;
 
-    [Header("BackPanel")]
-    public Image backPanel;
-    [Range(0.1f, 0.5f)] public float fadeInDuration;
-    public Ease fadeInType;
-    [Range(0.1f, 0.5f)] public float fadeOutDuration;
-    public Ease fadeOutType;
 
-    [Header("Icon")]
-    public CanvasGroup icon;
+
+    [Header("BackHome : ホームボタン押下時の演出")]
+    [Space(10)]
+    [Range(0.1f, 0.5f)]
+    public float backHome_FadeOut_Time = 0.3f;
+    public Ease backHome_FadeOut_Type = Ease.OutSine;
+
+
+    [Header("Icon : ロードマーク")]
+    [Space(10)]
     [Range(0.1f, 0.5f)] public float iconDuration;
     public Ease iconType;
-    public Image iconEmi;
     public Color loadColor;
     public Color normalColor;
 
-    [Header("StartRing")]
-    [Range(12f, 100f)] public float ringOutDuration;
-    [Range(12f, 100f)] public float ringInDuration;
-    public float rotateValue;
-    public float rotateDuration;
-    public Ease rotateType;
-    public float fadeDuration;
-    public Ease fadeType;
-    public float scaleDuration;
-    public Ease scaleType;
-    public float intervalTime;
 
-    Tween ringOut;
-    Tween ringIn;
-
-    [Header("RectMove")]
-    [Range(0.1f, 0.25f)] public float firstDuration;
-    public Ease firstType;
+    [Space(20)]
 
 
-    [Header("シーンに移れるかのシグナル")]
+    [Header("GetCompenent")]
+    [Space(10)]
+    public Image curtain;
+
+    public Image ringIn;
+
+    public RectTransform home;
+    public RectTransform start;
+    const float INI_HOME = 220;
+    const float INI_START = -110;
+
+    public CanvasGroup icon;
+    public Image iconEmi;
+
+
     public bool isCompleteShutter;
+    Tween t_ringIn;
+
+    InformationManager informationMg;
+    CourseController courseCtrl;
+
     AsyncOperation async;
-    public InformationManager informationMg;
-    public CourseController courseCtrl;
-    private List<Tween> tweenList = new List<Tween>();
+    List<Tween> tweenList = new List<Tween>();
 
     private void OnDestroy()
     {
-        //tweenList.Add(ringOut);
-        //tweenList.Add(ringIn);
+        t_ringIn.Kill();
         tweenList.KillAllAndClear();
     }
 
     void Start()
     {
         Initialize();
-        OpenShutter(false);
+        StartUp();
     }
 
     void Initialize()
     {
         informationMg = GetComponent<InformationManager>();
+        courseCtrl = GetComponentInChildren<CourseController>();
 
-        homePanel.anchoredPosition = new Vector2(0f, initialHomeY);
-        startPanel.anchoredPosition = new Vector2(0f, initialStartY);
-
-        backPanel.color = Color.black;
+        home.anchoredPosition = new Vector2(0f, INI_HOME);
+        start.anchoredPosition = new Vector2(0f, INI_START);
+        curtain.color = Color.black;
         icon.alpha = 1f;
         iconEmi.color = normalColor;
 
-        ringOut = startRingOut.rectTransform.DOLocalRotate(new Vector3(0, 0, 360f), ringOutDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
-        ringIn = startRingIn.rectTransform.DOLocalRotate(new Vector3(0, 0, 360f), ringInDuration, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
-
+        t_ringIn = ringIn.rectTransform.DOLocalRotate(new Vector3(0, 0, 360f), startUp_ringIn_Speed, RotateMode.LocalAxisAdd)
+            .SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear).SetRelative(true);
     }
 
-    public void OpenShutter(bool isComplete)
+    void StartUp()
     {
-        isCompleteShutter = false;
+        Sequence s_startUp = DOTween.Sequence().SetUpdate(false);
 
-        Sequence seq_open = DOTween.Sequence().SetUpdate(false);
-        seq_open.AppendInterval(0.35f);
-        seq_open.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
-        seq_open.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
+        s_startUp.Append(curtain.DOFade(0f, startUp_FadeIn_Time).SetEase(startUp_FadeIn_Type));
+        s_startUp.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
 
-        seq_open.AppendInterval(0.3f);
-        seq_open.AppendCallback(() => courseCtrl.MoveCourse(informationMg.data.recentCourseAdress, courseCtrl.fadeDuration));
+        s_startUp.AppendInterval(0.3f);
+        s_startUp.AppendCallback(() => courseCtrl.MoveCourse(informationMg.data.recentCourseAdress, courseCtrl.fadeDuration));
 
-        seq_open.AppendInterval(0.55f);
-        seq_open.Append(homePanel.DOAnchorPosY(0f, firstDuration).SetEase(firstType));
-        seq_open.Join(startPanel.DOAnchorPosY(-1 * initialStartY, firstDuration).SetEase(firstType));
+        s_startUp.AppendInterval(0.5f);
+        s_startUp.Append(home.DOAnchorPosY(0f, startUp_Button_Time).SetEase(startUp_Button_Type));
+        s_startUp.Join(start.DOAnchorPosY(-INI_START, startUp_Button_Time).SetEase(startUp_Button_Type));
 
-        tweenList.Add(seq_open);
-
-        if (isComplete)
-        {
-            seq_open.Complete();
-        }
+        tweenList.Add(s_startUp);
     }
 
-    public void CloseToHome(string sceneName)
+    public void StartGame(string sceneName)//Scene移動処理
     {
-        backPanel.raycastTarget = true;
-        iconEmi.color = loadColor;
-
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
 
-        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad)
-        .OnComplete(() =>
-        {
-            Tween emiLoop = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
-            .OnStepComplete(() =>
-            {
-                CheckLoad();//ループ一回毎に (progress >= 0.9f) か判定する
-            }
-            );
-            tweenList.Add(emiLoop);//ループをkillことでエラーを出さないようにする
-        }
-        );
+        curtain.raycastTarget = true;
 
-        Sequence seq_close = DOTween.Sequence();
-        seq_close.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
-        seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
-        seq_close.AppendCallback(() =>
-        {
-            ringOut.Kill(false);
-            ringIn.Kill(false);
-        });
-        tweenList.Add(seq_close);
+        LoadIcon(0.85f);
+
+        Sequence s_StartGame = DOTween.Sequence();
+
+        s_StartGame.Append(ringIn.rectTransform.DOLocalRotate(new Vector3(0, 0, startGame_Ring_Distance), startGame_Ring_Time).SetEase(startGame_Ring_Type_Rotate).SetRelative(true));
+        s_StartGame.Join(ringIn.rectTransform.DOScale(startGame_Ring_Scale, startGame_Ring_Time).SetEase(startGame_Ring_Type_Rotate));
+        s_StartGame.Join(ringIn.DOFade(0f, startGame_Ring_FadeTime).SetEase(startGame_Ring_Type_FadeTime).SetDelay(intervalTime));
+
+        s_StartGame.Append(curtain.DOFade(1f, startGame_FadeOut_Time).SetEase(startGame_FadeOut_Type));
+        s_StartGame.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
+
+        tweenList.Add(s_StartGame);
     }
 
-    public void CloseToStart(string sceneName)//Scene移動処理
+    public void BackHome(string sceneName)
     {
-        backPanel.raycastTarget = true;
-        iconEmi.color = loadColor;
-
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
 
-        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad).SetDelay(0.85f)
-        .OnComplete(() =>
-        {
-            Tween emiLoop = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
-            .OnStepComplete(() =>
-            {
-                CheckLoad();//ループ一回毎に (progress >= 0.9f) か判定する
-            }
-            );
-            tweenList.Add(emiLoop);//ループをkillことでエラーを出さないようにする
-        }
-        );
+        curtain.raycastTarget = true;
+
+        LoadIcon(0.85f);
 
         Sequence seq_close = DOTween.Sequence();
-        seq_close.AppendCallback(() =>
-        {
-            ringOut.Kill(false);
-            ringIn.Kill(false);
-        });
-        seq_close.Append(startRingOut.rectTransform.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
-        seq_close.Join(startRingIn.rectTransform.DOLocalRotate(new Vector3(0, 0, rotateValue), rotateDuration).SetEase(rotateType).SetRelative(true));
-        seq_close.Join(startRingIn.rectTransform.DOScale(1.1f, scaleDuration).SetEase(scaleType));
-        seq_close.Join(startRingOut.DOFade(0f, fadeDuration).SetEase(fadeType).SetDelay(intervalTime));
-        seq_close.Join(startRingIn.DOFade(0f, fadeDuration).SetEase(fadeType).SetDelay(intervalTime));
-
-        seq_close.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
+        seq_close.Append(curtain.DOFade(1f, startGame_FadeOut_Time).SetEase(startGame_FadeOut_Type));
         seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
+        seq_close.AppendCallback((TweenCallback)(() =>
+        {
+            TweenExtensions.Kill(this.t_ringIn, (bool)false);
+        }));
         tweenList.Add(seq_close);
+    }
+
+    void LoadIcon(float delay)
+    {
+        iconEmi.color = loadColor;
+
+        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad).SetDelay(delay)
+       .OnComplete(() =>
+       {
+           Tween emiLoop = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)
+           .OnStepComplete(() =>
+           {
+               CheckLoad();//ループ一回毎に (progress >= 0.9f) か判定する
+           }
+           );
+           tweenList.Add(emiLoop);//ループをkillことでエラーを出さないようにする
+       }
+       );
     }
 
     public void CheckLoad()
@@ -189,38 +190,5 @@ public class ShutterManager : MonoBehaviour
             async.allowSceneActivation = true;
         }
     }
-
-    /*
-    public void ShutterClose(bool isComplete)
-    {
-        Sequence seq_close = DOTween.Sequence();
-
-        seq_close.AppendInterval(0.25f);
-
-        seq_close.AppendCallback(() => courseCtrl.FadeOutItems());
-        seq_close.AppendInterval(courseCtrl.fadeDuration);
-
-        seq_close.Append(startPanel.DOAnchorPosY(initialStartY, secondDuration).SetEase(secondType));
-
-        seq_close.Append(homePanel.DOAnchorPosX(initialHomeY, firstDuration).SetEase(firstType));
-
-        seq_close.AppendInterval(0.1f);
-
-
-        seq_close.OnComplete(() =>
-        {
-            FadeCanvasManager.instance.CheckLoad();
-            isCompleteShutter = true;
-        });
-
-        tweenList.Add(seq_close);
-
-        if (isComplete)
-        {
-            seq_close.Complete();
-        }
-
-    }
-     */
 
 }

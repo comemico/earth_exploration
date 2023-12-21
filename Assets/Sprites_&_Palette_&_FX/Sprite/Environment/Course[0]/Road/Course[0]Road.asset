@@ -10,15 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
-  m_Name: Road_001
+  m_Name: Course[0]Road
   m_EditorClassIdentifier: 
   m_Angles:
-  - m_Start: -180
-    m_End: 180
+  - m_Start: -45
+    m_End: 45
     m_Order: 0
     m_Sprites:
-    - {fileID: 2109625029, guid: 7b977c4b31ee9134aa4245abb8fb162e, type: 3}
-  m_FillTexture: {fileID: 0}
+    - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
+    - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
+    - {fileID: 21300000, guid: fd294e0024b9c95438403f5480807dae, type: 3}
+  - m_Start: -135
+    m_End: -45
+    m_Order: 0
+    m_Sprites:
+    - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - m_Start: -225
+    m_End: -135
+    m_Order: 0
+    m_Sprites: []
+  - m_Start: 45
+    m_End: 135
+    m_Order: 0
+    m_Sprites:
+    - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: efeb3b6865867464a8b071b90be4ab42, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:
@@ -45,4 +61,4 @@ MonoBehaviour:
     m_Sprites:
     - {fileID: 0}
   m_FillOffset: 0
-  m_UseSpriteBorders: 1
+  m_UseSpriteBorders: 0

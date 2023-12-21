@@ -265,7 +265,7 @@ RectTransform:
   - {fileID: 3366905526995257338}
   - {fileID: 3366905526045267113}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -319,7 +319,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.474
+  m_Value: 0.517
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
