@@ -11,7 +11,7 @@ public class GrypsController : MonoBehaviour
     public MemoryGageManager memoryGageMg;
     [HideInInspector] public GrypsParameter grypsParameter;
     [HideInInspector] public WheelManager wheelMg;
-    EffectManager effectManager;
+    [HideInInspector] public EffectManager effectManager;
     GroundCheck ground;
 
     public bool isBrake;

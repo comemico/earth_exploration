@@ -130,7 +130,7 @@ public class ResultManager : MonoBehaviour
 
         result.text = clear;
         result.color = new Color(1, 1, 1, 0);
-        result.rectTransform.anchoredPosition = new Vector3(-300f, -645f, 0f);
+        result.rectTransform.anchoredPosition = new Vector3(-300f, -700f, 0f);
 
         Sequence seq_clear = DOTween.Sequence();
         seq_clear.Append(result.rectTransform.DOAnchorPosX(0f, slideDuration).SetEase(slideType, 3));

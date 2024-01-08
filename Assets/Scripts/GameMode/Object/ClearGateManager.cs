@@ -42,7 +42,7 @@ public class ClearGateManager : MonoBehaviour
     private void Start()
     {
         FalseMask(GATE_KEY.both);
-        cinemachineCrl = Camera.main.GetComponent<CinemachineManager>();
+        cinemachineCrl = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
         boxCol = GetComponent<BoxCollider2D>();
     }
 

@@ -45,11 +45,11 @@ TagManager:
   - name: BackGround
     uniqueID: 2039801767
     locked: 0
-  - name: UI_Panel
-    uniqueID: 3323430753
-    locked: 0
   - name: Ground
     uniqueID: 644151655
+    locked: 0
+  - name: Player
+    uniqueID: 2652560283
     locked: 0
   - name: GroundEdge
     uniqueID: 1766489485
@@ -60,18 +60,6 @@ TagManager:
   - name: Object_Back
     uniqueID: 1532981893
     locked: 0
-  - name: Wheel
-    uniqueID: 3477387617
-    locked: 0
-  - name: Body_Back
-    uniqueID: 2492844991
-    locked: 0
-  - name: Body_Front
-    uniqueID: 790923827
-    locked: 0
-  - name: Player
-    uniqueID: 801511075
-    locked: 0
   - name: Effect_Front
     uniqueID: 1587155207
     locked: 0
@@ -80,9 +68,6 @@ TagManager:
     locked: 0
   - name: UI_Player
     uniqueID: 816626473
-    locked: 0
-  - name: EmptyLayer
-    uniqueID: 2134898537
     locked: 0
   - name: FadeCanvas
     uniqueID: 3309555037

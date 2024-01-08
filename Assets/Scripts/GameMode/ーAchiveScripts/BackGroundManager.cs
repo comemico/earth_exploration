@@ -20,6 +20,7 @@ public class BackGroundManager : MonoBehaviour
         startPos = transform.position;
     }
 
+
     private void LateUpdate()
     {
         Vector3 position = startPos;

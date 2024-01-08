@@ -101,7 +101,7 @@ public class WheelManager : MonoBehaviour
 
     public void BurnOutWheel(int gearNum)
     {
-        Quaternion rot = Quaternion.Euler(0f, 0f, -1 * burnPower[gearNum - 1] * Time.deltaTime);
+        Quaternion rot = Quaternion.Euler(0f, 0f, -1 * grypsCrl.transform.localScale.x * burnPower[gearNum - 1] * Time.deltaTime);
         // 現在の自信の回転の情報を取得する。
         Quaternion q = transform.rotation;
         // 合成して、自身に設定

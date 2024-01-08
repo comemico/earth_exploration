@@ -22,6 +22,11 @@ public class JetManager : MonoBehaviour
     CanvasGroup chargeRingCanGrp;
     Image chargeRingImg;
 
+    [Header("ChargeGauge")]
+    public Image gaugeFill;
+    public RectTransform pointer;
+    public Image pointerLamp;
+
     [Range(0.25f, 1.0f)] public float chargeTime;
     public Ease chargeType;
 
@@ -75,15 +80,42 @@ public class JetManager : MonoBehaviour
         }
     }
 
-    public void ChargeRing(int limitNum)
+    public void ChargeRing(int limitNum) //長押しで最大3ストック消費する
     {
         consumeNum = 0;
+
         chargeRingImg.fillAmount = 0f;
         chargeRingImg.DOFillAmount(0.3333333f, chargeTime).SetEase(chargeType).SetLoops(limitNum, LoopType.Incremental)
             .OnStepComplete(() =>
             {
-                consumeNum++;
+                consumeNum++; //1～3まで増加する (limitNumに応じて)
                 chargeRingImg.color = chargeColor[consumeNum];
+            });
+    }
+
+    public void ChargeEnergy() //長押しで最大1ストック消費する
+    {
+        consumeNum = 0;
+
+        pointer.DOKill(true);
+        gaugeFill.DOKill(true);
+
+        pointer.localRotation = Quaternion.Euler(0, 0, 240);
+        gaugeFill.color = chargeColor[0];
+        gaugeFill.fillAmount = 0.07f;
+
+
+        pointer.DOLocalRotate(new Vector3(0, 0, 120), chargeTime, RotateMode.Fast).SetEase(chargeType)
+            .OnComplete(() =>
+            {
+                pointerLamp.enabled = true;
+            });
+
+        gaugeFill.DOFillAmount(0.425f, chargeTime).SetEase(chargeType)
+            .OnComplete(() =>
+            {
+                consumeNum++; //1になる
+                gaugeFill.color = chargeColor[consumeNum];
             });
     }
 
@@ -98,9 +130,10 @@ public class JetManager : MonoBehaviour
     public void OnButtonDown()
     {
         isDown = true;
-        stageCrl.Regeneration();
+        stageCrl.Regeneration(); //一時的にLackModeからPlayModeへ移る
         stageCrl.grypsCrl.jetAnimator.SetBool("isDown", isDown);
-        ChargeRing(limitNumber);
+
+        ChargeEnergy();
 
         buttonLamp_Left.enabled = true;
         buttonLamp_Right.enabled = true;
@@ -118,16 +151,17 @@ public class JetManager : MonoBehaviour
         stageCrl.grypsCrl.jetAnimator.SetBool("isDown", isDown);
         Release(consumeNum);
 
-        chargeRingImg.DOKill(false);
-        chargeRingImg.fillAmount = 0f;
-        chargeRingImg.color = chargeColor[0];
-        buttonLamp_Left.color = chargeColor[0];
-        buttonLamp_Right.color = chargeColor[0];
+        pointer.DOKill(false);
+        gaugeFill.DOKill(false);
+        pointer.DOLocalRotate(new Vector3(0, 0, 240), 0.25f, RotateMode.Fast).SetEase(chargeType);
+        gaugeFill.DOFillAmount(0.07f, 0.25f).SetEase(chargeType);
 
+
+        pointerLamp.enabled = false;
         buttonLamp_Left.enabled = false;
         buttonLamp_Right.enabled = false;
 
-        if (!stageCrl.saltoMg.saltoHudMg.isHud) //if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)//空中時(Salto)はJetHud起× 着地時(Dash)はJetHud起〇
+        if (!stageCrl.saltoMg.saltoHudMg.isHud) //Salto側のTimeScale遷移を実行させるためスルーさせる
         {
             tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType);
         }
@@ -152,7 +186,6 @@ public class JetManager : MonoBehaviour
         //メモリ切れモード起動
         if (stageCrl.memoryGageMg.memoryGage <= 0)
         {
-            //grypsCrl.rb.velocity = new Vector2(3f, 0f);
             stageCrl.Lack();
         }
 

@@ -49,14 +49,17 @@ public class TurnYManager : MonoBehaviour
                 distanceHeight = destination.transform.parent.parent.position.y - transform.parent.parent.position.y;
 
                 grypsCrl.transform.rotation = Quaternion.Euler(Vector3.zero);
-                grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y + distanceHeight, grypsCrl.transform.position.z); // new Vector3(grypsCrl.transform.position.x, destination.transform.position.y, grypsCrl.transform.position.z);
+                grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y + distanceHeight, grypsCrl.transform.position.z);
 
                 grypsCrl.transform.GetChild(0).position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y - distanceHeight, grypsCrl.transform.position.z);
 
-                grypsCrl.sortingGroup.sortingOrder = 0;
+                grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder + 1;
+
                 grypsCrl.transform.GetChild(0).DOKill(true);
-                grypsCrl.transform.GetChild(0).DOLocalMoveY(0f, easeDuration).SetEase(easeType)
-                    .OnComplete(() => grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder + 1);
+                grypsCrl.transform.GetChild(0).DOLocalMoveY(0f, easeDuration).SetEase(easeType);
+                //.OnComplete(() => grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder + 1);
+
+                //grypsCrl.effectManager.transform.GetChild(0).DOLocalMoveX(-2, 0.5f).SetEase(Ease.InOutFlash, 2).SetRelative(true);
 
                 destination.isTurn = true;
                 isTurn = true;
