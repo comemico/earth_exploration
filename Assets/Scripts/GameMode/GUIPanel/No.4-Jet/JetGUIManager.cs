@@ -8,64 +8,87 @@ public class JetGUIManager : MonoBehaviour
 {
     //*ボタンを出し入れする処理=>GUIMg <-ここ
 
-    [Header("ChargeRing")]
-    public Transform chargeRing;
-    public CanvasGroup chargeRingCanGrp;
-
-    public float startupValue;
-    public float chargeRingDuration = 0.25f;
-    public Ease chargeRingType = Ease.InOutQuad;
-
     [Header("Button")]
-    public RectTransform buttonLeft;
     public RectTransform buttonRight;
+    public RectTransform buttonLeft;
     public CanvasGroup buttonCanGrp;
-
-    public float buttonDuration = 0.25f;
-    public Ease buttonType = Ease.InOutQuad;
+    RectTransform pushRight;
+    RectTransform pushLeft;
+    [Space(10)]
 
     public bool isHud;
-    [HideInInspector] public bool isCharge;
+
+    [Range(0.25f, 1.0f)] public float openTime = 0.25f;
+    public Ease openType = Ease.InOutQuad;
+    [Range(0.25f, 1.0f)] public float closeTime = 0.25f;
+    public Ease closeType = Ease.InOutQuad;
+    [Space(10)]
+
+    [Range(0.01f, 0.5f)] public float pushTime = 0.2f;
+    public Ease pushType = Ease.OutQuad;
+    [Range(0.01f, 0.5f)] public float pullTime = 0.2f;
+    public Ease pullType = Ease.OutQuad;
+
     List<Tween> tweenList = new List<Tween>();
 
-
+    private void Awake()
+    {
+        pushRight = buttonRight.transform.GetChild(1).GetComponent<RectTransform>();
+        pushLeft = buttonLeft.transform.GetChild(1).GetComponent<RectTransform>();
+    }
 
     public void StartUpJetHud()
     {
-        tweenList.KillAllAndClear();
-        Sequence seq_startup = DOTween.Sequence();
-
-        seq_startup.Append(chargeRing.DOScale(startupValue, chargeRingDuration).SetEase(chargeRingType));
-        seq_startup.Join(chargeRingCanGrp.DOFade(1f, chargeRingDuration).SetEase(chargeRingType));
-
         buttonCanGrp.blocksRaycasts = true;
-        seq_startup.Append(buttonLeft.DOLocalRotate(Vector3.zero, buttonDuration).SetEase(buttonType));
-        seq_startup.Join(buttonRight.DOLocalRotate(Vector3.zero, buttonDuration).SetEase(buttonType));
-        seq_startup.Join(buttonCanGrp.DOFade(1f, buttonDuration).SetEase(buttonType));
 
-        tweenList.Add(seq_startup);
+        tweenList.KillAllAndClear();
+        Sequence s_startup = DOTween.Sequence();
+
+        s_startup.Append(buttonRight.DOLocalRotate(Vector3.zero, openTime).SetEase(openType));
+        s_startup.Join(buttonLeft.DOLocalRotate(Vector3.zero, openTime).SetEase(openType));
+        s_startup.Join(buttonCanGrp.DOFade(1f, openTime).SetEase(openType));
+        s_startup.AppendCallback(() => JetButton(false));
+
+        tweenList.Add(s_startup);
         isHud = true;
     }
 
-
-
     public void ShutDownJetHud()
     {
-        tweenList.KillAllAndClear();
-        Sequence seq_shutdown = DOTween.Sequence();
-
-        seq_shutdown.Append(chargeRing.DOScale(1f, chargeRingDuration).SetEase(chargeRingType));
-        seq_shutdown.Join(chargeRingCanGrp.DOFade(0f, chargeRingDuration).SetEase(chargeRingType));
-
         buttonCanGrp.blocksRaycasts = false;
-        seq_shutdown.Append(buttonLeft.DOLocalRotate(new Vector3(0f, 0f, 90f), buttonDuration).SetEase(buttonType));
-        seq_shutdown.Join(buttonRight.DOLocalRotate(new Vector3(0f, 0f, -90f), buttonDuration).SetEase(buttonType));
-        seq_shutdown.Join(buttonCanGrp.DOFade(0f, buttonDuration).SetEase(buttonType));
 
-        tweenList.Add(seq_shutdown);
+        tweenList.KillAllAndClear();
+        Sequence s_shutdown = DOTween.Sequence();
+
+        s_shutdown.AppendInterval(0.5f);
+        s_shutdown.Append(buttonRight.DOLocalRotate(new Vector3(0f, 0f, -90f), closeTime).SetEase(closeType));
+        s_shutdown.Join(buttonLeft.DOLocalRotate(new Vector3(0f, 0f, 90f), closeTime).SetEase(closeType));
+        s_shutdown.Join(buttonCanGrp.DOFade(0f, closeTime).SetEase(closeType));
+        s_shutdown.AppendCallback(() => JetButton(true));
+
+        tweenList.Add(s_shutdown);
         isHud = false;
     }
 
+    public void JetButton(bool isPush)
+    {
+        //true=>ボタンOnへ 85
+        if (isPush)
+        {
+            pushRight.DOKill(true);
+            pushRight.DOAnchorPosX(85, pushTime).SetEase(pushType);
+            pushLeft.DOKill(true);
+            pushLeft.DOAnchorPosX(-85, pullTime).SetEase(pushType);
+        }
+        //false=>ボタンOffへ 135
+        else
+        {
+            pushRight.DOKill(true);
+            pushRight.DOAnchorPosX(135, pullTime).SetEase(pullType);
+            pushLeft.DOKill(true);
+            pushLeft.DOAnchorPosX(-135, pullTime).SetEase(pullType);
+        }
+    }
 
     /*
     public void JugeTapMode()

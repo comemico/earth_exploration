@@ -72,7 +72,7 @@ public class DashAreaManager : MonoBehaviour
 
             grypsCrl.ForceDash(KeyNum, (int)dashPower);
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
-            grypsCrl.stageCrl.jetMg.DisplayJetLimit(grypsCrl.stageCrl.jetMg.limitNumber + 1);
+            grypsCrl.stageCrl.jetMg.DisplayJetStock(grypsCrl.stageCrl.jetMg.stockNum + 1);
         }
     }
 }

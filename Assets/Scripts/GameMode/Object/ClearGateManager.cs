@@ -99,7 +99,7 @@ public class ClearGateManager : MonoBehaviour
             grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
 
             grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
-            grypsCrl.stageCrl.jetMg.limitRingCanGrp.DOFade(0f, 0.25f).SetDelay(0.1f);
+            //ジェットメーターを隠したい　grypsCrl.stageCrl.jetMg.limitRingCanGrp.DOFade(0f, 0.25f).SetDelay(0.1f);
             grypsCrl.stageCrl.jetMg.jetGuiMg.ShutDownJetHud();
             grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(grypsCrl.stageCrl.data.maxLifeNum);
 
