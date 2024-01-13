@@ -6,24 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Template.unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Stage/Area0/Linear/Course[0]Template.unity
     guid: d220e8aebc9000f44bf7f3fdc455f4ed
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Title/Title.unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Title/Title.unity
     guid: a61780043535069458d098dfcde9f5a2
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Select/StageSelect.unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Select/StageSelect.unity
     guid: 567ae31a569176743811c63b56683093
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[0].unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Stage/Area0/Linear/Course[0]Linear[0].unity
     guid: b8e17cb607febb146944559efeacc3f9
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[1].unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Stage/Area0/Linear/Course[0]Linear[1].unity
     guid: df6240f53f7af2d49838ff1bad05a54f
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[2].unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Stage/Area0/Linear/Course[0]Linear[2].unity
     guid: a81e57169b69298458b43b82e1034cfc
   - enabled: 1
-    path: Assets/Scenes_&_Prefabs/Scenes/Stage/Area0/Linear/Course[0]Linear[3].unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/Stage/Area0/Linear/Course[0]Linear[3].unity
     guid: b8f6eaa87af4b8d4f94774905ba6f149
   m_configObjects: {}
