@@ -38,7 +38,7 @@ public class SaltoManager : MonoBehaviour
     private void Start()
     {
         stageCrl = transform.root.GetComponent<StageCtrl>();
-        cinemachineCrl = Camera.main.GetComponent<CinemachineManager>();
+        cinemachineCrl = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
     }
 
     public void JugeSaltoMode(float gageTime)
@@ -46,7 +46,7 @@ public class SaltoManager : MonoBehaviour
         //tween_time.Kill(true);
         tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
         saltoHudMg.StartUpSaltoHud();
-        stageCrl.grypsCrl.saltoAnimator.SetBool("isWing", saltoHudMg.isHud);
+        stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", saltoHudMg.isHud);
         StartTimeGage(gageTime);
         isSalto = false;
     }
@@ -68,7 +68,7 @@ public class SaltoManager : MonoBehaviour
         {
             cinemachineCrl.DefaultZoom();
             saltoHudMg.ShutDownSaltoHud();
-            stageCrl.grypsCrl.saltoAnimator.SetBool("isWing", saltoHudMg.isHud);
+            stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", saltoHudMg.isHud);
             saltoNum = 0;
             //disc.transform.DOKill(true);
 
@@ -88,7 +88,7 @@ public class SaltoManager : MonoBehaviour
         {
 
             buttonEmi.enabled = false;
-            stageCrl.grypsCrl.Salto();
+            stageCrl.grypsCrl.effector.Salto();
             disc.transform.DOLocalRotate(new Vector3(0, 0, discAngle), discDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(discType);
             isSalto = true;
             saltoNum++;

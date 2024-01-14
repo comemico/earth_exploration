@@ -5,33 +5,28 @@ using UnityEngine.Rendering;
 
 public class TurnYManager : MonoBehaviour
 {
-    [Header("ターン後の位置")]
+    [Header("目的位置")]
     public TurnYManager destination;
 
-    [Header("Tween : Sprite.Move")]
-    [Range(0f, 10f)] public float easeDuration;
-    public Ease easeType;
-
+    ENTRANCE_KEY entranceKey; //侵入時の速度の向き
     public enum ENTRANCE_KEY
     {
         [InspectorName("左：1")] left = 1,
         [InspectorName("右：-1")] right = -1,
     }
-    ENTRANCE_KEY entranceKey; //侵入時の速度の向き
 
-    public float height = 0.5f;
+    float distanceHeight; // ( 目的位置 - 現在位置 )の距離
+    [HideInInspector] public bool isTurn;
 
     GrypsController grypsCrl;
-    [HideInInspector] public bool isTurn;
-    float distanceHeight;
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
-            if (Enum.IsDefined(typeof(ENTRANCE_KEY), (int)Mathf.Sign(grypsCrl.rb.velocity.x)))// 事前に定義が存在するかどうか確認する
+
+            if (Enum.IsDefined(typeof(ENTRANCE_KEY), (int)Mathf.Sign(grypsCrl.rb.velocity.x))) //事前に定義が存在するかどうか確認する (ENTRANCE_KEYに1か-1があるかどうか)
             {
                 entranceKey = (ENTRANCE_KEY)(int)Mathf.Sign(grypsCrl.rb.velocity.x);
             }
@@ -42,7 +37,7 @@ public class TurnYManager : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if ((int)entranceKey != (int)grypsCrl.transform.localScale.x && !isTurn)//侵入時の向きから変わった場合
+            if ((int)entranceKey != (int)grypsCrl.transform.localScale.x && !isTurn) //侵入時の向きから変わった場合 && Turnは出るまで一回のみにする
             {
                 GetComponentInParent<FloorManager>().TurnFloor(destination.transform.parent);
 
@@ -51,18 +46,11 @@ public class TurnYManager : MonoBehaviour
                 grypsCrl.transform.rotation = Quaternion.Euler(Vector3.zero);
                 grypsCrl.transform.position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y + distanceHeight, grypsCrl.transform.position.z);
 
-                grypsCrl.transform.GetChild(0).position = new Vector3(grypsCrl.transform.position.x, grypsCrl.transform.position.y - distanceHeight, grypsCrl.transform.position.z);
+                grypsCrl.effector.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder + 1;
+                grypsCrl.effector.Turn(distanceHeight);
 
-                grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder + 1;
-
-                grypsCrl.transform.GetChild(0).DOKill(true);
-                grypsCrl.transform.GetChild(0).DOLocalMoveY(0f, easeDuration).SetEase(easeType);
-                //.OnComplete(() => grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder + 1);
-
-                //grypsCrl.effectManager.transform.GetChild(0).DOLocalMoveX(-2, 0.5f).SetEase(Ease.InOutFlash, 2).SetRelative(true);
-
-                destination.isTurn = true;
-                isTurn = true;
+                isTurn = true; //周回してもターンできるようにするため
+                destination.isTurn = true; //目的位置側のTurnYManagerでTurnされないように
             }
         }
     }
@@ -71,8 +59,8 @@ public class TurnYManager : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            isTurn = false;
-            destination.isTurn = false;
+            isTurn = false; //周回してもターンできるようにするため
+            destination.isTurn = false; //目的位置側のTurnYManagerでTurnされないように
         }
     }
 

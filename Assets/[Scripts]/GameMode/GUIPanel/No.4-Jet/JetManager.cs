@@ -27,11 +27,9 @@ public class JetManager : MonoBehaviour
 
     [Header("Stock")]
     public Image[] stock;
-
     public int stockNum;
     const int MAX_STOCK = 3;
     int consumeNum;
-
 
     [Header("TimeScale")]
     public float slowTimeScale = 0.1f;
@@ -59,7 +57,7 @@ public class JetManager : MonoBehaviour
     {
         jetGuiMg = GetComponent<JetGUIManager>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
-        cinemachineCrl = Camera.main.GetComponent<CinemachineManager>();
+        cinemachineCrl = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
     }
 
 
@@ -123,7 +121,7 @@ public class JetManager : MonoBehaviour
         if (isCoolDown) return; //クールダウン中はスルーさせる
 
         stageCrl.Regeneration(); //一時的にLackModeからPlayModeへ移る
-        stageCrl.grypsCrl.jetAnimator.SetBool("isDown", true);
+        stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", true);
         ChargeGauge();
 
         if (Time.timeScale > slowTimeScale)
@@ -155,7 +153,7 @@ public class JetManager : MonoBehaviour
                     if (isPush) OnButtonDown();
 
                     pointerLamp.enabled = false;
-                    stageCrl.grypsCrl.jetAnimator.SetBool("isDown", false);
+                    stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", false);
                 });
             pointer.DOKill(false);
             pointer.DOLocalRotate(new Vector3(0, 0, 240), coolTime, RotateMode.Fast).SetEase(Ease.Linear);
@@ -171,7 +169,7 @@ public class JetManager : MonoBehaviour
             pointer.DOKill(false);
             pointer.DOLocalRotate(new Vector3(0, 0, 240), returnTime, RotateMode.Fast).SetEase(Ease.Linear);
 
-            stageCrl.grypsCrl.jetAnimator.SetBool("isDown", false);
+            stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", false);
 
         }
 

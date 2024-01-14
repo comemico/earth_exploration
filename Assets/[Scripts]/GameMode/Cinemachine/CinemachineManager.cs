@@ -6,27 +6,23 @@ public class CinemachineManager : MonoBehaviour
 {
     [Header("ScreenRange : 進行方向へカメラをずらす設定")]
     [Range(0.1f, 0.5f)] public float range = 0.15f;
-    public float turnDuration = 0.5f;
+    [Range(0.1f, 0.5f)] public float turnTime = 0.5f;
     public Ease turnType = Ease.OutQuad;
     Tween tween_turn;
 
     [Header("ScreenZoom : カメラのズーム設定")]
-    [Range(0.25f, 1.0f)] public float fovDuration = 0.35f;
-    public Ease fovType = Ease.Linear;
-    public int defaultFov = 110;
-    [Range(1f, 3f)] public float fovDeDuration = 1.25f;
-    public Ease fovDeType = Ease.Linear;
-    Tween tween_fov;
+    [Range(0.25f, 1.0f)] public float zoomTime = 0.35f;
+    public Ease zoomType = Ease.Linear;
+    [Space(10)]
 
-    public CinemachineVirtualCamera cinemachineVirtualCamera; //m_Lens.～ の変更に使用する
+    [Range(1f, 3f)] public float returnTime = 1.25f;
+    public Ease returnType = Ease.Linear;
+    public int defaultSize = 10;
+    Tween tween_size;
 
-    public CinemachineFramingTransposer framingTransposer; //Screen Xの変更に使用する
+    CinemachineVirtualCamera cinemachineVirtualCamera; //m_Lens.～ の変更に使用する
+    CinemachineFramingTransposer framingTransposer; //Screen Xの変更に使用する
 
-    /*
-    public CinemachineBrain brain; //多分使わない
-    public CinemachineVirtualCamera[] vcamFloor;//編集不可
-    public CinemachineVirtualCamera nearestVC;
-     */
 
     private void Awake()
     {
@@ -68,7 +64,7 @@ public class CinemachineManager : MonoBehaviour
     {
         //tween_screenX.Kill(true);
         //tween_turn =
-        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f - (key * range), turnDuration).SetEase(turnType);
+        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f - (key * range), turnTime).SetEase(turnType);
     }
 
     public void StartDirection(float screenX)
@@ -85,9 +81,9 @@ public class CinemachineManager : MonoBehaviour
         DOTween.To(() => framingTransposer.m_DeadZoneHeight, x => framingTransposer.m_DeadZoneHeight = x, 0f, 1.5f).SetEase(Ease.OutSine);
     }
 
-    public void Zoom(int fov)
+    public void Zoom(int size)
     {
-        tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.OrthographicSize, x => cinemachineVirtualCamera.m_Lens.OrthographicSize = x, fov, fovDuration).SetEase(fovType);
+        tween_size = DOTween.To(() => cinemachineVirtualCamera.m_Lens.OrthographicSize, x => cinemachineVirtualCamera.m_Lens.OrthographicSize = x, size, zoomTime).SetEase(zoomType);
 
         //tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.FieldOfView, x => cinemachineVirtualCamera.m_Lens.FieldOfView = x, fov, fovDuration).SetEase(fovType);
         /*
@@ -103,7 +99,7 @@ public class CinemachineManager : MonoBehaviour
 
     public void DefaultZoom()
     {
-        tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.OrthographicSize, x => cinemachineVirtualCamera.m_Lens.OrthographicSize = x, defaultFov, fovDeDuration).SetEase(fovDeType);
+        tween_size = DOTween.To(() => cinemachineVirtualCamera.m_Lens.OrthographicSize, x => cinemachineVirtualCamera.m_Lens.OrthographicSize = x, defaultSize, returnTime).SetEase(returnType);
         //tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.FieldOfView, x => cinemachineVirtualCamera.m_Lens.FieldOfView = x, defaultFov, fovDeDuration).SetEase(fovDeType);
         //tween_fov.Kill(false);
         //cinemachineVirtualCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();

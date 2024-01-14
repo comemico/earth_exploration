@@ -125,7 +125,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
         gearNum = 0;
-        stageCrl.grypsCrl.jetAnimator.SetFloat("IdleSpeed", gearNum + 1);
+        stageCrl.grypsCrl.effector.animatorJet.SetFloat("IdleSpeed", gearNum + 1);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -163,7 +163,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             float medianValue = power - gearNum;
 
             bowMg.DrawingBow(gearNum, medianValue);
-            stageCrl.grypsCrl.jetAnimator.SetFloat("IdleSpeed", gearNum + 1);
+            stageCrl.grypsCrl.effector.animatorJet.SetFloat("IdleSpeed", gearNum + 1);
 
             if (oldGearNum != gearNum)//ƒƒ‚ƒŠ‚ª•Ï‚í‚Á‚½‚¾‚¯Aƒƒ‚ƒŠ•\¦‚Ìˆ—‚ğs‚È‚Á‚Ä‚à‚ç‚¤
             {

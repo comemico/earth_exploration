@@ -103,7 +103,7 @@ public class ClearGateManager : MonoBehaviour
             grypsCrl.stageCrl.jetMg.jetGuiMg.ShutDownJetHud();
             grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(grypsCrl.stageCrl.data.maxLifeNum);
 
-            grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.grypsParameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
+            grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
         }
     }
 

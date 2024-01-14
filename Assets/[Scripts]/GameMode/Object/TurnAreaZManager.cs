@@ -62,7 +62,7 @@ public class TurnAreaZManager : MonoBehaviour
                 grypsCrl.transform.GetChild(0).DOKill(true);
                 grypsCrl.transform.GetChild(0).DOLocalMoveZ(0f, easeDuration).SetEase(easeType);
 
-                grypsCrl.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder;
+                grypsCrl.effector.sortingGroup.sortingOrder = destination.transform.parent.GetComponent<SortingGroup>().sortingOrder;
                 destination.isTurn = true;
                 isTurn = true;
             }

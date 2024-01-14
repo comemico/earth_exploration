@@ -9,8 +9,8 @@ public class SaltoAreaManager : MonoBehaviour
 
     public float runUpSpeed;
 
-    [Header("Zoom: Camera.FOV")]
-    public int fov;
+    [Header("Zoom: Camera.Size")]
+    public int size;
 
     [Header("“üŒû•ûŒü‚ÆN“ü‚ÌŒü‚«")]
     public ENTRANCE_KEY entranceKey;
@@ -36,7 +36,7 @@ public class SaltoAreaManager : MonoBehaviour
         {
             if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
             {
-                Camera.main.GetComponent<CinemachineManager>().Zoom(fov);
+                Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>().Zoom(size);
                 grypsCrl.stageCrl.saltoMg.JugeSaltoMode(flightDuration);
                 isSalto = true;
             }
