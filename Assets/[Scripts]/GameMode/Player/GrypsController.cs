@@ -47,6 +47,8 @@ public class GrypsController : MonoBehaviour
     Tween tween_salto;
      */
 
+
+
     private void Awake()
     {
         AllGetComponent();
