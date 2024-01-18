@@ -86,7 +86,7 @@ public class PauseManager : MonoBehaviour
         isPause = true;
         panel.SetActive(true);
         stageInfo.SetActive(true);
-        stageCrl.saltoMg.saltoTimeGage.DOPause();
+        stageCrl.saltoMg.saltoHudMg.gauge.DOPause();
         tipsText.color = new Color(1, 1, 1, 0);
         rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
         button.anchoredPosition = new Vector2(320, 0);
@@ -99,7 +99,6 @@ public class PauseManager : MonoBehaviour
 
         tweenList.Add(sequence);
 
-
         savedTimeScale = Time.timeScale;
         Time.timeScale = 0f;
     }
@@ -110,7 +109,7 @@ public class PauseManager : MonoBehaviour
         panel.SetActive(false);
         stageInfo.SetActive(false);
         SwichBloom(false, lampDuration);
-        stageCrl.saltoMg.saltoTimeGage.DOPlay();
+        stageCrl.saltoMg.saltoHudMg.gauge.DOPlay();
 
         //スロー状態でポーズ画面に入っても、スロー状態で戻せるようにするため
         if (Mathf.Approximately(Time.timeScale, 1f))//timescale= 1fに近ければ1fに設定

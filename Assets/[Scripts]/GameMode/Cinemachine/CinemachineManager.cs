@@ -29,36 +29,6 @@ public class CinemachineManager : MonoBehaviour
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
         framingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
     }
-    private void Start()
-    {
-
-        //framingTransposer.m_ScreenX = 0.5f - (-1 * range);
-        //  brain = GetComponent<CinemachineBrain>();
-        //  vcamFloor = GetComponentsInChildren<CinemachineVirtualCamera>();
-        //  framingTransposer = vcamFloor[1].GetCinemachineComponent<CinemachineFramingTransposer>();
-        //  activeVC = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-    }
-
-    /*
-    public void AttachFramingTransposer(int floorNum)//TimelineÇ≈äJénÉJÉÅÉâÇ™LiveèÛë‘ÇÃéûÇ…î≠âŒÇ≥ÇπÇÈ
-    {
-        framingTransposer = null;
-        framingTransposer = vcamFloor[floorNum].GetCinemachineComponent<CinemachineFramingTransposer>();
-    }
-    public void ToFloorVcam(int floorNum, int destinationKey)
-    {
-        AttachFramingTransposer(floorNum);
-        framingTransposer.m_ScreenX = 0.5f - (destinationKey * range);
-
-        for (int i = 0; i < vcamFloor.Length; i++)
-        {
-            vcamFloor[i].Priority = 0;
-            vcamFloor[i].Follow = null;
-        }
-        vcamFloor[floorNum].Priority = 10;
-        vcamFloor[floorNum].Follow = grypsSprite;
-    }
-     */
 
     public void ChangeDirection(int key)
     {
@@ -80,6 +50,8 @@ public class CinemachineManager : MonoBehaviour
         //tween_turn = 
         DOTween.To(() => framingTransposer.m_DeadZoneHeight, x => framingTransposer.m_DeadZoneHeight = x, 0f, 1.5f).SetEase(Ease.OutSine);
     }
+
+
 
     public void Zoom(int size)
     {
@@ -103,6 +75,15 @@ public class CinemachineManager : MonoBehaviour
         //tween_fov = DOTween.To(() => cinemachineVirtualCamera.m_Lens.FieldOfView, x => cinemachineVirtualCamera.m_Lens.FieldOfView = x, defaultFov, fovDeDuration).SetEase(fovDeType);
         //tween_fov.Kill(false);
         //cinemachineVirtualCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+    }
+
+    Tween t_timeScale;
+
+    public void DOTimeScale(float endValue, float duration)
+    {
+        t_timeScale.Kill(true);
+        t_timeScale = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, endValue, duration).SetEase(Ease.OutQuint);
+        //Debug.Log("DOTimeScale()");
     }
 
 }

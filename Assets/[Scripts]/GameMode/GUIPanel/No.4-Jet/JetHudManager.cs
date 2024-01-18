@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class JetGUIManager : MonoBehaviour
+public class JetHudManager : MonoBehaviour
 {
     //*ƒ{ƒ^ƒ“‚ðo‚µ“ü‚ê‚·‚éˆ—=>GUIMg <-‚±‚±
 
@@ -25,10 +25,10 @@ public class JetGUIManager : MonoBehaviour
     [Space(10)]
 
     public Color pushColor;
-    [Range(0.01f, 0.5f)] public float pushTime = 0.2f;
-    public Ease pushType = Ease.OutQuad;
-    [Range(0.01f, 0.5f)] public float pullTime = 0.2f;
-    public Ease pullType = Ease.OutQuad;
+    [Range(0.01f, 0.5f)] public float pushTime = 0.125f;
+    public Ease pushType = Ease.OutQuint;
+    [Range(0.01f, 0.5f)] public float pullTime = 0.175f;
+    public Ease pullType = Ease.OutBack;
 
     List<Tween> tweenList = new List<Tween>();
 
@@ -40,6 +40,7 @@ public class JetGUIManager : MonoBehaviour
 
     public void StartUpJetHud()
     {
+        Debug.Log("start");
         buttonCanGrp.blocksRaycasts = true;
         pushRight.color = Color.white;
         pushLeft.color = Color.white;

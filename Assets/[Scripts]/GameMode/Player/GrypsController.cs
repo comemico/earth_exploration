@@ -245,17 +245,19 @@ public class GrypsController : MonoBehaviour
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
     }
 
-    private void TakeOff()
+    private void TakeOff() //離陸
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
         Brake(false);//TakeOff()でブレーキを解除
         //rb.DORotate(-1 * (int)transform.localScale.x * 10f, 0.5f).SetEase(Ease.OutSine);
     }
 
-    private void Land()
+    private void Land() //着地
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-        stageCrl.saltoMg.Release(); //Salto中着地した場合SaltoHudをShutdownさせるために呼ぶ
+        stageCrl.saltoMg.SaltoEnd(); //Salto中着地した場合SaltoHudをShutdownさせるために呼ぶ
+        stageCrl.jetMg.Land();
+
         wheelMg.WheelLamp(false, true);
     }
 

@@ -24,22 +24,18 @@ public class SaltoAreaManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (grypsCrl == null)
+        if (collision.tag == "Player")
         {
-            grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+            if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
+            grypsCrl.stageCrl.saltoMg.SaltoStart(flightDuration);
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
         {
-            if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
-            {
-                Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>().Zoom(size);
-                grypsCrl.stageCrl.saltoMg.JugeSaltoMode(flightDuration);
-                isSalto = true;
-            }
+            // isSalto = true;
+            // if (grypsCrl.stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && (int)entranceKey == (int)grypsCrl.transform.localScale.x && !isSalto)//N“ü‚ÌŒü‚«‚Å‚ ‚éê‡
         }
     }
 
@@ -47,7 +43,7 @@ public class SaltoAreaManager : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            isSalto = false;
+            // isSalto = false;
         }
     }
 

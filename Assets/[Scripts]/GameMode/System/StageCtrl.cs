@@ -141,18 +141,44 @@ public class StageCtrl : MonoBehaviour
         controlScreenMg.ChangeControlLimit(status);
     }
 
+    void LateUpdate()
+    {
+        switch (state)
+        {
+            case State.Ready:
+                break;
+
+            case State.Play:
+                if (grypsCrl.transform.position.y <= deadLineY)
+                {
+                    resultMg.Result(ResultManager.CAUSE.missFall);
+                    GameOver();
+                    return;
+                }
+                break;
+
+            case State.Lack:
+                if (grypsCrl.transform.position.y <= deadLineY)
+                {
+                    resultMg.Result(ResultManager.CAUSE.missFall);
+                    GameOver();
+                    return;
+                }
+                if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && controlStatus == ControlStatus.control)
+                {
+                    ChangeControlStatus(ControlStatus.unControl);
+                    resultMg.Result(ResultManager.CAUSE.missLack);
+                    GameOver();
+                    return;
+                }
+                break;
+        }
+
+    }
+
     public void Ready()
     {
         state = State.Ready;
-        /*
-        if (GManager.instance.lifeNum > GManager.instance.maxLifeNum)
-        {
-            GManager.instance.lifeNum = GManager.instance.maxLifeNum;
-            Debug.Log("上限を超えたため、max値に変更");
-        }
-        memoryGageMg.memoryGage = GManager.instance.lifeNum;
-        memoryGageMg.DisplayMemoryGage(GManager.instance.lifeNum);
-        */
     }
 
     public void Lack()
@@ -225,47 +251,7 @@ public class StageCtrl : MonoBehaviour
         Save(data);
     }
 
-    void LateUpdate()
-    {
-        switch (state)
-        {
-            case State.Ready:
-                break;
 
-            case State.Play:
-                if (grypsCrl.transform.position.y <= deadLineY)
-                {
-                    resultMg.Result(ResultManager.CAUSE.missFall);
-                    GameOver();
-                    return;
-                }
-                break;
-
-            case State.Lack:
-                if (grypsCrl.transform.position.y <= deadLineY)
-                {
-                    resultMg.Result(ResultManager.CAUSE.missFall);
-                    GameOver();
-                    return;
-                }
-                if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && controlStatus == ControlStatus.control)
-                {
-                    ChangeControlStatus(ControlStatus.unControl);
-                    resultMg.Result(ResultManager.CAUSE.missLack);
-                    GameOver();
-                    return;
-                }
-                break;
-        }
-
-    }
-
-    /*
-    private void UpdateStageNum()
-    {
-        PlayerPrefs.SetFloat(GManager.instance.loadStageNum, GManager.instance.stageNum);
-    }
-    */
 
 
 }

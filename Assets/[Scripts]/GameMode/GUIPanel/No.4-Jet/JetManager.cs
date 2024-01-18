@@ -40,10 +40,9 @@ public class JetManager : MonoBehaviour
 
     Tween t_slow;
 
+    [HideInInspector] public JetHudManager jetHudMg;
     StageCtrl stageCrl;
-    [HideInInspector] public JetGUIManager jetGuiMg;
     CinemachineManager cinemachineCrl;
-    //public GrypsController grypsCrl;
 
 
     private void Awake()
@@ -55,7 +54,7 @@ public class JetManager : MonoBehaviour
 
     void GetComponent()
     {
-        jetGuiMg = GetComponent<JetGUIManager>();
+        jetHudMg = GetComponent<JetHudManager>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
         cinemachineCrl = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
     }
@@ -73,19 +72,21 @@ public class JetManager : MonoBehaviour
 
         this.stockNum = Num;
 
-        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)//空中時(Salto)はJetHud起× 着地時(Dash)はJetHud起〇
+        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl && !jetHudMg.isHud) //空中時にHudを起動させたくないため && stock変化時に毎回呼ばれるため、Hudがfalseの場合のみ起動させる
         {
-            JugeJetMode();
+            jetHudMg.StartUpJetHud();
+        }
+
+    }
+
+    public void Land() //着地時にStockが増加したかを判断する
+    {
+        if (stockNum >= 1 && !jetHudMg.isHud) //stockが1以上 && Hudがfalseの場合のみ起動させる
+        {
+            jetHudMg.StartUpJetHud();
         }
     }
 
-    public void JugeJetMode()
-    {
-        if (!jetGuiMg.isHud && stockNum >= 1)
-        {
-            jetGuiMg.StartUpJetHud();
-        }
-    }
 
     public void ChargeGauge() //長押しで最大1ストック消費する
     {
@@ -116,7 +117,7 @@ public class JetManager : MonoBehaviour
     public void OnButtonDown()
     {
         isPush = true;
-        jetGuiMg.JetButton(isPush);
+        jetHudMg.JetButton(isPush);
 
         if (isCoolDown) return; //クールダウン中はスルーさせる
 
@@ -129,14 +130,11 @@ public class JetManager : MonoBehaviour
             t_slow = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, slowTimeScale, slowTime).SetEase(slowType);
         }
     }
-    /*
-        stageCrl.grypsCrl.jetAnimator.SetBool("isDown", isDown);
-     */
 
     public void OnButtonUp()
     {
         isPush = false;
-        jetGuiMg.JetButton(isPush);
+        jetHudMg.JetButton(isPush);
 
         if (isCoolDown) return; //クールダウン中はスルーさせる
 
@@ -190,18 +188,15 @@ public class JetManager : MonoBehaviour
         }
 
     }
-    /*
-        stageCrl.grypsCrl.jetAnimator.SetBool("isDown", isDown);
-     */
 
     void ConsumeStock(int consumeNum)
     {
         stockNum -= consumeNum;
         DisplayJetStock(stockNum);
 
-        stageCrl.saltoMg.Release(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ
+        stageCrl.saltoMg.SaltoEnd(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ
         stageCrl.grypsCrl.ForceJet(consumeNum - 1);
-        if (stockNum <= 0) jetGuiMg.ShutDownJetHud();
+        if (stockNum <= 0) jetHudMg.ShutDownJetHud();
 
         isCoolDown = true;
         this.consumeNum = 0;

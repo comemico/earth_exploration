@@ -6,113 +6,92 @@ using DG.Tweening;
 
 public class SaltoManager : MonoBehaviour
 {
-    public SaltoHudManager saltoHudMg;
-    public Image buttonEmi;
-    public Image saltoNumMemory;
 
-    [Header("Disc")]
-    public Image saltoTimeGage;
-    public Ease saltoTimeType;
+    [Header("SaltoPanel")]
+    public int saltoNum;
+    public bool isSalto; //Salto’†‚©‚Ç‚¤‚©
 
-    [Header("Disc")]
-    public RectTransform disc;
-    public float discAngle;
-    public float discDuration;
-    public Ease discType;
+    const int MAX_STOCK = 3;
+
 
     [Header("TimeScale")]
-    [NamedArrayAttribute(new string[] { "Fill", "First", "Secound", "Third" })]
-    [Range(0.05f, 1f)] public float[] timeScaleBox;
-    public float slowDuration;
-    public Ease slowType;
-    public float returnDuration;
-    public Ease returnType;
-    Tween tween_time;
+    [NamedArrayAttribute(new string[] { "—£—¤", "1‰ñ“]", "2‰ñ“]", "3‰ñ“]" })]
+    [Range(0.03f, 1f)] public float[] timeScaleBox;
 
-    int saltoNum;
-    public bool isSalto;
+    [Range(0.1f, 0.5f)] public float slowTime = 0.1f;
+    public Ease slowType = Ease.OutQuint;
+    [Range(0.1f, 0.5f)] public float returnTime = 0.25f;
+    public Ease returnType = Ease.InQuint;
+
+
+    [HideInInspector] public SaltoHudManager saltoHudMg;
     StageCtrl stageCrl;
     CinemachineManager cinemachineCrl;
-    //GrypsController grypsCrl;
 
-    private void Start()
+
+    private void Awake()
     {
+        saltoHudMg = GetComponent<SaltoHudManager>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
         cinemachineCrl = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
     }
 
-    public void JugeSaltoMode(float gageTime)
+    public void SaltoStart(float flightDuration) //SaltoƒGƒŠƒA‚É“ü‚è‹N“®
     {
-        //tween_time.Kill(true);
-        tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[0], slowDuration).SetEase(slowType);
-        saltoHudMg.StartUpSaltoHud();
-        stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", saltoHudMg.isHud);
-        StartTimeGage(gageTime);
-        isSalto = false;
+        if (!saltoHudMg.isHud)
+        {
+            saltoHudMg.StartUpSaltoHud();
+            saltoHudMg.StartTimeGauge(flightDuration);
+            stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", true);
+
+            cinemachineCrl.DOTimeScale(timeScaleBox[0], slowTime);
+        }
     }
 
-    public void StartTimeGage(float gageTime)
-    {
-        saltoTimeGage.fillAmount = 0.5f;
-        saltoTimeGage.DOKill(true);
-        saltoTimeGage.DOFillAmount(0.1666667f, gageTime).SetEase(saltoTimeType)
-            .OnComplete(() =>
-            {
-                Release();//Jet‚ÌisHud‚ªfalse‚ÅA1‚ÂˆÈãJetMemory‚ª‚ ‚ê‚ÎAJetHudZ
-            });
-    }
-
-    public void Release()
+    public void SaltoEnd()
     {
         if (saltoHudMg.isHud)
         {
-            cinemachineCrl.DefaultZoom();
             saltoHudMg.ShutDownSaltoHud();
-            stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", saltoHudMg.isHud);
             saltoNum = 0;
-            //disc.transform.DOKill(true);
+            stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", false);
 
-            tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration).SetEase(returnType)
-                .OnComplete(() =>
-                {
-                    saltoNumMemory.fillAmount = 0f;
-                    stageCrl.jetMg.JugeJetMode();
-                });
+            cinemachineCrl.DOTimeScale(1, returnTime);
+            //cinemachineCrl.DefaultZoom();
         }
     }
 
+    public void OnButtonDown()
+    {
+        saltoHudMg.SaltoButton(true);
+    }
 
     public void OnButtonUp()
     {
-        if (!isSalto && stageCrl.controlStatus == StageCtrl.ControlStatus.unControl && saltoHudMg.isHud)
-        {
+        saltoHudMg.SaltoButton(false);
 
-            buttonEmi.enabled = false;
-            stageCrl.grypsCrl.effector.Salto();
-            disc.transform.DOLocalRotate(new Vector3(0, 0, discAngle), discDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(discType);
-            isSalto = true;
-            saltoNum++;
-            //tween_time.Kill(true);
-            tween_time = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, timeScaleBox[saltoNum], slowDuration).SetEase(slowType);
+        if (isSalto) return; //Salto’†‚ÍƒXƒ‹[‚³‚¹‚é
 
-        }
+        stageCrl.grypsCrl.effector.Salto();
+        saltoHudMg.RotateDisc();
+        cinemachineCrl.DOTimeScale(timeScaleBox[saltoNum], slowTime);
 
+        isSalto = true;
     }
 
     public void SaltoComplete()
     {
         stageCrl.controlScreenMg.ProduceMemory(1);
-        stageCrl.jetMg.DisplayJetStock(stageCrl.jetMg.stockNum + 1); //‹ó’†(unControl)‚È‚Ì‚ÅJetHud~
+        stageCrl.jetMg.DisplayJetStock(stageCrl.jetMg.stockNum + 1); //‹ó’†(unControl)‚Ístock‚ª‘‚¦‚Ä‚àJetHud‚Ì‹N“®‚Í‚µ‚È‚¢
 
-        saltoNumMemory.fillAmount = 0.1666f * saltoNum;
-
-        buttonEmi.enabled = true;
+        saltoNum++;
         if (saltoNum >= 3)
         {
-            stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-            Release(); //‰ñ“]”ãŒÀ‚ÅSaltoHud‚ğ‹­§Shutdown
-            return;
+            SaltoEnd(); //‰ñ“]”ãŒÀ‚ÅSaltoHud‚ğ‹­§Shutdown
+            //stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
+            //return;
         }
+
         isSalto = false;
     }
 

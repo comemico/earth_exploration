@@ -1,84 +1,123 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
 public class SaltoHudManager : MonoBehaviour
 {
-    [Header("DialRing")]
-    public float shutDownValue;
-    public float dialRingDuration = 0.25f;
-    public Ease chargeRingType = Ease.InOutQuad;
+    //主にUIの動きに関わるスクリプト.
+    //: SaltoMgからの指令に答える関係.
 
-    [Header("Button")]
-    public CanvasGroup buttonCanGrp;
-    public RectTransform button;
-    public float buttonStartUpValue;
-    public float buttonShutDownValue;
-    public float buttonDuration;
-    public Ease buttonType;
-    public Ease buttonFadeType;
-
-
-    /*
-    public Transform chargeRing;
-    public CanvasGroup chargeRingCanGrp;
-    public RectTransform buttonRight;
-    public float buttonDuration = 0.25f;
-    public Ease buttonType = Ease.InOutQuad;
-     */
-
+    [Header("StartUp / ShutDown")]
+    public RectTransform bearing;
+    public CanvasGroup saltoCanGrp;
+    [Space(10)]
 
     public bool isHud;
-    [HideInInspector] public bool isCharge;
+    [Space(10)]
+
+    [Range(0.25f, 1.0f)] public float openTime = 0.25f;
+    public Ease openType = Ease.InOutQuad;
+    [Range(0.25f, 1.0f)] public float closeTime = 0.25f;
+    public Ease closeType = Ease.InOutQuad;
+
+    [Header("Button")]
+    public Image push;
+    [Space(10)]
+
+    public Color pushColor;
+    [Range(0.01f, 0.5f)] public float pushTime = 0.125f;
+    public Ease pushType = Ease.OutQuint;
+    [Range(0.01f, 0.5f)] public float pullTime = 0.175f;
+    public Ease pullType = Ease.OutBack;
+
+
+    [Header("Disc / TimeGauge")]
+    public RectTransform disc;
+    public Image gauge;
+    [Space(10)]
+
+    [Range(0, 60)] public int discValue = 45; //回転量
+    [Range(0.1f, 0.3f)] public float discTime = 0.175f;
+    public Ease discType = Ease.OutSine;
+
+
+    [Header("Stock")]
+    public Image[] stock;
+
+
+    SaltoManager saltoMg;
     List<Tween> tweenList = new List<Tween>();
 
 
+    private void Awake()
+    {
+        saltoMg = GetComponent<SaltoManager>();
+    }
 
     public void StartUpSaltoHud()
     {
-        buttonCanGrp.blocksRaycasts = true;
+        saltoCanGrp.blocksRaycasts = true;
 
         tweenList.KillAllAndClear();
-        Sequence seq_startup = DOTween.Sequence();
+        Sequence s_startup = DOTween.Sequence();
 
-        seq_startup.Append(transform.DOLocalRotate(Vector3.zero, dialRingDuration).SetEase(chargeRingType));
-        seq_startup.Append(buttonCanGrp.DOFade(1f, buttonDuration).SetEase(buttonFadeType));
-        seq_startup.Join(button.DOAnchorPosY(buttonStartUpValue, buttonDuration).SetEase(buttonType));
+        s_startup.Append(bearing.DOLocalRotate(Vector3.zero, openTime).SetEase(openType));
+        s_startup.Join(saltoCanGrp.DOFade(1f, openTime).SetEase(openType));
 
-        /*
-        seq_startup.Append(chargeRing.DOScale(startupValue, chargeRingDuration).SetEase(chargeRingType));
-        seq_startup.Join(chargeRingCanGrp.DOFade(1f, chargeRingDuration).SetEase(chargeRingType));
-        seq_startup.Append(buttonLeft.DOLocalRotate(Vector3.zero, buttonDuration).SetEase(buttonType));
-        seq_startup.Join(buttonRight.DOLocalRotate(Vector3.zero, buttonDuration).SetEase(buttonType));
-        seq_startup.Join(buttonCanGrp.DOFade(1f, buttonDuration).SetEase(buttonType));
-         */
-
-        tweenList.Add(seq_startup);
+        tweenList.Add(s_startup);
         isHud = true;
     }
 
     public void ShutDownSaltoHud()
     {
-        buttonCanGrp.blocksRaycasts = false;
+        saltoCanGrp.blocksRaycasts = false;
 
         tweenList.KillAllAndClear();
-        Sequence seq_shutdown = DOTween.Sequence();
+        Sequence s_shutdown = DOTween.Sequence();
 
-        seq_shutdown.Append(buttonCanGrp.DOFade(0f, buttonDuration).SetEase(buttonFadeType));
-        seq_shutdown.Join(button.DOAnchorPosY(buttonShutDownValue, buttonDuration).SetEase(buttonType));
-        seq_shutdown.Append(transform.DOLocalRotate(new Vector3(0f, 0f, shutDownValue), dialRingDuration).SetEase(chargeRingType));
-        //seq_shutdown.AppendCallback(()=>)
-        /*
-        seq_shutdown.Append(chargeRing.DOScale(1f, chargeRingDuration).SetEase(chargeRingType));
-        seq_shutdown.Join(chargeRingCanGrp.DOFade(0f, chargeRingDuration).SetEase(chargeRingType));
+        s_shutdown.Append(bearing.DOLocalRotate(new Vector3(0, 0, -45), closeTime).SetEase(closeType));
+        s_shutdown.Join(saltoCanGrp.DOFade(0f, closeTime).SetEase(closeType));
 
-        seq_shutdown.Append(buttonLeft.DOLocalRotate(new Vector3(0f, 0f, 90f), buttonDuration).SetEase(buttonType));
-        seq_shutdown.Join(buttonRight.DOLocalRotate(new Vector3(0f, 0f, -90f), buttonDuration).SetEase(buttonType));
-        seq_shutdown.Join(buttonCanGrp.DOFade(0f, buttonDuration).SetEase(buttonType));
-         */
-
-        tweenList.Add(seq_shutdown);
+        tweenList.Add(s_shutdown);
         isHud = false;
     }
+
+    public void SaltoButton(bool isPush)
+    {
+        //true=>ボタンOnへ 0.9f
+        if (isPush)
+        {
+            push.color = pushColor;
+            push.rectTransform.DOKill(true);
+            push.rectTransform.DOScale(0.9f, pushTime).SetEase(pushType);
+        }
+        //false=>ボタンOffへ 1f
+        else
+        {
+            push.color = Color.white;
+            push.DOKill(true);
+            push.rectTransform.DOScale(1f, pushTime).SetEase(pushType);
+        }
+
+    }
+
+    public void RotateDisc()
+    {
+        disc.DOKill(true);
+        disc.DOLocalRotate(new Vector3(0, 0, discValue), discTime, RotateMode.FastBeyond360).SetRelative(true).SetEase(discType);
+    }
+
+    public void StartTimeGauge(float flightDuration)
+    {
+        gauge.DOKill(true);
+        gauge.fillAmount = 0.5f;
+        gauge.DOFillAmount(0.17f, flightDuration).SetEase(Ease.Linear).SetDelay(openTime)
+            .OnComplete(() =>
+            {
+                saltoMg.SaltoEnd();//JetのisHudがfalseで、1つ以上JetStockがあれば、JetHud〇
+            });
+    }
+
 }
