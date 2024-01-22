@@ -97,6 +97,7 @@ public class StartGateManager : MonoBehaviour
         {
             grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, dashLevel);
             grypsCrl.stageCrl.controlScreenMg.bowMg.canvasGroup.alpha = 0f;
+            grypsCrl.effector.PowerOnLamp();
         });
         seq_raise.AppendInterval(1.5f);
         seq_raise.AppendCallback(() => LowerFlag());

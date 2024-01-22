@@ -6,12 +6,13 @@ using DG.Tweening;
 
 public class SaltoManager : MonoBehaviour
 {
+    //主にSaltoの制御に関わるスクリプト.
+    //: SaltoStart() => OnButton() => SaltoComplete() => SaltoEnd().
 
-    [Header("SaltoPanel")]
-    public int saltoNum;
-    public bool isSalto; //Salto中かどうか
-
-    const int MAX_STOCK = 3;
+    [Header("LensSize")]
+    [Range(10f, 15f)] public float lensOutValue = 13;
+    [Range(0.1f, 0.5f)] public float lensOutTime = 0.3f;
+    public Ease lensOutType = Ease.OutSine;
 
 
     [Header("TimeScale")]
@@ -23,6 +24,10 @@ public class SaltoManager : MonoBehaviour
     [Range(0.1f, 0.5f)] public float returnTime = 0.25f;
     public Ease returnType = Ease.InQuint;
 
+
+    [Header("SaltoInfo")]
+    public int saltoNum;
+    public bool isSalto; //Salto中かどうか
 
     [HideInInspector] public SaltoHudManager saltoHudMg;
     StageCtrl stageCrl;
@@ -40,11 +45,12 @@ public class SaltoManager : MonoBehaviour
     {
         if (!saltoHudMg.isHud)
         {
-            saltoHudMg.StartUpSaltoHud();
+            saltoHudMg.StartUpSaltoHud(flightDuration);
             saltoHudMg.StartTimeGauge(flightDuration);
             stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", true);
 
-            cinemachineCrl.DOTimeScale(timeScaleBox[0], slowTime);
+            cinemachineCrl.DOLensSize(lensOutValue, lensOutTime, lensOutType);
+            cinemachineCrl.DOTimeScale(timeScaleBox[0], slowTime, slowType);
         }
     }
 
@@ -54,10 +60,18 @@ public class SaltoManager : MonoBehaviour
         {
             saltoHudMg.ShutDownSaltoHud();
             saltoNum = 0;
+            isSalto = false;
+
             stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", false);
 
-            cinemachineCrl.DOTimeScale(1, returnTime);
-            //cinemachineCrl.DefaultZoom();
+            if (!stageCrl.jetMg.jetHudMg.isHud) //stockが1以上 && Hudがfalseの場合のみ起動させる
+            {
+                stageCrl.jetMg.jetHudMg.StartUpJetHud();
+            }
+
+
+            cinemachineCrl.DOLensSize(10, 1f, Ease.Linear);
+            cinemachineCrl.DOTimeScale(1, returnTime, returnType);
         }
     }
 
@@ -70,11 +84,14 @@ public class SaltoManager : MonoBehaviour
     {
         saltoHudMg.SaltoButton(false);
 
-        if (isSalto) return; //Salto中はスルーさせる
+        if (isSalto || !saltoHudMg.isHud) return; //Salto中かシャットダウン後は入力を受け付けない.
 
-        stageCrl.grypsCrl.effector.Salto();
+        stageCrl.grypsCrl.effector.Salto(saltoNum);
         saltoHudMg.RotateDisc();
-        cinemachineCrl.DOTimeScale(timeScaleBox[saltoNum], slowTime);
+
+        saltoNum++;
+        saltoHudMg.DisplayStock(saltoNum);
+        cinemachineCrl.DOTimeScale(timeScaleBox[saltoNum], slowTime, slowType);
 
         isSalto = true;
     }
@@ -82,14 +99,11 @@ public class SaltoManager : MonoBehaviour
     public void SaltoComplete()
     {
         stageCrl.controlScreenMg.ProduceMemory(1);
-        stageCrl.jetMg.DisplayJetStock(stageCrl.jetMg.stockNum + 1); //空中時(unControl)はstockが増えてもJetHudの起動はしない
+        stageCrl.jetMg.DisplayJetStock(stageCrl.jetMg.stockNum + 1); //空中時(unControl)はstockが増えてもJetHudの起動はしない.
 
-        saltoNum++;
         if (saltoNum >= 3)
         {
-            SaltoEnd(); //回転数上限でSaltoHudを強制Shutdown
-            //stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-            //return;
+            SaltoEnd(); //回転数上限でSaltoHudを強制Shutdown.
         }
 
         isSalto = false;

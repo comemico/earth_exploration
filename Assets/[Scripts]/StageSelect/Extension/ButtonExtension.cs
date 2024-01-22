@@ -11,7 +11,11 @@ public class ButtonExtension : MonoBehaviour,
     private void Awake()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(() => SoundManager.Instance.PlaySE(SESoundData.SE.Button01));
+        button.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySE(SESoundData.SE.Button_Choice);
+            SoundManager.Instance.seAudioSource.pitch = 1f;
+        });
     }
 
     public void OnPointerDown(PointerEventData eventData)

@@ -45,26 +45,45 @@ public class SaltoHudManager : MonoBehaviour
 
     [Header("Stock")]
     public Image[] stock;
+    const int MAX_STOCK = 3;
 
 
     SaltoManager saltoMg;
     List<Tween> tweenList = new List<Tween>();
 
+    private void OnDestroy()
+    {
+        tweenList.KillAllAndClear();
+    }
 
     private void Awake()
     {
         saltoMg = GetComponent<SaltoManager>();
     }
 
-    public void StartUpSaltoHud()
+    public void Initialize()
+    {
+        gauge.fillAmount = 0.5f;
+
+        Color col = stock[0].color;
+        col.a = 0f;
+        foreach (Image img in stock)
+        {
+            img.color = col;
+        }
+    }
+
+    public void StartUpSaltoHud(float flightDuration)
     {
         saltoCanGrp.blocksRaycasts = true;
+        Initialize();
 
         tweenList.KillAllAndClear();
         Sequence s_startup = DOTween.Sequence();
 
         s_startup.Append(bearing.DOLocalRotate(Vector3.zero, openTime).SetEase(openType));
         s_startup.Join(saltoCanGrp.DOFade(1f, openTime).SetEase(openType));
+
 
         tweenList.Add(s_startup);
         isHud = true;
@@ -80,9 +99,25 @@ public class SaltoHudManager : MonoBehaviour
         s_shutdown.Append(bearing.DOLocalRotate(new Vector3(0, 0, -45), closeTime).SetEase(closeType));
         s_shutdown.Join(saltoCanGrp.DOFade(0f, closeTime).SetEase(closeType));
 
+
         tweenList.Add(s_shutdown);
         isHud = false;
     }
+
+
+    public void StartTimeGauge(float flightDuration)
+    {
+        gauge.DOKill(false);
+        gauge.DOFillAmount(0.17f, flightDuration).SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                if (isHud) //‚‘¬‚ÅN“üŽžA‚·‚®‚ÉShutDownHud‚ªŒÄ‚Î‚ê‚é‚½‚ß‚Ì‘Îô.
+                {
+                    saltoMg.SaltoEnd(); //§ŒÀŽžŠÔ‚ÅShutDown.
+                }
+            });
+    }
+
 
     public void SaltoButton(bool isPush)
     {
@@ -109,15 +144,12 @@ public class SaltoHudManager : MonoBehaviour
         disc.DOLocalRotate(new Vector3(0, 0, discValue), discTime, RotateMode.FastBeyond360).SetRelative(true).SetEase(discType);
     }
 
-    public void StartTimeGauge(float flightDuration)
+    public void DisplayStock(int stockNum)
     {
-        gauge.DOKill(true);
-        gauge.fillAmount = 0.5f;
-        gauge.DOFillAmount(0.17f, flightDuration).SetEase(Ease.Linear).SetDelay(openTime)
-            .OnComplete(() =>
-            {
-                saltoMg.SaltoEnd();//Jet‚ÌisHud‚ªfalse‚ÅA1‚ÂˆÈãJetStock‚ª‚ ‚ê‚ÎAJetHudZ
-            });
+        if (stockNum > MAX_STOCK) return;
+
+        stock[stockNum - 1].DOFade(1f, 0.25f).SetEase(Ease.OutSine);
+
     }
 
 }

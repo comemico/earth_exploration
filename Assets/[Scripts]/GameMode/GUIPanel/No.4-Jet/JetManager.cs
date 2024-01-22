@@ -28,8 +28,9 @@ public class JetManager : MonoBehaviour
     [Header("Stock")]
     public Image[] stock;
     public int stockNum;
-    const int MAX_STOCK = 3;
+    int oldStockNum;
     int consumeNum;
+    const int MAX_STOCK = 3;
 
     [Header("TimeScale")]
     public float slowTimeScale = 0.1f;
@@ -38,7 +39,6 @@ public class JetManager : MonoBehaviour
     [Range(0.1f, 0.5f)] public float returnTime = 0.25f;
     public Ease returnType = Ease.InQuint;
 
-    Tween t_slow;
 
     [HideInInspector] public JetHudManager jetHudMg;
     StageCtrl stageCrl;
@@ -60,25 +60,42 @@ public class JetManager : MonoBehaviour
     }
 
 
-    public void DisplayJetStock(int Num)
+    public void DisplayJetStock(int stockNum)
     {
-        if (Num > MAX_STOCK) return;
+        if (MAX_STOCK < stockNum) return; //stockNumが3より大きい場合は、リターンする.
 
-        //stack.DOKill(true);
-        for (int i = 0; i < MAX_STOCK; i++)
+        if (stockNum > oldStockNum) //増加.
         {
-            stock[i].enabled = (Num > i);
+            if (stock[stockNum - 1] == null) return;
+            stock[stockNum - 1].DOKill(true);
+            stock[stockNum - 1].DOFade(1f, 0.25f).SetEase(Ease.OutSine);
+
+            if (!jetHudMg.isHud && stageCrl.controlStatus != StageCtrl.ControlStatus.unControl) // stock変化時に毎回呼ばれるためHudがfalseの場合のみ起動させる && 空中時にHudを起動させたくないため.
+            {
+                jetHudMg.StartUpJetHud();
+            }
+        }
+        else if (stockNum < oldStockNum) //減少.
+        {
+            if (stock[stockNum] == null) return;
+            stock[stockNum].DOKill(true);
+            stock[stockNum].DOFade(0f, 0.25f);
+
+            if (jetHudMg.isHud && stockNum == 0)
+            {
+                jetHudMg.ShutDownJetHud();
+            }
         }
 
-        this.stockNum = Num;
+        oldStockNum = stockNum;
 
-        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl && !jetHudMg.isHud) //空中時にHudを起動させたくないため && stock変化時に毎回呼ばれるため、Hudがfalseの場合のみ起動させる
-        {
-            jetHudMg.StartUpJetHud();
-        }
+        this.stockNum = stockNum; //DashAreaから渡されたstockNumを更新する.
+
+        // for (int i = 0; i < MAX_STOCK; i++) stock[i].enabled = (stockNum > i);
 
     }
 
+    /*
     public void Land() //着地時にStockが増加したかを判断する
     {
         if (stockNum >= 1 && !jetHudMg.isHud) //stockが1以上 && Hudがfalseの場合のみ起動させる
@@ -86,6 +103,7 @@ public class JetManager : MonoBehaviour
             jetHudMg.StartUpJetHud();
         }
     }
+     */
 
 
     public void ChargeGauge() //長押しで最大1ストック消費する
@@ -127,7 +145,7 @@ public class JetManager : MonoBehaviour
 
         if (Time.timeScale > slowTimeScale)
         {
-            t_slow = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, slowTimeScale, slowTime).SetEase(slowType);
+            cinemachineCrl.DOTimeScale(slowTimeScale, slowTime, slowType);
         }
     }
 
@@ -176,9 +194,9 @@ public class JetManager : MonoBehaviour
         buttonLamp_Left.enabled = false;
         buttonLamp_Right.enabled = false;
 
-        if (!stageCrl.saltoMg.saltoHudMg.isHud) //Salto側のTimeScale遷移を実行させるためスルーさせる
+        if (!stageCrl.saltoMg.saltoHudMg.isHud) //Salto側のTimeScale遷移を実行させるためスルーさせる.
         {
-            t_slow = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnTime).SetEase(returnType);
+            cinemachineCrl.DOTimeScale(1f, returnTime, returnType);
         }
 
         //メモリ切れモード起動
@@ -193,13 +211,12 @@ public class JetManager : MonoBehaviour
     {
         stockNum -= consumeNum;
         DisplayJetStock(stockNum);
-
-        stageCrl.saltoMg.SaltoEnd(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ
         stageCrl.grypsCrl.ForceJet(consumeNum - 1);
-        if (stockNum <= 0) jetHudMg.ShutDownJetHud();
 
-        isCoolDown = true;
+        stageCrl.saltoMg.SaltoEnd(); //空中でJetした際に、SaltoHudをShutdownさせるために呼ぶ.
+
         this.consumeNum = 0;
+        isCoolDown = true; //クールダウン中は入力を受け付けない.
     }
 
 

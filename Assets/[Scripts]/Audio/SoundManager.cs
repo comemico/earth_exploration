@@ -69,10 +69,13 @@ public class SESoundData
 {
     public enum SE
     {
-        Button01,
-        Button02,
-        Damage,
-        Hoge, // ‚±‚ê‚ªƒ‰ƒxƒ‹‚É‚È‚é
+        Button_Choice,
+        Button_Back,
+        Force_Boost,
+        Force_Jet,
+        Force_Dash,
+        Force_Salto,// ‚±‚ê‚ªƒ‰ƒxƒ‹‚É‚È‚é
+        Charge_Salto,
     }
 
     public SE se;

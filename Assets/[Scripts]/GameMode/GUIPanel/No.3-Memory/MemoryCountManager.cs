@@ -11,6 +11,13 @@ public class MemoryCountManager : MonoBehaviour
     [Range(0.1f, 0.2f)] public float slideDuration;
     public Ease slideType = Ease.OutSine;
 
+    [Header("ÉäÅ[Éã")]
+    public RectTransform bgmReel;
+    public RectTransform seReel;
+    [Range(0.1f, 0.35f)] public float reelTime = 0.175f;
+    const int REEL_DISTANCE = 100;
+
+
     [Header("ÉÅÉÇÉäÉâÉìÉv")]
     public Image produceLamp;
     public Image consumeLamp;
@@ -28,16 +35,16 @@ public class MemoryCountManager : MonoBehaviour
             if (num > memoryNum)//ÉÅÉÇÉäÇè¡îÔÇ∑ÇÈèÍçá
             {
                 aheadNumber.anchoredPosition = new Vector2(0f, slideDistance);
-                aheadNumber.DOAnchorPosY(-slideDistance, slideDuration).SetEase(slideType).SetRelative(true);
+                aheadNumber.DOAnchorPosY(-slideDistance, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f).SetRelative(true);
                 lateNumber.anchoredPosition = Vector2.zero;
-                lateNumber.DOAnchorPosY(-slideDistance, slideDuration).SetEase(slideType).SetRelative(true);
+                lateNumber.DOAnchorPosY(-slideDistance, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f).SetRelative(true);
             }
             else
             {
                 aheadNumber.anchoredPosition = new Vector2(0f, -slideDistance);
-                aheadNumber.DOAnchorPosY(slideDistance, slideDuration).SetEase(slideType).SetRelative(true);
+                aheadNumber.DOAnchorPosY(slideDistance, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f).SetRelative(true);
                 lateNumber.anchoredPosition = Vector2.zero;
-                lateNumber.DOAnchorPosY(slideDistance, slideDuration).SetEase(slideType).SetRelative(true);
+                lateNumber.DOAnchorPosY(slideDistance, reelTime).SetEase(Ease.OutElastic, 0f, 0.225f).SetRelative(true);
             }
             aheadNumberText.text = memoryNum.ToString();
             lateNumberText.text = num.ToString();

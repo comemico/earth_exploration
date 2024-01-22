@@ -21,7 +21,7 @@ public class GrypsController : MonoBehaviour
 
     [HideInInspector] public Rigidbody2D rb = null;
 
-    [Header("ブーストのリロード基準")]
+    [Header("ブーストのクールタイム")]
     public float reloadTime = 0.1f;
     [Range(25, 100)] public float reloadVelocity;
     private float time;
@@ -203,6 +203,9 @@ public class GrypsController : MonoBehaviour
         rb.AddForce(force, ForceMode2D.Impulse);
         //effectManager.JetEffect();
         wheelMg.ArchedBack(false);
+
+        SoundManager.Instance.PlaySE(SESoundData.SE.Force_Boost);
+        SoundManager.Instance.seAudioSource.pitch = 1.15f;
     }
 
     public void Turn(int key, bool isBrake)
@@ -228,6 +231,9 @@ public class GrypsController : MonoBehaviour
         stageCrl.controlScreenMg.KeyChange(key);
         Vector2 force = transform.localScale.x * transform.right * parameter.dashPower[power];
         rb.AddForce(force, ForceMode2D.Impulse);
+
+        SoundManager.Instance.PlaySE(SESoundData.SE.Force_Dash);
+        SoundManager.Instance.seAudioSource.pitch = 1.5f;
     }
 
     public void Brake(bool isBrake)
@@ -242,7 +248,19 @@ public class GrypsController : MonoBehaviour
         Brake(false);//ForceJet()でブレーキを解除
         Vector2 force = transform.localScale.x * transform.right * parameter.jetPower[power];
         rb.AddForce(force, ForceMode2D.Impulse);
-        stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
+
+        //地面 => restrictedControl , 空中 => unControl
+        if (isGround)
+        {
+            stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.restrictedControl);
+        }
+        else
+        {
+            stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
+        }
+
+        SoundManager.Instance.PlaySE(SESoundData.SE.Force_Jet);
+        SoundManager.Instance.seAudioSource.pitch = 0.85f;
     }
 
     private void TakeOff() //離陸
@@ -255,10 +273,9 @@ public class GrypsController : MonoBehaviour
     private void Land() //着地
     {
         stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.control);
-        stageCrl.saltoMg.SaltoEnd(); //Salto中着地した場合SaltoHudをShutdownさせるために呼ぶ
-        stageCrl.jetMg.Land();
-
         wheelMg.WheelLamp(false, true);
+
+        stageCrl.saltoMg.SaltoEnd(); //Salto中着地した場合SaltoHudをShutdownさせるために呼ぶ
     }
 
 

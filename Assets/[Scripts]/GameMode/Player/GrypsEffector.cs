@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 
 public class GrypsEffector : MonoBehaviour
@@ -11,22 +12,34 @@ public class GrypsEffector : MonoBehaviour
     // アニメーション、エフェクト、ランプ(目、ジェット)、ソート切り替えの管理を行なう場所
 
     [Header("HeadLamp")]
-    public Renderer headLamp;
+    public SpriteRenderer headLamp;
+    public Light2D underLamp;
+    [Space(10)]
 
-    [Header("Turn")]
-    [Range(0f, 1f)] public float turnTime = 0.25f;
-    public Ease turnType = Ease.OutSine;
+    [Range(0.1f, 1f)] public float onTime = 0.5f;
+    public Ease onType = Ease.OutSine;
+    [Range(0.1f, 1f)] public float offTime = 0.5f;
+    public Ease offType = Ease.OutSine;
+    [NamedArrayAttribute(new string[] { "Ready", "Play", "Lack" })]
+    public Color[] lampColor;
+
+
+    [Header("Salto")]
+    public Animator animatorSalto;
+    [Space(10)]
+    [NamedArrayAttribute(new string[] { "1回転", "2回転", "3回転" })]
+    [Range(0.2f, 0.75f)] public float[] saltoTime;
+    public Ease saltoType = Ease.OutSine;
+
 
     [Header("Jet")]
     public Animator animatorJet;
     public Renderer jetLamp;
 
-    [Header("Salto")]
-    public Animator animatorSalto;
-    [Space(10)]
 
-    [Range(0f, 1f)] public float saltoTime = 0.3f;
-    public Ease saltoType = Ease.OutSine;
+    [Header("Turn")]
+    [Range(0f, 1f)] public float turnTime = 0.25f;
+    public Ease turnType = Ease.OutSine;
 
 
     [Header("Sorting")]
@@ -40,10 +53,24 @@ public class GrypsEffector : MonoBehaviour
         grypsCrl = GetComponentInParent<GrypsController>();
     }
 
+
     public void HeadLamp()
     {
 
     }
+
+    public void PowerOnLamp()
+    {
+        headLamp.DOFade(1f, onTime).SetEase(onType);
+        DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 1f, onTime).SetEase(onType);
+    }
+
+    public void PowerOffLamp()
+    {
+        headLamp.DOFade(0f, offTime).SetEase(offType);
+        DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 0f, offTime).SetEase(offType);
+    }
+
 
     public void Turn(float distanceHeight)
     {
@@ -52,23 +79,18 @@ public class GrypsEffector : MonoBehaviour
         transform.DOLocalMoveY(0f, turnTime).SetEase(turnType);
     }
 
-    public void Salto()
+
+    public void Salto(int saltoNum)
     {
         transform.DOKill(true);
-        transform.DOLocalRotate(new Vector3(0, 0, 360f), saltoTime, RotateMode.FastBeyond360).SetEase(saltoType).OnComplete(grypsCrl.stageCrl.saltoMg.SaltoComplete);
 
-        /*
-        if ((int)transform.localScale.x == 1)//右を見ている
+        transform.DOLocalRotate(new Vector3(0, 0, 360f), saltoTime[saltoNum], RotateMode.FastBeyond360).SetEase(saltoType).OnComplete(() =>
         {
-            tween_salto.Kill(true);
-            tween_salto = transform.DORotate(new Vector3(0, 0, 360f - targetAngle), 0.25f).SetRelative(true).SetUpdate(false).SetEase(Ease.OutSine);
-        }
-        else if ((int)transform.localScale.x == -1)//左を見ている
-        {
-            tween_salto.Kill(true);
-            tween_salto = transform.DOLocalRotate(new Vector3(0, 0, 360f + targetAngle), 0.25f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.OutSine);
-        }
-        */
+            grypsCrl.stageCrl.saltoMg.SaltoComplete();
+        });
+
+        SoundManager.Instance.PlaySE(SESoundData.SE.Force_Salto);
+        SoundManager.Instance.seAudioSource.pitch = 2.5f;
     }
 
 

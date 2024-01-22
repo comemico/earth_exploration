@@ -13,35 +13,11 @@ public class GrypsParameter : MonoBehaviour
     [NamedArrayAttribute(new string[] { "1段階", "2段階", "3段階" })]
     [Range(1, 200)] public int[] jetPower;
 
-    [NamedArrayAttribute(new string[] { "1回転", "2回転", "3回転" })]
-    [Range(0.2f, 0.75f)] public float[] saltoTime;
-
     [NamedArrayAttribute(new string[] { "弱", "中", "強" })]
     [Range(0.5f, 0.15f)] public float[] suctionPower;
 
 
     [Range(0.5f, 1.0f)] public float breakPower;
-
-    [Range(1000, 10000)] public int somersoultPower;
-    /*
-    public ControlLimit controlLimitB;
-    public enum ControlLimit
-    {
-        [InspectorName("操作不能")] 操作不能b,
-        [InspectorName("操作可能")] 操作可能b,
-        [InspectorName("操作一部可能")] 操作一部可能b
-    }
-
-    public Status status;
-    public enum Status
-    {
-        Ready,
-        Play,
-        Lack,
-        GameOver,
-        Clear
-    }
-     */
 
 
 }

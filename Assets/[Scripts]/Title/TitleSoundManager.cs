@@ -19,7 +19,7 @@ public class TitleSoundManager : MonoBehaviour
     [Header("ƒŠ[ƒ‹")]
     public RectTransform bgmReel;
     public RectTransform seReel;
-    [Range(0.1f, 0.35f)] public float reelTime = 0.15f;
+    [Range(0.1f, 0.35f)] public float reelTime = 0.175f;
     const int REEL_DISTANCE = 100;
 
     public bool isBgm;

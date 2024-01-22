@@ -29,6 +29,7 @@ public class BowManager : MonoBehaviour
     float handleDistance;
 
     List<Tween> tweenList = new List<Tween>();
+    Sequence s_shot;
 
     private void OnDestroy() => tweenList.KillAllAndClear();//ã≠êßèIóπéûÅAäÆóπèÛë‘Ç…Ç»ÇÈÇÊÇ§Ç…Ç∑ÇÈ
 
@@ -46,7 +47,7 @@ public class BowManager : MonoBehaviour
 
     public void StartDrawBow(int key)
     {
-        tweenList.KillAllAndClear();
+        s_shot.Kill(true);
 
         canvasGroup.alpha = 1f;
         transform.localScale = new Vector3(key * 1.2f, 1.2f, 1f);
@@ -119,13 +120,12 @@ public class BowManager : MonoBehaviour
             frame[i].DOFade(0f, 0.2f);
         }
 
-        Sequence seq_shot = DOTween.Sequence();
-        seq_shot.Append(handle.DOAnchorPosX(0f, shotDuration).SetEase(shotType));
-        seq_shot.Join(shaft.DOSizeDelta(new Vector2(0f, shaft.sizeDelta.y), shotDuration).SetEase(shotType));
-        seq_shot.Append(canvasGroup.DOFade(0f, fadeDuration).SetEase(fadeType));
-        seq_shot.Join(handleLamp.DOFade(0f, 0.35f));
+        s_shot = DOTween.Sequence();
+        s_shot.Append(handle.DOAnchorPosX(0f, shotDuration).SetEase(shotType));
+        s_shot.Join(shaft.DOSizeDelta(new Vector2(0f, shaft.sizeDelta.y), shotDuration).SetEase(shotType));
+        s_shot.Append(canvasGroup.DOFade(0f, fadeDuration).SetEase(fadeType));
+        s_shot.Join(handleLamp.DOFade(0f, 0.35f));
 
-        tweenList.Add(seq_shot);
     }
 
 }

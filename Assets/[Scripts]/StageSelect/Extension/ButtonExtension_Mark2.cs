@@ -15,7 +15,11 @@ public class ButtonExtension_Mark2 : MonoBehaviour, IPointerDownHandler, IPointe
     private void Awake()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(() => SoundManager.Instance.PlaySE(SESoundData.SE.Button01));
+        button.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySE(SESoundData.SE.Button_Choice);
+            SoundManager.Instance.seAudioSource.pitch = 1f;
+        });
     }
 
     /*

@@ -111,8 +111,8 @@ public class PauseManager : MonoBehaviour
         SwichBloom(false, lampDuration);
         stageCrl.saltoMg.saltoHudMg.gauge.DOPlay();
 
-        //スロー状態でポーズ画面に入っても、スロー状態で戻せるようにするため
-        if (Mathf.Approximately(Time.timeScale, 1f))//timescale= 1fに近ければ1fに設定
+        //スロー状態でポーズ画面に入っても、スロー状態で戻せるようにするため.
+        if (Mathf.Approximately(Time.timeScale, 1f)) //timescale= 1fに近ければ1fに設定.
         {
             Time.timeScale = 1f;
         }
