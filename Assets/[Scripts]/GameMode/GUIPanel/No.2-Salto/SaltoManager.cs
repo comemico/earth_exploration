@@ -58,17 +58,17 @@ public class SaltoManager : MonoBehaviour
     {
         if (saltoHudMg.isHud)
         {
-            saltoHudMg.ShutDownSaltoHud();
-            saltoNum = 0;
-            isSalto = false;
 
-            stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", false);
-
-            if (!stageCrl.jetMg.jetHudMg.isHud) //stock‚ª1ˆÈã && Hud‚ªfalse‚Ìê‡‚Ì‚İ‹N“®‚³‚¹‚é
+            if (stageCrl.jetMg.stockNum >= 1 && !stageCrl.jetMg.jetHudMg.isHud) //stock‚ª1ˆÈã && Hud‚ªfalse‚Ìê‡‚Ì‚İ‹N“®‚³‚¹‚é
             {
                 stageCrl.jetMg.jetHudMg.StartUpJetHud();
             }
 
+            saltoHudMg.ShutDownSaltoHud();
+            isSalto = false;
+            saltoNum = 0;
+
+            stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", false);
 
             cinemachineCrl.DOLensSize(10, 1f, Ease.Linear);
             cinemachineCrl.DOTimeScale(1, returnTime, returnType);

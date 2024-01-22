@@ -3450,40 +3450,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
       propertyPath: seSoundDatas.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[6].se
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[2].volume
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[3].volume
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[4].volume
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[5].volume
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[6].volume
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[4].audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 08460d06b72634645b981f2d929390f2, type: 3}
-    - target: {fileID: 903423969654744487, guid: d60900278359edb419f660bd0d560b86, type: 3}
-      propertyPath: seSoundDatas.Array.data[6].audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d6c950c8450eb344abe49c62d01b9df3, type: 3}
     - target: {fileID: 2619987449438697549, guid: d60900278359edb419f660bd0d560b86, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -67165,7 +67133,6 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: 29592aa0c5ef8174a8095624a371c9cc, type: 2}
-    - {fileID: 11400000, guid: 8bd7897d9bbfe1d4691a1d1ee3480c88, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -67181,8 +67148,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    - m_PersistentCalls:
-        m_Calls: []
 --- !u!114 &1333018646352284174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68157,14 +68122,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headLamp: {fileID: 513138053189000591}
   underLamp: {fileID: 3299958203919489814}
-  onTime: 0.65
-  onType: 14
-  offTime: 0.5
-  offType: 2
   lampColor:
-  - {r: 0.09803922, g: 0.6509804, b: 0.5058824, a: 0}
   - {r: 0.09803922, g: 0.6509804, b: 0.5058824, a: 1}
   - {r: 0.83137256, g: 0.07450981, b: 0.10980392, a: 1}
+  onTime: 0.55
+  offTime: 1
   animatorSalto: {fileID: 1670789329906738416}
   saltoTime:
   - 0.35
@@ -68208,7 +68170,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: e6bc5b9a7f6bc23479a1bc49b5d8a829, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -68311,7 +68273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialMg: {fileID: 0}
   bowMg: {fileID: 0}
-  isDebugMode: 1
+  isDebugMode: 0
   maxGage: 3
   distancePerMemory: 0.035
   gearNum: 0

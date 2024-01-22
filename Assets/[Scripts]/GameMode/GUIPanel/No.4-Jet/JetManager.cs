@@ -139,7 +139,8 @@ public class JetManager : MonoBehaviour
 
         if (isCoolDown) return; //クールダウン中はスルーさせる
 
-        stageCrl.Regeneration(); //一時的にLackModeからPlayModeへ移る
+        // stageCrl.Regeneration(); 
+        stageCrl.state = StageCtrl.State.Play; //一時的にLackModeからPlayModeへ移る
         stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", true);
         ChargeGauge();
 
@@ -202,7 +203,8 @@ public class JetManager : MonoBehaviour
         //メモリ切れモード起動
         if (stageCrl.memoryGageMg.memoryGage <= 0)
         {
-            stageCrl.Lack();
+            stageCrl.state = StageCtrl.State.Lack;
+            //stageCrl.Lack();
         }
 
     }

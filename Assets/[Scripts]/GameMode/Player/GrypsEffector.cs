@@ -14,14 +14,12 @@ public class GrypsEffector : MonoBehaviour
     [Header("HeadLamp")]
     public SpriteRenderer headLamp;
     public Light2D underLamp;
+    public Color[] lampColor;
     [Space(10)]
 
-    [Range(0.1f, 1f)] public float onTime = 0.5f;
-    public Ease onType = Ease.OutSine;
-    [Range(0.1f, 1f)] public float offTime = 0.5f;
-    public Ease offType = Ease.OutSine;
+    [Range(0.1f, 1.5f)] public float onTime = 0.5f;
+    [Range(0.1f, 1.5f)] public float offTime = 0.5f;
     [NamedArrayAttribute(new string[] { "Ready", "Play", "Lack" })]
-    public Color[] lampColor;
 
 
     [Header("Salto")]
@@ -61,14 +59,18 @@ public class GrypsEffector : MonoBehaviour
 
     public void PowerOnLamp()
     {
-        headLamp.DOFade(1f, onTime).SetEase(onType);
-        DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 1f, onTime).SetEase(onType);
+        headLamp.DOFade(1f, onTime).SetEase(Ease.InQuint).SetDelay(0.15f);
+        DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 1f, onTime).SetEase(Ease.InQuint).SetDelay(0.15f);
     }
 
     public void PowerOffLamp()
     {
-        headLamp.DOFade(0f, offTime).SetEase(offType);
-        DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 0f, offTime).SetEase(offType);
+        headLamp.DOFade(0f, offTime).SetEase(Ease.OutElastic).OnComplete(() =>
+        {
+            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missLack);
+        });
+
+        DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 0f, offTime).SetEase(Ease.OutElastic);
     }
 
 

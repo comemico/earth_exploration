@@ -39,9 +39,9 @@ public class StageCtrl : MonoBehaviour
 
     public enum ControlStatus
     {
-        [InspectorName("操作不能")] unControl,
-        [InspectorName("操作可能")] control,
-        [InspectorName("操作一部可能")] restrictedControl
+        [InspectorName("UnControl")] unControl,
+        [InspectorName("Control")] control,
+        [InspectorName("Restricted")] restrictedControl
     }
     public enum State
     {
@@ -167,7 +167,9 @@ public class StageCtrl : MonoBehaviour
                 if (Mathf.Abs(grypsCrl.rb.velocity.x) < 0.1f && controlStatus == ControlStatus.control)
                 {
                     ChangeControlStatus(ControlStatus.unControl);
-                    resultMg.Result(ResultManager.CAUSE.missLack);
+
+                    grypsCrl.effector.PowerOffLamp(); //目を暗くする => Result(ResultManager.CAUSE.missLack);
+                    //resultMg.Result(ResultManager.CAUSE.missLack);
                     GameOver();
                     return;
                 }
@@ -184,20 +186,23 @@ public class StageCtrl : MonoBehaviour
     public void Lack()
     {
         state = State.Lack;
-        //目を点滅
+        //目を赤くする
+        grypsCrl.effector.headLamp.color = grypsCrl.effector.lampColor[1];
+        //grypsCrl.effector.headLamp.DOColor(grypsCrl.effector.lampColor[1], 0.2f).SetEase(Ease.InSine);
     }
 
     public void Regeneration()
     {
         state = State.Play;
-        //目の点滅を戻す
+        //目を青に戻す
+        grypsCrl.effector.headLamp.color = grypsCrl.effector.lampColor[0];
+        //grypsCrl.effector.headLamp.DOColor(grypsCrl.effector.lampColor[0], 0.2f).SetEase(Ease.InSine);
     }
 
     public void GameOver()
     {
         state = State.GameOver;
         grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        //目を暗くする
     }
 
     public void StageClear()

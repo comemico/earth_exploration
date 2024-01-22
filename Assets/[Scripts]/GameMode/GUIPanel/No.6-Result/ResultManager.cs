@@ -97,6 +97,7 @@ public class ResultManager : MonoBehaviour
         {
             case CAUSE.clear:
                 jetPanel.SetActive(false);
+
                 OpenClearPanel();
                 break;
 
@@ -104,6 +105,7 @@ public class ResultManager : MonoBehaviour
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[0].enabled = true;
                 causeText.text = "落下してしまった！";
+
                 OpenMissPanel();
                 break;
 
@@ -111,6 +113,7 @@ public class ResultManager : MonoBehaviour
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[1].enabled = true;
                 causeText.text = "爆発してしまった！";
+
                 OpenMissPanel();
                 break;
 
@@ -118,6 +121,7 @@ public class ResultManager : MonoBehaviour
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[2].enabled = true;
                 causeText.text = "バッテリー切れ！？";
+
                 OpenMissPanel();
                 break;
         }
@@ -159,9 +163,13 @@ public class ResultManager : MonoBehaviour
         seq_miss.Append(result.rectTransform.DOAnchorPosY(-225f, fallDuration).SetEase(fallType));
         seq_miss.Append(button.DOAnchorPosX(-160f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
         seq_miss.AppendInterval(0.15f);
+
         seq_miss.Append(result.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
         seq_miss.Join(OpenTips());
-        seq_miss.AppendCallback(() => ScrollText());
+        seq_miss.AppendCallback(() =>
+        {
+            ScrollText();
+        });
 
         tweenList.Add(seq_miss);
     }

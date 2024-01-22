@@ -89,20 +89,18 @@ public class ClearGateManager : MonoBehaviour
                 FalseMask((GATE_KEY)gateKey);//速度の正負(1,-1)からenum 型への変換 => 引数に入れる
             }
 
-            boxCol.enabled = false; //1回しか呼ばれなくなる ・高速で侵入すると2回以上呼ばれてDOMoveXが正の方向にしか行かなくなる (Sign(0)で1になるため)
-            transform.GetComponentInParent<SortingGroup>().enabled = false; //SpriteMaskの効果を出すため
+            boxCol.enabled = false; //1回しか呼ばれなくなる ・高速で侵入すると2回以上呼ばれてDOMoveXが正の方向にしか行かなくなる (Sign(0)で1になるため).
+            transform.GetComponentInParent<SortingGroup>().enabled = false; //SpriteMaskの効果を出すため.
 
             grypsCrl.stageCrl.StageClear();
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
-
-            grypsCrl.rb.velocity = Vector2.zero;
-            grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
-
             grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
-            //ジェットメーターを隠したい　grypsCrl.stageCrl.jetMg.limitRingCanGrp.DOFade(0f, 0.25f).SetDelay(0.1f);
             grypsCrl.stageCrl.jetMg.jetHudMg.ShutDownJetHud();
             grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(grypsCrl.stageCrl.data.maxLifeNum);
 
+            grypsCrl.effector.underLamp.intensity = 0f;
+            grypsCrl.rb.velocity = Vector2.zero;
+            grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
             grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
         }
     }
@@ -119,7 +117,7 @@ public class ClearGateManager : MonoBehaviour
         });
     }
 
-    public void SwichBloom(bool isEnabled, float fadeTime) //FadeInする場合、PanelAnimeで光源が見えるのを防ぐ目的
+    public void SwichBloom(bool isEnabled, float fadeTime) //FadeInする場合、PanelAnimeで光源が見えるのを防ぐ目的.
     {
         foreach (SpriteRenderer sprite in emiSprite)
         {
