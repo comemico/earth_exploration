@@ -4,34 +4,33 @@ using UnityEngine.EventSystems;
 
 public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-    MovingMaskManager movingMaskMg;
-    [HideInInspector] public TutorialManager tutorialMg;
-    [HideInInspector] public BowManager bowMg;
-    MemoryGageManager memoryGageMg;
-    Image crlImage;
-
-    StageCtrl stageCrl;
-    GrypsController grypsCrl;
-    CinemachineManager cinemachineMg;
 
     [Header("デバックモード切替ボタン")]
     public bool isDebugMode;
-    public int maxGage; //残りメモリ数に応じて上限が変化する(3～1)
+    public int maxGage; //残りメモリ数に応じて上限が変化する(3～1).
 
     [Header("1メモリのスワイプ量(wide=1.0)")]
     public float distancePerMemory;
 
-
     float distanceFactor;
-    float dragLength; //( 0.0～1.0 )
+    float dragLength; //( 0.0～1.0 ).
     Vector2 screenFactor;
     Vector2 startPosition, currentPosition;
 
     public int gearNum;
     int oldGearNum;
 
-    private int key = 1;//向き
-    private int oldKey = 1;//最後に変わった向き
+    int key = 1;//向き.
+    int oldKey = 1;//最後に変わった向き.
+
+
+    [HideInInspector] public BowManager bowMg;
+    Image crlImage;
+    StageCtrl stageCrl;
+    MemoryGageManager memoryGageMg;
+    GrypsController grypsCrl;
+    CinemachineManager cinemachineMg;
+
 
     private void Start()
     {
@@ -43,15 +42,15 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private void GetComponent()
     {
+        bowMg = GetComponentInChildren<BowManager>();
+        crlImage = GetComponent<Image>();
+
         stageCrl = transform.root.GetComponent<StageCtrl>();
         grypsCrl = transform.root.GetComponent<StageCtrl>().grypsCrl;
-        cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
-        movingMaskMg = transform.parent.GetComponentInChildren<MovingMaskManager>();
-        tutorialMg = transform.parent.GetComponentInChildren<TutorialManager>();
-        bowMg = transform.parent.GetComponentInChildren<BowManager>();
         memoryGageMg = transform.root.GetComponentInChildren<MemoryGageManager>();
-        crlImage = GetComponent<Image>();
+        cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
     }
+
 
     public void ChangeControlLimit(StageCtrl.ControlStatus status)//, bool isInterval)空中時、ワープ中、etc...
     {
@@ -104,13 +103,11 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         startPosition = eventData.position * screenFactor;
         bowMg.StartDrawBow(key);
-        //movingMaskMg.FadeInMovingMask(startPosition);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         bowMg.Release();
-        //movingMaskMg.FadeOutMovingMask();
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -131,7 +128,6 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         currentPosition = eventData.position * screenFactor;
-        //movingMaskMg.OnDragMovingMask(currentPosition);
 
         if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
         {
@@ -165,7 +161,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             bowMg.DrawingBow(gearNum, medianValue);
             stageCrl.grypsCrl.effector.animatorJet.SetFloat("IdleSpeed", gearNum + 1);
 
-            if (oldGearNum != gearNum)//メモリが変わった時だけ、メモリ表示の処理を行なってもらう
+            if (oldGearNum != gearNum)//メモリが変わった時だけ、メモリ表示の処理を行なってもらう.
             {
                 bowMg.DisplaySpeedArrow(gearNum);
                 memoryGageMg.DisplayMemoryGage(memoryGageMg.memoryGage - gearNum);
@@ -183,7 +179,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
         bowMg.StartDrawBow(key);
         cinemachineMg.ChangeDirection(key);
         stageCrl.saltoMg.transform.localScale = new Vector3(key, 1f, 1f);
-        oldKey = key;//更新
+        oldKey = key;
     }
 
 

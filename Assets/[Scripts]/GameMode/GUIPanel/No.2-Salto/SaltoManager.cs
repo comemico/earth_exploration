@@ -70,6 +70,9 @@ public class SaltoManager : MonoBehaviour
 
             stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", false);
 
+            stageCrl.grypsCrl.effector.trailNormal.emitting = true;
+            stageCrl.grypsCrl.effector.trailAlpha.emitting = true;
+
             cinemachineCrl.DOLensSize(10, 1f, Ease.Linear);
             cinemachineCrl.DOTimeScale(1, returnTime, returnType);
         }

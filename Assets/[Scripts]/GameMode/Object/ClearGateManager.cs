@@ -58,13 +58,13 @@ public class ClearGateManager : MonoBehaviour
             case GATE_KEY.left:
                 left.enabled = false;
                 right.enabled = true;
-                cinemachineCrl.ClearDirection(0.43f);
+                //cinemachineCrl.ClearDirection(0.43f);
                 break;
 
             case GATE_KEY.right:
                 left.enabled = true;
                 right.enabled = false;
-                cinemachineCrl.ClearDirection(0.08f);
+                //cinemachineCrl.ClearDirection(0.08f);
                 break;
         }
     }

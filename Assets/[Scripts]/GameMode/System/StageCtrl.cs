@@ -65,9 +65,10 @@ public class StageCtrl : MonoBehaviour
     [Header("No.2")] [HideInInspector] public SaltoManager saltoMg;
     [Header("No.3")] [HideInInspector] public MemoryGageManager memoryGageMg;
     [Header("No.4")] [HideInInspector] public JetManager jetMg;
-    [Header("No.5")] [HideInInspector] public PauseManager pauseMg;
-    [Header("No.6")] [HideInInspector] public ResultManager resultMg;
-    [Header("No.7")] [HideInInspector] public CurtainManager curtainMg;
+    [Header("No.5")] [HideInInspector] public TutorialManager tutorialMg;
+    [Header("No.6")] [HideInInspector] public PauseManager pauseMg;
+    [Header("No.7")] [HideInInspector] public ResultManager resultMg;
+    [Header("No.8")] [HideInInspector] public CurtainManager curtainMg;
     private List<Tween> tweenList = new List<Tween>();
     private void OnDestroy() => tweenList.KillAllAndClear();
 
@@ -115,6 +116,7 @@ public class StageCtrl : MonoBehaviour
         saltoMg = GetComponentInChildren<SaltoManager>();
         memoryGageMg = GetComponentInChildren<MemoryGageManager>();
         jetMg = GetComponentInChildren<JetManager>();
+        tutorialMg = GetComponentInChildren<TutorialManager>();
         pauseMg = GetComponentInChildren<PauseManager>();
         resultMg = GetComponentInChildren<ResultManager>();
         curtainMg = GetComponentInChildren<CurtainManager>();

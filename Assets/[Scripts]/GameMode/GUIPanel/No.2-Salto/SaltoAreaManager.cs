@@ -26,6 +26,9 @@ public class SaltoAreaManager : MonoBehaviour
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
             grypsCrl.ForceDash((int)grypsCrl.transform.localScale.x, 0);
             grypsCrl.stageCrl.saltoMg.SaltoStart(flightDuration);
+
+            grypsCrl.effector.trailNormal.emitting = false;
+            grypsCrl.effector.trailAlpha.emitting = false;
         }
     }
 

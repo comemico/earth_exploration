@@ -70,7 +70,7 @@ public class StartBandManager : MonoBehaviour
         seq_wakeUp.Append(backPanel.DOFade(0f, tipsTime).SetEase(tipsType));
         seq_wakeUp.Append(tipsEdge.rectTransform.DOSizeDelta(new Vector2(235, 235), tipsTime).SetEase(tipsType));
         seq_wakeUp.Append(tipsEdge.DOFade(0f, tipsTime).SetEase(tipsType));
-        seq_wakeUp.AppendCallback(() => titleMg.cinemachineMg.Zoom(55));
+        seq_wakeUp.AppendCallback(() => titleMg.cinemachineMg.DOLensSize(8f, 1.5f, Ease.Linear));
 
         //ƒpƒlƒ‹‘Ò‹@
         seq_wakeUp.Join(screen.DOAnchorPosY(-350, screenMoveTime).SetEase(screenMoveType));

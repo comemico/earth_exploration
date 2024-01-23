@@ -33,7 +33,8 @@ public class GrypsEffector : MonoBehaviour
     [Header("Jet")]
     public Animator animatorJet;
     public Renderer jetLamp;
-
+    public TrailRenderer trailNormal;
+    public TrailRenderer trailAlpha;
 
     [Header("Turn")]
     [Range(0f, 1f)] public float turnTime = 0.25f;
@@ -49,12 +50,6 @@ public class GrypsEffector : MonoBehaviour
     {
         sortingGroup = GetComponent<SortingGroup>();
         grypsCrl = GetComponentInParent<GrypsController>();
-    }
-
-
-    public void HeadLamp()
-    {
-
     }
 
     public void PowerOnLamp()
@@ -80,6 +75,7 @@ public class GrypsEffector : MonoBehaviour
         transform.DOKill(true);
         transform.DOLocalMoveY(0f, turnTime).SetEase(turnType);
     }
+
 
 
     public void Salto(int saltoNum)

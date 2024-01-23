@@ -10,7 +10,7 @@ public class TitleManager : MonoBehaviour
     public SelectBandManager selectBandMg;
     public TitleModeManager modeMg;
     public TitleCurtainManager curtainMg;
-    public TitleCinemachine cinemachineMg;
+    public CinemachineManager cinemachineMg;
 
     [Header("LaunchButton")]
     public Button launchButton;

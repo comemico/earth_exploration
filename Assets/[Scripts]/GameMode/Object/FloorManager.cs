@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
+    /// <summary>
+    /// フロアの配置方法 : 奥行きはフロアオブジェクト全体のY値を上下させる( SpriteShape.Hight=>0.5f の場合、高さは1.25f ).
+    /// </summary>
+
     [Header("フロア配列")]
     public Transform[] colBox;
     CinemachineManager cinemachineMg;
@@ -10,26 +14,7 @@ public class FloorManager : MonoBehaviour
     private void Start()
     {
         cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
-        /*
-        floor = new Transform[transform.childCount];
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            floor[i] = transform.GetChild(i);
-        }
-         */
     }
-    /*
-    public void AllUnenableCollider()
-    {
-        for (int x = 0; x < floor.Length; x++)
-        {
-            for (int i = 0; i < floor[x].GetChild(0).childCount; i++)
-            {
-                floor[x].GetChild(0).GetChild(i).GetComponent<Collider2D>().enabled = false;
-            }
-        }
-    }
-     */
 
     public void FalseCollider()
     {
@@ -53,7 +38,6 @@ public class FloorManager : MonoBehaviour
         {
             colBox[floorNumber].GetChild(i).GetComponent<Collider2D>().enabled = true;
         }
-
 
         return floorNumber;
     }
