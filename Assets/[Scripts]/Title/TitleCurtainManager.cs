@@ -98,8 +98,20 @@ public class TitleCurtainManager : MonoBehaviour
     {
         Sequence seq_end = DOTween.Sequence();
         seq_end.Append(backPanel.DOFade(1f, fadeOutDuration).SetEase(fadeOutType));
+        seq_end.AppendInterval(0.5f);
+        seq_end.AppendCallback(() => Quit());
         tweenList.Add(seq_end);
         return seq_end;
     }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;//ゲームプレイ終了
+#else
+        Application.Quit();//ゲームプレイ終了
+#endif
+    }
+
 
 }

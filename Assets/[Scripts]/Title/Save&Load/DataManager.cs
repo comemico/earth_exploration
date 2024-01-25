@@ -66,15 +66,4 @@ public class DataManager : MonoBehaviour
     void OnDestroy() => Save(data);
 
 
-    /*
-    public void SetSaveData(SaveData data)
-    {
-        GManager.instance.courseDate = data.linearData;
-        GManager.instance.isRerease = data.scatterClear;
-        GManager.instance.maxLifeNum = data.maxLifeNum;
-        GManager.instance.recentCourseNum = data.recentCourseAdress;
-        GManager.instance.recentStageNum = data.recentStageAdress;
-    }
-     */
-
 }

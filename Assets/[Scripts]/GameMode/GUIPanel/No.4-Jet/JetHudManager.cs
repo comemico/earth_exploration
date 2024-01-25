@@ -70,7 +70,7 @@ public class JetHudManager : MonoBehaviour
         s_shutdown.AppendInterval(0.5f);
         s_shutdown.Append(buttonRight.DOLocalRotate(new Vector3(0f, 0f, -90f), closeTime).SetEase(closeType));
         s_shutdown.Join(buttonLeft.DOLocalRotate(new Vector3(0f, 0f, 90f), closeTime).SetEase(closeType));
-        s_shutdown.Join(buttonCanGrp.DOFade(0f, closeTime).SetEase(closeType));
+        s_shutdown.Join(buttonCanGrp.DOFade(0f, closeTime).SetEase(Ease.InSine));
         s_shutdown.AppendCallback(() =>
         {
             JetButton(true); //ƒ{ƒ^ƒ“Žû”[

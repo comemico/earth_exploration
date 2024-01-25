@@ -4,11 +4,13 @@ using DG.Tweening;
 public class ZoomManager : MonoBehaviour
 {
     [Header("Lens")]
-    [Range(5f, 15f)] public float enterValue = 10f;
+    [Range(6f, 15f)] public float enterValue = 10f;
     [Range(0.5f, 3f)] public float enterTime = 1f;
+    [Space(10)]
 
-    [Range(5f, 15f)] public float exitValue = 10f;
+    [Range(6f, 15f)] public float exitValue = 10f;
     [Range(0.5f, 3f)] public float exitTime = 1f;
+
     public Ease lensType = Ease.OutQuad;
 
 

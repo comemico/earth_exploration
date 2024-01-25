@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class JetManager : MonoBehaviour
 {
+
     [Header("ButtonLamp")]
     public Image buttonLamp_Right;
     public Image buttonLamp_Left;
@@ -95,18 +96,7 @@ public class JetManager : MonoBehaviour
 
     }
 
-    /*
-    public void Land() //着地時にStockが増加したかを判断する
-    {
-        if (stockNum >= 1 && !jetHudMg.isHud) //stockが1以上 && Hudがfalseの場合のみ起動させる
-        {
-            jetHudMg.StartUpJetHud();
-        }
-    }
-     */
-
-
-    public void ChargeGauge() //長押しで最大1ストック消費する
+    public void ChargeGauge() //長押しで最大1ストック消費する.
     {
         gauge.DOKill(true);
         gauge.color = gaugeColor[0];
@@ -118,7 +108,7 @@ public class JetManager : MonoBehaviour
         gauge.DOFillAmount(0.425f, chargeTime).SetEase(Ease.Linear).SetDelay(0.125f)
             .OnComplete(() =>
             {
-                consumeNum++; //1になる
+                consumeNum++; //1になる.
                 gauge.color = gaugeColor[consumeNum];
             });
 
@@ -137,12 +127,12 @@ public class JetManager : MonoBehaviour
         isPush = true;
         jetHudMg.JetButton(isPush);
 
-        if (isCoolDown) return; //クールダウン中はスルーさせる
+        if (isCoolDown) return; //クールダウン中はスルーさせる.
 
-        // stageCrl.Regeneration(); 
-        stageCrl.state = StageCtrl.State.Play; //一時的にLackModeからPlayModeへ移る
-        stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", true);
         ChargeGauge();
+
+        stageCrl.state = StageCtrl.State.Play; //一時的にLackModeからPlayModeへ移る.
+        stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", true);
 
         if (Time.timeScale > slowTimeScale)
         {
@@ -155,12 +145,11 @@ public class JetManager : MonoBehaviour
         isPush = false;
         jetHudMg.JetButton(isPush);
 
-        if (isCoolDown) return; //クールダウン中はスルーさせる
-
+        if (isCoolDown) return; //クールダウン中はスルーさせる.
 
         if (consumeNum >= 1)
         {
-            //ストックを消費する場合
+            //ストックを消費する場合 => 溜めた後にボタンを離した場合.
             ConsumeStock(consumeNum);
             gauge.DOKill(false);
             gauge.DOFillAmount(0.07f, coolTime).SetEase(Ease.Linear)
@@ -178,7 +167,7 @@ public class JetManager : MonoBehaviour
         }
         else
         {
-            //ストックを消費しない場合
+            //ストックを消費しない場合 => 溜まる前にボタンを離した場合.
             float returnTime = (240 - (int)pointer.localEulerAngles.z) * resetTimePer;
 
             gauge.DOKill(false);
@@ -189,7 +178,6 @@ public class JetManager : MonoBehaviour
             stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", false);
 
         }
-
 
         // ストック消費に関係なく共通実行
         buttonLamp_Left.enabled = false;
@@ -204,7 +192,6 @@ public class JetManager : MonoBehaviour
         if (stageCrl.memoryGageMg.memoryGage <= 0)
         {
             stageCrl.state = StageCtrl.State.Lack;
-            //stageCrl.Lack();
         }
 
     }
@@ -222,6 +209,15 @@ public class JetManager : MonoBehaviour
     }
 
 
+    /*
+    public void Land() //着地時にStockが増加したかを判断する
+    {
+        if (stockNum >= 1 && !jetHudMg.isHud) //stockが1以上 && Hudがfalseの場合のみ起動させる
+        {
+            jetHudMg.StartUpJetHud();
+        }
+    }
+     */
 
     /*
     void Release(int consumeNum)

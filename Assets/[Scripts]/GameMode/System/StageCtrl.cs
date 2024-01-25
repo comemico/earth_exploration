@@ -190,7 +190,6 @@ public class StageCtrl : MonoBehaviour
         state = State.Lack;
         //目を赤くする
         grypsCrl.effector.headLamp.color = grypsCrl.effector.lampColor[1];
-        //grypsCrl.effector.headLamp.DOColor(grypsCrl.effector.lampColor[1], 0.2f).SetEase(Ease.InSine);
     }
 
     public void Regeneration()
@@ -198,7 +197,6 @@ public class StageCtrl : MonoBehaviour
         state = State.Play;
         //目を青に戻す
         grypsCrl.effector.headLamp.color = grypsCrl.effector.lampColor[0];
-        //grypsCrl.effector.headLamp.DOColor(grypsCrl.effector.lampColor[0], 0.2f).SetEase(Ease.InSine);
     }
 
     public void GameOver()

@@ -31,14 +31,14 @@ public class SaltoManager : MonoBehaviour
 
     [HideInInspector] public SaltoHudManager saltoHudMg;
     StageCtrl stageCrl;
-    CinemachineManager cinemachineCrl;
+    CinemachineManager cinemachineMg;
 
 
     private void Awake()
     {
         saltoHudMg = GetComponent<SaltoHudManager>();
         stageCrl = transform.root.GetComponent<StageCtrl>();
-        cinemachineCrl = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
+        cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
     }
 
     public void SaltoStart(float flightDuration) //SaltoƒGƒŠƒA‚É“ü‚è‹N“®
@@ -49,8 +49,8 @@ public class SaltoManager : MonoBehaviour
             saltoHudMg.StartTimeGauge(flightDuration);
             stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", true);
 
-            cinemachineCrl.DOLensSize(lensOutValue, lensOutTime, lensOutType);
-            cinemachineCrl.DOTimeScale(timeScaleBox[0], slowTime, slowType);
+            cinemachineMg.DOLensSize(lensOutValue, lensOutTime, lensOutType);
+            cinemachineMg.DOTimeScale(timeScaleBox[0], slowTime, slowType);
         }
     }
 
@@ -73,8 +73,8 @@ public class SaltoManager : MonoBehaviour
             stageCrl.grypsCrl.effector.trailNormal.emitting = true;
             stageCrl.grypsCrl.effector.trailAlpha.emitting = true;
 
-            cinemachineCrl.DOLensSize(10, 1f, Ease.Linear);
-            cinemachineCrl.DOTimeScale(1, returnTime, returnType);
+            cinemachineMg.DOLensSize(10, 1f, Ease.Linear);
+            cinemachineMg.DOTimeScale(1, returnTime, returnType);
         }
     }
 
@@ -94,7 +94,7 @@ public class SaltoManager : MonoBehaviour
 
         saltoNum++;
         saltoHudMg.DisplayStock(saltoNum);
-        cinemachineCrl.DOTimeScale(timeScaleBox[saltoNum], slowTime, slowType);
+        cinemachineMg.DOTimeScale(timeScaleBox[saltoNum], slowTime, slowType);
 
         isSalto = true;
     }

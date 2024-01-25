@@ -58,16 +58,15 @@ public class ClearGateManager : MonoBehaviour
             case GATE_KEY.left:
                 left.enabled = false;
                 right.enabled = true;
-                //cinemachineCrl.ClearDirection(0.43f);
                 break;
 
             case GATE_KEY.right:
                 left.enabled = true;
                 right.enabled = false;
-                //cinemachineCrl.ClearDirection(0.08f);
                 break;
         }
     }
+
 
     /*
     Enumについての参考ページ
@@ -101,7 +100,11 @@ public class ClearGateManager : MonoBehaviour
             grypsCrl.effector.underLamp.intensity = 0f;
             grypsCrl.rb.velocity = Vector2.zero;
             grypsCrl.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
-            grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true).OnComplete(() => RaiseFlag());
+            grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    RaiseFlag();
+                });
         }
     }
 

@@ -95,37 +95,33 @@ public class ResultManager : MonoBehaviour
     {
         switch (cause)
         {
-            case CAUSE.clear:
-                jetPanel.SetActive(false);
 
+            case CAUSE.clear:
                 OpenClearPanel();
                 break;
 
             case CAUSE.missFall:
+                causeText.text = "落下してしまった！";
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[0].enabled = true;
-                causeText.text = "落下してしまった！";
-
                 OpenMissPanel();
                 break;
 
             case CAUSE.missBomb:
+                causeText.text = "爆発してしまった！";
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[1].enabled = true;
-                causeText.text = "爆発してしまった！";
-
                 OpenMissPanel();
                 break;
 
             case CAUSE.missLack:
+                causeText.text = "バッテリー切れ！？";
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[2].enabled = true;
-                causeText.text = "バッテリー切れ！？";
-
                 OpenMissPanel();
                 break;
-        }
 
+        }
     }
 
     public void OpenClearPanel()

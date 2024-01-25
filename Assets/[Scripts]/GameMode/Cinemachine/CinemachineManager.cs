@@ -29,9 +29,10 @@ public class CinemachineManager : MonoBehaviour
     }
 
 
-    public void DOLensSize(float endValue, float duration, Ease ease)
+    public Tween DOLensSize(float endValue, float duration, Ease ease)
     {
         t_lensSize = DOTween.To(() => cinemachineVirtualCamera.m_Lens.OrthographicSize, x => cinemachineVirtualCamera.m_Lens.OrthographicSize = x, endValue, duration).SetEase(ease);
+        return t_lensSize;
     }
 
 

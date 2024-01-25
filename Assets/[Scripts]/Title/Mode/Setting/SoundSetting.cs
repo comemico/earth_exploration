@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class TitleSoundManager : MonoBehaviour
+public class SoundSetting : MonoBehaviour
 {
     DataManager dataMg;
 
