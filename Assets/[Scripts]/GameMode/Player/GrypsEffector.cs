@@ -54,7 +54,10 @@ public class GrypsEffector : MonoBehaviour
 
     public void PowerOnLamp()
     {
-        headLamp.DOFade(1f, onTime).SetEase(Ease.InQuint).SetDelay(0.15f);
+        headLamp.DOFade(1f, onTime).SetEase(Ease.InQuint).SetDelay(0.15f).OnComplete(() =>
+        {
+            grypsCrl.stageCrl.controlScreenMg.crlImage.enabled = true; //‘€ì‰Â”\‚É‚·‚é.
+        });
         DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 1f, onTime).SetEase(Ease.InQuint).SetDelay(0.15f);
     }
 

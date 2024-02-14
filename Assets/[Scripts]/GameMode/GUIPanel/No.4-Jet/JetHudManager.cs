@@ -31,6 +31,9 @@ public class JetHudManager : MonoBehaviour
     public Ease pullType = Ease.OutBack;
 
     List<Tween> tweenList = new List<Tween>();
+    Sequence s_startup;
+    Sequence s_shutdown;
+
     private void OnDestroy()
     {
         tweenList.KillAllAndClear();
@@ -48,8 +51,8 @@ public class JetHudManager : MonoBehaviour
         pushRight.color = Color.white;
         pushLeft.color = Color.white;
 
-        Sequence s_startup = DOTween.Sequence();
-
+        s_shutdown.Kill(true);
+        s_startup = DOTween.Sequence();
         s_startup.Append(buttonRight.DOLocalRotate(Vector3.zero, openTime).SetEase(openType));
         s_startup.Join(buttonLeft.DOLocalRotate(Vector3.zero, openTime).SetEase(openType));
         s_startup.Join(buttonCanGrp.DOFade(1f, openTime).SetEase(openType));
@@ -65,8 +68,8 @@ public class JetHudManager : MonoBehaviour
     {
         buttonCanGrp.blocksRaycasts = false;
 
-        Sequence s_shutdown = DOTween.Sequence();
-
+        s_startup.Kill(true);
+        s_shutdown = DOTween.Sequence();
         s_shutdown.AppendInterval(0.5f);
         s_shutdown.Append(buttonRight.DOLocalRotate(new Vector3(0f, 0f, -90f), closeTime).SetEase(closeType));
         s_shutdown.Join(buttonLeft.DOLocalRotate(new Vector3(0f, 0f, 90f), closeTime).SetEase(closeType));

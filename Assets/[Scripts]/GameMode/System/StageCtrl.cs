@@ -65,7 +65,7 @@ public class StageCtrl : MonoBehaviour
     [Header("No.2")] [HideInInspector] public SaltoManager saltoMg;
     [Header("No.3")] [HideInInspector] public MemoryGageManager memoryGageMg;
     [Header("No.4")] [HideInInspector] public JetManager jetMg;
-    [Header("No.5")] [HideInInspector] public TutorialManager tutorialMg;
+    [Header("No.5")] [HideInInspector] public GuideManager guideMg;
     [Header("No.6")] [HideInInspector] public PauseManager pauseMg;
     [Header("No.7")] [HideInInspector] public ResultManager resultMg;
     [Header("No.8")] [HideInInspector] public CurtainManager curtainMg;
@@ -116,7 +116,7 @@ public class StageCtrl : MonoBehaviour
         saltoMg = GetComponentInChildren<SaltoManager>();
         memoryGageMg = GetComponentInChildren<MemoryGageManager>();
         jetMg = GetComponentInChildren<JetManager>();
-        tutorialMg = GetComponentInChildren<TutorialManager>();
+        guideMg = GetComponentInChildren<GuideManager>();
         pauseMg = GetComponentInChildren<PauseManager>();
         resultMg = GetComponentInChildren<ResultManager>();
         curtainMg = GetComponentInChildren<CurtainManager>();
@@ -229,7 +229,7 @@ public class StageCtrl : MonoBehaviour
         }
         else if (stageType == StageType.Scatter)
         {
-            if (!data.scatterClear[stageNum]) //初回ステージクリア時
+            if (!data.scatterClear[stageNum]) //初回ステージクリア時 => clearData[Num]がfalseの場合.
             {
                 data.scatterClear[stageNum] = true;
                 if (stageMode == StageMode.Exceed)

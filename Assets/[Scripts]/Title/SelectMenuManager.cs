@@ -69,7 +69,7 @@ public class SelectMenuManager : MonoBehaviour
         exitButton.onClick.AddListener(() => modeMg.exitMode.StartUpExitMode());
         settingButton.onClick.AddListener(() => modeMg.settingMode.StartUpSettingMode());
         creditButton.onClick.AddListener(() => modeMg.creditMode.StartUpCreditMode());
-        launchButton.onClick.AddListener(() => modeMg.curtainMg.CloseCurtain("StageSelect"));
+        launchButton.onClick.AddListener(() => modeMg.launchMode.StartUpLaunchMode());
     }
 
     public Sequence ShowSelectButton() //Band.DOSize() => Button.DOMove().

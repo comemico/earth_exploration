@@ -38,6 +38,7 @@ public class CinemachineManager : MonoBehaviour
 
     public void DOTimeScale(float endValue, float duration, Ease ease)
     {
+        //t_timeScale.Kill(true); ジェットのHud挙動がおかしくなるため、完了できない（ゲージがすぐ満タンになり、溜めることができなくなる）.
         t_timeScale = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, endValue, duration).SetEase(ease);
     }
 

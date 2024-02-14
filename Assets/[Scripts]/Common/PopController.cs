@@ -7,21 +7,27 @@ using DG.Tweening;
 
 public class PopController : MonoBehaviour
 {
-    Image blockImg;
 
     [Header("バックパネル")]
     public Transform backPanel;
+    Image blockImg;
+    [Space(10)]
+
     [Range(0.5f, 1f)] public float startScale = 0.9f;
     public float openDuration = 0.25f;
     public float closeDuration = 0.2f;
     public Ease type_Panel = Ease.OutQuad;
     CanvasGroup canvasGroup;
 
+
     [Header("サイドマーク")]
     public RectTransform[] sideMark;
+    [Space(10)]
+
     [Range(0, 100)] public int sideMarkDistance = 25;
     public float sideMarkTime = 0.2f;
     public Ease sideMarkType = Ease.OutQuint;
+
 
     [Header("LampBox")]
     public Image[] lampBox;
@@ -42,7 +48,7 @@ public class PopController : MonoBehaviour
 
     public void OpenPanel()
     {
-        tweenList.KillAllAndClear();
+        // tweenList.KillAllAndClear();
         blockImg.raycastTarget = true;
         canvasGroup.blocksRaycasts = true;//グループ内のUI要素がRayにヒットするかどうか
 

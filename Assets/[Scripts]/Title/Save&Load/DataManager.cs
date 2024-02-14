@@ -53,8 +53,8 @@ public class DataManager : MonoBehaviour
         data.recentCourseAdress = 0;
         data.recentStageAdress = 0;
 
-        data.linearData = new int[2]; //コースエリア数
-        data.scatterDiscover = new bool[2]; //ScatterStageの数
+        data.linearData = new int[3]; //コースエリア総数
+        data.scatterDiscover = new bool[2]; //ScatterStageの総数
         data.scatterClear = new bool[2]; //上記の数量に揃える
 
         for (int i = 0; i < data.linearData.Length; i++) data.linearData[i] = 0;

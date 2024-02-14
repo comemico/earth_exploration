@@ -86,7 +86,7 @@ public class TitleMode : MonoBehaviour
 
         //ランプ点灯.
         s_powerOn.Append(lampImg.DOFade(1f, 0.35f).SetEase(Ease.OutSine));
-
+        s_powerOn.Join(modeMg.gryps.WakeUp());
         //BGM再生.
         s_powerOn.AppendInterval(0.25f); //この間にグリプスの起動アニメを完了させる
         s_powerOn.AppendCallback(() => SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Title)); //selectSceneから移る場合、自動的に再生できるようにしたい.

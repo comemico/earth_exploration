@@ -113,6 +113,11 @@ public class GrypsController : MonoBehaviour
         rb.DORotate(0f, 0.5f).SetEase(Ease.OutSine);
     }
 
+    public void Stop()
+    {
+        rb.velocity = Vector2.zero;
+    }
+
     public void ForceDash(int key, int power)
     {
         Brake(false);//ForceDash()でブレーキを解除
@@ -170,7 +175,7 @@ public class GrypsController : MonoBehaviour
         wheelMg.WheelLamp(false, true);
 
         stageCrl.saltoMg.SaltoEnd(); //Salto中着地した場合SaltoHudをShutdownさせるために呼ぶ
-
+        //Debug.Log("Land()");
     }
 
 

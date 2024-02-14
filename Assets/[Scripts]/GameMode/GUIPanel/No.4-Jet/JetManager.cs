@@ -73,6 +73,7 @@ public class JetManager : MonoBehaviour
 
             if (!jetHudMg.isHud && stageCrl.controlStatus != StageCtrl.ControlStatus.unControl) // stock•Ï‰»‚É–ˆ‰ñŒÄ‚Î‚ê‚é‚½‚ßHud‚ªfalse‚Ìê‡‚Ì‚İ‹N“®‚³‚¹‚é && ‹ó’†‚ÉHud‚ğ‹N“®‚³‚¹‚½‚­‚È‚¢‚½‚ß.
             {
+                //Debug.Log("StartUp");
                 jetHudMg.StartUpJetHud();
             }
         }
@@ -84,6 +85,7 @@ public class JetManager : MonoBehaviour
 
             if (jetHudMg.isHud && stockNum == 0)
             {
+                //Debug.Log("ShutDown");
                 jetHudMg.ShutDownJetHud();
             }
         }

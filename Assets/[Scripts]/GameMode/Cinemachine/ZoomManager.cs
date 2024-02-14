@@ -29,9 +29,19 @@ public class ZoomManager : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if (cinemachineMg == null) cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
+            if (cinemachineMg == null)
+            {
+                Debug.Log("cinemachineMgがnullです。");
+                cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
+            }
             cinemachineMg.DOLensSize(exitValue, exitTime, lensType);
         }
     }
 
 }
+/*
+ * ブースト
+ * ターボ
+ * ジェット
+ * ダッシュ
+ */

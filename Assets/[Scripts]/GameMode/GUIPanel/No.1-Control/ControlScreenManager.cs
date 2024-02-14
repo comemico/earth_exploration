@@ -25,7 +25,8 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
     [HideInInspector] public BowManager bowMg;
-    Image crlImage;
+    [HideInInspector] public Image crlImage; //スワイプの入力を感知するパネル.
+
     StageCtrl stageCrl;
     MemoryGageManager memoryGageMg;
     GrypsController grypsCrl;
@@ -129,7 +130,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         currentPosition = eventData.position * screenFactor;
 
-        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)
+        if (stageCrl.controlStatus != StageCtrl.ControlStatus.unControl) //Control & RestrictedControl 状態のみ方向転換が可能.
         {
             if (currentPosition.x + 0.005f < startPosition.x)
             {
@@ -148,7 +149,7 @@ public class ControlScreenManager : MonoBehaviour, IDragHandler, IEndDragHandler
             }
         }
 
-        if (stageCrl.controlStatus == StageCtrl.ControlStatus.control)
+        if (stageCrl.controlStatus == StageCtrl.ControlStatus.control) //Control状態のみBowの操作が可能.
         {
             dragLength = Mathf.Abs(startPosition.x - currentPosition.x);
 
