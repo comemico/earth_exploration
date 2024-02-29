@@ -49,7 +49,7 @@ public class SaltoManager : MonoBehaviour
             saltoHudMg.StartTimeGauge(flightDuration);
             stageCrl.grypsCrl.effector.animatorSalto.SetBool("isWing", true);
 
-            cinemachineMg.DOLensSize(lensOutValue, lensOutTime, lensOutType);
+            // cinemachineMg.DOLensSize(lensOutValue, lensOutTime, lensOutType);
             cinemachineMg.DOTimeScale(timeScaleBox[0], slowTime, slowType);
         }
     }
@@ -73,7 +73,7 @@ public class SaltoManager : MonoBehaviour
             stageCrl.grypsCrl.effector.trailNormal.emitting = true;
             stageCrl.grypsCrl.effector.trailAlpha.emitting = true;
 
-            cinemachineMg.DOLensSize(10, 1f, Ease.Linear);
+            // cinemachineMg.DOLensSize(10, 1f, Ease.Linear);
             cinemachineMg.DOTimeScale(1, returnTime, returnType);
         }
     }

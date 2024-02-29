@@ -11,18 +11,28 @@ public class ResultManager : MonoBehaviour
     public CAUSE cause;
     public enum CAUSE
     {
-        [InspectorName("クリアおめでとう！")] clear = 0,
+        [InspectorName("ミッション成功！")] clear = 0,
         [InspectorName("落下してしまった！")] missFall = 1,
         [InspectorName("爆発してしまった！")] missBomb = 2,
         [InspectorName("バッテリー切れ！？")] missLack = 3
     }
+
+    [Header("ボタンのパターン")]
+    public PATTERN pattern;
+    public enum PATTERN
+    {
+        normal = 0,
+        onlyMap = 1,
+        onlyNext = 2
+    }
+
+
 
     [Header("Panel")]
     public Image panel;
     public Text result;
     public Text causeText;
     public Image[] icon;
-    public GameObject jetPanel;
     public RectTransform pauseButton;
 
     const string clear = "ミッション成功";
@@ -32,6 +42,8 @@ public class ResultManager : MonoBehaviour
     public RectTransform button;
     public Button push_Retry;
     public Button push_World;
+    public Button push_Next;
+
     public Image[] emissionImg;
 
     [Header("Clear")]
@@ -89,6 +101,7 @@ public class ResultManager : MonoBehaviour
     {
         push_Retry.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain(SceneManager.GetActiveScene().name));
         push_World.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
+        push_Next.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("Area[" + stageCrl.areaNum + "]" + stageCrl.stageType + "[" + (stageCrl.stageNum + 1) + "]"));
     }
 
     public void Result(CAUSE cause)
@@ -97,6 +110,7 @@ public class ResultManager : MonoBehaviour
         {
 
             case CAUSE.clear:
+                ButtonPattern(pattern);
                 OpenClearPanel();
                 break;
 
@@ -104,6 +118,7 @@ public class ResultManager : MonoBehaviour
                 causeText.text = "落下してしまった！";
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[0].enabled = true;
+                ButtonPattern(PATTERN.normal);
                 OpenMissPanel();
                 break;
 
@@ -111,6 +126,7 @@ public class ResultManager : MonoBehaviour
                 causeText.text = "爆発してしまった！";
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[1].enabled = true;
+                ButtonPattern(PATTERN.normal);
                 OpenMissPanel();
                 break;
 
@@ -118,9 +134,32 @@ public class ResultManager : MonoBehaviour
                 causeText.text = "バッテリー切れ！？";
                 for (int i = 0; i < icon.Length; i++) icon[i].enabled = false;
                 icon[2].enabled = true;
+                ButtonPattern(PATTERN.normal);
                 OpenMissPanel();
                 break;
 
+        }
+    }
+
+    public void ButtonPattern(PATTERN setPattern)
+    {
+        switch (setPattern)
+        {
+            case PATTERN.normal:
+                push_Next.transform.parent.gameObject.SetActive(false);
+                break;
+
+            case PATTERN.onlyMap:
+                push_World.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -60f);
+                push_Retry.transform.parent.gameObject.SetActive(false);
+                push_Next.transform.parent.gameObject.SetActive(false);
+                break;
+
+            case PATTERN.onlyNext:
+                push_Next.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -60f);
+                push_Retry.transform.parent.gameObject.SetActive(false);
+                push_World.transform.parent.gameObject.SetActive(false);
+                break;
         }
     }
 

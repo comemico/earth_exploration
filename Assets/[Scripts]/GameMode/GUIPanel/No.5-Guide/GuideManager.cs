@@ -25,6 +25,19 @@ public class GuideManager : MonoBehaviour
     CinemachineManager cinemachineCrl;
     float savedTimeScale;
 
+    [Header("ガイド")]
+    public ARROW arrow;
+    public enum ARROW
+    {
+        boost = 0,
+        jet = 1,
+        salto = 2
+    }
+    [Range(0, 10)] public int arrowNum;
+    public bool isPlay;
+
+
+
 
     private void Awake()
     {
@@ -60,6 +73,7 @@ public class GuideManager : MonoBehaviour
         stageCrl.saltoMg.saltoHudMg.gauge.DOPause();
         pop.OpenPanel();
 
+        //時間を止める.
         savedTimeScale = Time.timeScale;
         cinemachineCrl.DOTimeScale(0f, 0f, Ease.Linear);
     }
@@ -87,6 +101,16 @@ public class GuideManager : MonoBehaviour
         stageCrl.saltoMg.saltoHudMg.gauge.DOPlay();
         pop.ClosePanel(false);
 
+        //ガイド番号の照合でで矢印ガイドを開始&停止を行なう.
+        if (this.guideNum == arrowNum)// && !isPlay)
+        {
+            GuideArrow(true);
+        }
+        else if (isPlay)
+        {
+            GuideArrow(false);
+        }
+
         //スロー状態でポーズ画面に入っても、スロー状態で戻せるようにするため.
         if (Mathf.Approximately(Time.timeScale, 1f)) //timescale= 1fに近ければ1fに設定.
         {
@@ -97,14 +121,47 @@ public class GuideManager : MonoBehaviour
             cinemachineCrl.DOTimeScale(savedTimeScale, 0f, Ease.Linear);
         }
     }
-    //NextText() :あるガイドのテキストボックスの要素数だけ更新する.
 
-    //CloseGuide() :ガイドを非表示にする.
-    /*
-     * 時間を動かす.
-     * ポップを閉じる.
-     */
+    public void GuideArrow(bool isShow)
+    {
+        switch (arrow)
+        {
+            case ARROW.boost:
+                if (isShow)
+                {
+                    Debug.Log("ShowArrow()");
+                    isPlay = true;
+                }
+                else
+                {
+                    Debug.Log("HideArrow()");
+                    isPlay = false;
+                }
+                break;
 
+            case ARROW.jet:
+                if (isShow)
+                {
+
+                }
+                else
+                {
+
+                }
+                break;
+
+            case ARROW.salto:
+                if (isShow)
+                {
+
+                }
+                else
+                {
+
+                }
+                break;
+        }
+    }
 
 }
 

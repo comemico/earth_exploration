@@ -5,9 +5,12 @@ using DG.Tweening;
 
 public class SaltoAreaManager : MonoBehaviour
 {
+
+    [Header("サルトモード時間")]
     public float flightDuration = 3.0f;
 
     GrypsController grypsCrl;
+
 
     /*
     [Header("入口方向と侵入時の向き")]

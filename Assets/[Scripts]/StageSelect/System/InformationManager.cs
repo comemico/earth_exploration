@@ -99,7 +99,7 @@ public class InformationManager : MonoBehaviour
 
     public void StartGame()
     {
-        var sceneName = "Course[" + courseNum + "]" + stageType + "[" + stageNum + "]";
+        var sceneName = "Area[" + courseNum + "]" + stageType + "[" + stageNum + "]";
         shutterMg.StartGame(sceneName);
 
         data.recentCourseAdress = courseNum;

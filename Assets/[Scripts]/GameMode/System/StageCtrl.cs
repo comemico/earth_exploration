@@ -28,6 +28,9 @@ public class StageCtrl : MonoBehaviour
     [Range(0, 5)] public int areaNum; //今のエリア番号
     [Range(0, 19)] public int stageNum; //今のステージ番号
 
+    [Header("このエリアの最終面か")]//リザルトの「次のステージ」ボタンを非表示にするため.
+    public bool isUpperLimit;
+
     [Header("分散ステージを開放させるか")]
     public bool isReleaseScatter; //リニアルート以外の分岐ステージを開放させるか
     public int releaseScatterNum; //開放するスキャッターステージ番号
@@ -54,7 +57,7 @@ public class StageCtrl : MonoBehaviour
 
     [Header("プレイヤー情報とスタートフラッグ")]
     public GrypsController grypsCrl;
-    public StartGateManager startGateMg;
+    public GateStartManager startGateMg;
     public ControlStatus controlStatus;
     public State state;
 

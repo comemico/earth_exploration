@@ -49,13 +49,15 @@ public class DataManager : MonoBehaviour
     public void DeleteAll() //初期化
     {
         Debug.Log("初期化");
-        data.maxLifeNum = 5;
+        data.maxLifeNum = 15;
         data.recentCourseAdress = 0;
         data.recentStageAdress = 0;
 
         data.linearData = new int[3]; //コースエリア総数
         data.scatterDiscover = new bool[2]; //ScatterStageの総数
         data.scatterClear = new bool[2]; //上記の数量に揃える
+
+        data.isGuide = false;
 
         for (int i = 0; i < data.linearData.Length; i++) data.linearData[i] = 0;
         for (int i = 0; i < data.scatterDiscover.Length; i++) data.scatterDiscover[i] = false;
@@ -64,6 +66,5 @@ public class DataManager : MonoBehaviour
 
     // ゲーム終了時に保存
     void OnDestroy() => Save(data);
-
 
 }

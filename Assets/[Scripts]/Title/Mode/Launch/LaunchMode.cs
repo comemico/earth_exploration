@@ -7,12 +7,15 @@ using DG.Tweening;
 
 public class LaunchMode : MonoBehaviour
 {
+    DataManager dataMg;
 
     CanvasGroup canvasGrp;
     ModeManager modeMg;
 
     private void Awake()
     {
+        dataMg = GetComponentInParent<DataManager>();
+
         modeMg = transform.parent.GetComponent<ModeManager>();
         canvasGrp = GetComponent<CanvasGroup>();
         canvasGrp.alpha = 0f;
@@ -31,7 +34,19 @@ public class LaunchMode : MonoBehaviour
         s_Launch.AppendInterval(0.15f);
         s_Launch.AppendCallback(() => modeMg.gryps.ForceJet(0));
         s_Launch.AppendInterval(1f);
-        s_Launch.AppendCallback(() => modeMg.curtainMg.CloseCurtain("StageSelect"));
+        s_Launch.AppendCallback(() =>
+        {
+            if (dataMg.data.isGuide)
+            {
+                modeMg.curtainMg.CloseCurtain("StageSelect");
+            }
+            else
+            {
+                dataMg.data.isGuide = true;
+                modeMg.curtainMg.CloseCurtain("Area[0]Linear[0]");
+            }
+        }
+        );
     }
 
 

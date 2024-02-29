@@ -12,4 +12,6 @@ public class SaveData
 
     public bool isBGM;
     public bool isSE;
+
+    public bool isGuide;
 }
