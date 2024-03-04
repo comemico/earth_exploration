@@ -156,7 +156,8 @@ public class StageCtrl : MonoBehaviour
             case State.Play:
                 if (grypsCrl.transform.position.y <= deadLineY)
                 {
-                    resultMg.Result(ResultManager.CAUSE.missFall);
+                    resultMg.OpenMissPanel(ResultManager.CAUSE.落下してしまった);
+                    //                    resultMg.Result(ResultManager.CAUSE.missFall);
                     GameOver();
                     return;
                 }
@@ -165,7 +166,8 @@ public class StageCtrl : MonoBehaviour
             case State.Lack:
                 if (grypsCrl.transform.position.y <= deadLineY)
                 {
-                    resultMg.Result(ResultManager.CAUSE.missFall);
+                    resultMg.OpenMissPanel(ResultManager.CAUSE.落下してしまった);
+                    //                    resultMg.Result(ResultManager.CAUSE.missFall);
                     GameOver();
                     return;
                 }

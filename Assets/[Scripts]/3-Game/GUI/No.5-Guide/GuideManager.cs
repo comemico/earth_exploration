@@ -8,36 +8,40 @@ using DG.Tweening;
 public class GuideManager : MonoBehaviour
 {
     //ミッションの表示/非表示
+    [Header("ガイドパネル")]
     public PopController pop;
     public Button nextButton;
     public Button closeButton;
-
     public Text content;
     public Text pageText;
+    [Space(10)]
 
     public List<GuidData> guideOrder;
-
     public int guideNum;
     public int maxPage;
     public int currentPage;
-
+    float savedTimeScale;
     StageCtrl stageCrl;
     CinemachineManager cinemachineCrl;
-    float savedTimeScale;
 
-    [Header("ガイド")]
-    public ARROW arrow;
-    public enum ARROW
+
+    [Header("ガイド矢印")]
+    public RectTransform[] guideArrow;
+    [Space(10)]
+
+    public GUIDE guide;
+    public enum GUIDE
     {
         boost = 0,
         jet = 1,
         salto = 2
     }
     [Range(0, 10)] public int arrowNum;
+    public float arrowDistance;
+    [Range(0f, 1f)] public float arrowTime;
+    public Ease arrowType;
     public bool isPlay;
-
-
-
+    Tween L_arrow;
 
     private void Awake()
     {
@@ -124,43 +128,56 @@ public class GuideManager : MonoBehaviour
 
     public void GuideArrow(bool isShow)
     {
-        switch (arrow)
+        if (isShow)
         {
-            case ARROW.boost:
-                if (isShow)
-                {
-                    Debug.Log("ShowArrow()");
-                    isPlay = true;
-                }
-                else
-                {
-                    Debug.Log("HideArrow()");
-                    isPlay = false;
-                }
-                break;
-
-            case ARROW.jet:
-                if (isShow)
-                {
-
-                }
-                else
-                {
-
-                }
-                break;
-
-            case ARROW.salto:
-                if (isShow)
-                {
-
-                }
-                else
-                {
-
-                }
-                break;
+            L_arrow.Kill(true);
+            guideArrow[(int)guide].anchoredPosition = Vector2.zero;
+            guideArrow[(int)guide].GetComponent<CanvasGroup>().DOFade(1f, 0.3f).SetEase(Ease.Linear);
+            if ((int)guide != 1)//ガイドが「ジェット」じゃない場合はX方向にアニメーション.
+            {
+                L_arrow = guideArrow[(int)guide].DOAnchorPosX(arrowDistance, arrowTime).SetEase(arrowType).SetLoops(-1, LoopType.Yoyo).SetRelative(true);
+            }
+            else
+            {
+                L_arrow = guideArrow[(int)guide].DOAnchorPosY(arrowDistance, arrowTime).SetEase(arrowType).SetLoops(-1, LoopType.Yoyo).SetRelative(true);
+            }
+            isPlay = true;
         }
+        else
+        {
+            guideArrow[(int)guide].GetComponent<CanvasGroup>().DOFade(0f, 0.3f).SetEase(Ease.Linear);
+            L_arrow.Kill(true);
+            isPlay = false;
+        }
+        /*
+switch (guide)
+{
+    case GUIDE.boost:
+        break;
+
+    case GUIDE.jet:
+        if (isShow)
+        {
+
+        }
+        else
+        {
+
+        }
+        break;
+
+    case GUIDE.salto:
+        if (isShow)
+        {
+
+        }
+        else
+        {
+
+        }
+        break;
+}
+         */
     }
 
 }

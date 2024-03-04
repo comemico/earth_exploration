@@ -65,7 +65,8 @@ public class GrypsEffector : MonoBehaviour
     {
         headLamp.DOFade(0f, offTime).SetEase(Ease.OutElastic).OnComplete(() =>
         {
-            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missLack);
+            grypsCrl.stageCrl.resultMg.OpenMissPanel(ResultManager.CAUSE.バッテリー切れ);
+            //            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missLack);
         });
 
         DOTween.To(() => underLamp.intensity, x => underLamp.intensity = x, 0f, offTime).SetEase(Ease.OutElastic);

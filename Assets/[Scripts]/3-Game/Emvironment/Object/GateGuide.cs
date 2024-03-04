@@ -17,6 +17,7 @@ public class GateGuide : MonoBehaviour
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
             grypsCrl.stageCrl.guideMg.OpenGuide(guideNumber);
+            grypsCrl.stageCrl.controlScreenMg.ProduceMemory(grypsCrl.stageCrl.data.maxLifeNum - grypsCrl.stageCrl.memoryGageMg.memoryGage);
         }
     }
 

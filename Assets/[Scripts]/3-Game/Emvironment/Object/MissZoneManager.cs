@@ -16,7 +16,8 @@ public class MissZoneManager : MonoBehaviour
             }
 
             Debug.Log("fall");
-            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missFall);
+            grypsCrl.stageCrl.resultMg.OpenMissPanel(ResultManager.CAUSE.—Ž‰º‚µ‚Ä‚µ‚Ü‚Á‚½);
+            //            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.missFall);
             grypsCrl.rb.velocity = Vector2.zero;
             //grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
             if (grypsCrl.stageCrl.controlStatus != StageCtrl.ControlStatus.unControl)

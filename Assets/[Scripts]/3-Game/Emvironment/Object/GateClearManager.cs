@@ -116,7 +116,8 @@ public class GateClearManager : MonoBehaviour
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
         seq_raise.AppendCallback(() =>
         {
-            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
+            grypsCrl.stageCrl.resultMg.OpenClearPanel();
+            //            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
         });
     }
 
