@@ -57,13 +57,9 @@ public class ResultManager : MonoBehaviour
 
 
     StageCtrl stageCrl;
+    TipsManager tipsMg;
 
-
-
-
-
-
-
+    /*
     [Header("Tips")]
     public Image tipsEdge;
     public CanvasGroup backPanel;
@@ -77,6 +73,8 @@ public class ResultManager : MonoBehaviour
     public Ease tipsOpenType;
     [Range(0.1f, 0.5f)] public float tipsFadeDuration;
     public Ease tipsFadeType;
+     */
+
     [Range(0.1f, 0.5f)] public float lampDuration;
     public Ease lampType;
 
@@ -87,9 +85,10 @@ public class ResultManager : MonoBehaviour
     private void Start()
     {
         stageCrl = GetComponentInParent<StageCtrl>();
+        tipsMg = GetComponentInChildren<TipsManager>();
+
         AddListener();
-        tipsText.text = stageCrl.tipsText;
-        rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
+        tipsMg.rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
     }
 
     private void AddListener()
@@ -124,7 +123,6 @@ public class ResultManager : MonoBehaviour
         for (int i = 0; i < missIcon.Length; i++) missIcon[i].SetActive(false);
         missIcon[(int)cause].SetActive(true);
 
-        tipsText.color = new Color(1, 1, 1, 0);
 
         Sequence seq_miss = DOTween.Sequence();
         seq_miss.Append(missPanel.DOFade(1f, fadeDuration).SetEase(fadeType));
@@ -132,10 +130,11 @@ public class ResultManager : MonoBehaviour
         seq_miss.Append(button.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
         seq_miss.AppendInterval(0.15f);
         seq_miss.Append(missText.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
-        seq_miss.Join(OpenTips());
+        // seq_miss.Join(OpenTips());
         seq_miss.AppendCallback(() =>
         {
-            ScrollText();
+            tipsMg.ShowTips();
+            //ScrollText();
         });
 
         tweenList.Add(seq_miss);
@@ -188,7 +187,7 @@ public class ResultManager : MonoBehaviour
 
 
 
-
+    /*
     public Sequence OpenTips()
     {
         backPanel.alpha = 0f;
@@ -221,6 +220,7 @@ public class ResultManager : MonoBehaviour
         sq_scroll.AppendInterval(0.25f);
         tweenList.Add(sq_scroll);
     }
+     */
 
 
 }

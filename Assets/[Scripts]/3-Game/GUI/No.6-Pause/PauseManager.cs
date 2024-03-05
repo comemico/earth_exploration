@@ -16,6 +16,17 @@ public class PauseManager : MonoBehaviour
     public Button push_Retry;
     public Button push_World;
 
+    [Header("Button")]
+    public RectTransform button;
+    public Image[] emissionImg;
+    public float lampDuration;
+    public Ease lampType;
+
+    public bool isPause = false;
+
+    StageCtrl stageCrl;
+    public TipsManager tipsMg;
+    /*
     [Header("Tips")]
     public Image tipsEdge;
     public CanvasGroup backPanel;
@@ -29,24 +40,12 @@ public class PauseManager : MonoBehaviour
     public Ease tipsFadeType;
     [Range(0.1f, 0.5f)] public float tipsOpenDuration;
     public Ease tipsOpenType;
+     */
 
-    public Image[] emissionImg;
-    public float lampDuration;
-    public Ease lampType;
-
-    [Header("Button")]
-    public RectTransform button;
-
-    public bool isPause = false;
-
-    StageCtrl stageCrl;
     float savedTimeScale;
     List<Tween> tweenList = new List<Tween>();
 
-    private void OnDestroy()
-    {
-        tweenList.KillAllAndClear();
-    }
+    private void OnDestroy() => tweenList.KillAllAndClear();
 
     private void Awake()
     {
@@ -57,9 +56,12 @@ public class PauseManager : MonoBehaviour
     private void InitializeGetComponent()
     {
         stageCrl = GetComponentInParent<StageCtrl>();
+        tipsMg = GetComponentInChildren<TipsManager>();
+
+        tipsMg.tipsText.text = stageCrl.tipsText;
+
         panel.SetActive(false);
         SwichBloom(false, 0f);
-        tipsText.text = stageCrl.tipsText;
     }
 
     private void AddListener()
@@ -87,15 +89,19 @@ public class PauseManager : MonoBehaviour
         panel.SetActive(true);
         stageInfo.SetActive(true);
         stageCrl.saltoMg.saltoHudMg.gauge.DOPause();
-        tipsText.color = new Color(1, 1, 1, 0);
-        rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
-        button.anchoredPosition = new Vector2(320, 0);
+        button.anchoredPosition = new Vector2(480, 0);
 
         tweenList.KillAllAndClear();
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(button.DOAnchorPosX(-160f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        sequence.Append(button.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        sequence.AppendCallback(() => tipsMg.ShowTips());
+
+        //     tipsText.color = new Color(1, 1, 1, 0);
+        //     rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
+        /*
         sequence.Append(OpenTips());
         sequence.AppendCallback(() => ScrollText());
+         */
 
         tweenList.Add(sequence);
 
@@ -107,6 +113,8 @@ public class PauseManager : MonoBehaviour
     {
         isPause = false;
         panel.SetActive(false);
+        tipsMg.CloseTips();
+
         stageInfo.SetActive(false);
         SwichBloom(false, lampDuration);
         stageCrl.saltoMg.saltoHudMg.gauge.DOPlay();
@@ -131,6 +139,8 @@ public class PauseManager : MonoBehaviour
             img.DOFade(Convert.ToInt32(isEnabled), fadeTime).SetEase(lampType);
         }
     }
+
+    /*
     public Sequence OpenTips()
     {
         backPanel.alpha = 0f;
@@ -163,6 +173,7 @@ public class PauseManager : MonoBehaviour
         sq_scroll.AppendInterval(0.25f);
         tweenList.Add(sq_scroll);
     }
+     */
 
     //if (stageCrl.controlStatus == StageCtrl.ControlStatus.unControl) push_Pause.interactable = false;//空中時もポーズを押せなくなるが、変に連打されるより着地後に戻すほうが都合が良いかもしれない
 }

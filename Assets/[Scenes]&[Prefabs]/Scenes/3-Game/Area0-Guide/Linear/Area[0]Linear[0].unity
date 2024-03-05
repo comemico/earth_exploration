@@ -93296,6 +93296,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7979307061573681306}
     - target: {fileID: 830189124108393569, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: tipsText
+      value: "\u5DE6\u53F3\u306B\u5F15\u3063\u5F35\u3063\u3066\u307F\u3088\u3046!\u5DE6\u53F3\u306B\u5F15\u3063\u5F35\u3063\u3066\u307F\u3088\u3046!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 830189124108393569, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: startGateMg
       value: 
       objectReference: {fileID: 1149260891}
@@ -93304,6 +93308,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1680017955}
     - target: {fileID: 2986481513925698125, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4317823739303029406, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}

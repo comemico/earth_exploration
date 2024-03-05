@@ -106,7 +106,7 @@ public class GuideManager : MonoBehaviour
         pop.ClosePanel(false);
 
         //ガイド番号の照合でで矢印ガイドを開始&停止を行なう.
-        if (this.guideNum == arrowNum)// && !isPlay)
+        if (this.guideNum == arrowNum)// && !isPlay).
         {
             GuideArrow(true);
         }
@@ -149,35 +149,6 @@ public class GuideManager : MonoBehaviour
             L_arrow.Kill(true);
             isPlay = false;
         }
-        /*
-switch (guide)
-{
-    case GUIDE.boost:
-        break;
-
-    case GUIDE.jet:
-        if (isShow)
-        {
-
-        }
-        else
-        {
-
-        }
-        break;
-
-    case GUIDE.salto:
-        if (isShow)
-        {
-
-        }
-        else
-        {
-
-        }
-        break;
-}
-         */
     }
 
 }
