@@ -34,6 +34,10 @@ public class StageFrameManager : MonoBehaviour
     const float PERANGLE = 9.484f;
 
     [Header("Tips")]
+    public Color[] rankColor;
+    TipsManager tipsMg;
+
+    /*
     public Image tipsEdge;
     public CanvasGroup backPanel;
     public Text tipsText;
@@ -46,7 +50,8 @@ public class StageFrameManager : MonoBehaviour
     public Ease tipsFadeType;
     [Range(0.1f, 0.5f)] public float tipsOpenDuration;
     public Ease tipsOpenType;
-    public Color[] rankColor;
+     */
+
 
 
     public RectTransform RectTransform => this.transform as RectTransform;
@@ -66,6 +71,7 @@ public class StageFrameManager : MonoBehaviour
 
     void GetComponent()
     {
+        tipsMg = GetComponentInChildren<TipsManager>();
         scopeImg = scopeOut.transform.GetComponent<Image>();
     }
 
@@ -111,7 +117,7 @@ public class StageFrameManager : MonoBehaviour
             lvLamp[i].enabled = (levelNum > i);
         };
     }
-
+    /*
     public Sequence OpenTips()
     {
         backPanel.alpha = 0f;
@@ -144,23 +150,30 @@ public class StageFrameManager : MonoBehaviour
         sq_scroll.AppendInterval(0.25f);
         tweenList.Add(sq_scroll);
     }
+     */
 
     public void ChangeTarget(int levelNum, string tips)
     {
         tweenList.KillAllAndClear();
 
-        tipsText.text = tips;
-        tipsText.color = new Color(1, 1, 1, 0);
         float value = levelNum / 8f;
-        rankLamp.color = rankColor[(int)Mathf.Ceil(value) - 1];
+
+        tipsMg.rankLamp.color = rankColor[(int)Mathf.Ceil(value) - 1];
+        tipsMg.tipsText.text = tips;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(TargetScope());
-        sequence.Append(TargetLevel(levelNum));
-        sequence.Join(OpenTips());
-        sequence.AppendCallback(() => ScrollText());
+        //  sequence.Append(TargetScope());
+        sequence.AppendCallback(() =>
+        {
+            TargetScope();
+            tipsMg.ShowTips();
+            TargetLevel(levelNum);
+        });
 
         tweenList.Add(sequence);
+        // sequence.Append(TargetLevel(levelNum));
+        // sequence.Join(OpenTips());
+
     }
 
 }
