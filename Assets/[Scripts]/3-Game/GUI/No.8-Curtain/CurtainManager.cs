@@ -7,42 +7,49 @@ using DG.Tweening;
 
 public class CurtainManager : MonoBehaviour
 {
-    [Header("SliderInfo")]
-    public RectTransform slider;
-    [Range(0.1f, 0.5f)] public float sliderDuration;
-    public Ease sliderType;
-
-    [Header("NameInfo")]
-    public RectTransform course;
-    public RectTransform stage;
-    [Range(0.1f, 0.5f)] public float nameDuration;
-    public Ease nameType;
-
     [Header("BackPanel")]
     public Image backPanel;
+    [Space(10)]
+
     [Range(0.1f, 0.5f)] public float fadeInDuration;
     public Ease fadeInType;
     [Range(0.1f, 0.5f)] public float fadeOutDuration;
     public Ease fadeOutType;
 
-    [Header("Icon")]
-    public CanvasGroup icon;
-    [Range(0.1f, 0.5f)] public float iconDuration;
-    public Ease iconType;
-    public Image iconEmi;
-    public Color loadColor;
-    public Color normalColor;
 
     [Header("StageInfo")]
     public GameObject stageInfo;
+    public Image check;
+    public RectTransform slider;
+    public Text area;
+    public Text stage;
+    [Space(10)]
 
-    const int SLIDER = 500;
+    [Range(0.1f, 0.5f)] public float sliderDuration;
+    public Ease sliderType;
+    [Range(0.1f, 0.5f)] public float nameDuration;
+    public Ease nameType;
+
+
+    [Header("Icon")]
+    public CanvasGroup icon;
+    [Space(10)]
+
+    [Range(0.1f, 0.5f)] public float iconDuration;
+    public Ease iconType;
+    public Image iconEmi;
+    public Color loadingColor;
+    public Color completeColor;
+
+
+
+    const int SLIDER = 675;
     const int HEIGHT = 100;
 
     private List<Tween> tweenList = new List<Tween>();
 
+    StageCtrl stageCrl;
     AsyncOperation async;
-
 
     private void OnDestroy()
     {
@@ -56,27 +63,43 @@ public class CurtainManager : MonoBehaviour
 
     void Initialize()
     {
+        stageCrl = GetComponentInParent<StageCtrl>();
+
         backPanel.color = Color.black;
+
+        check.color = new Color(1, 1, 1, 0);
         slider.sizeDelta = new Vector2(0f, 2f);
-        course.anchoredPosition = new Vector2(0f, -HEIGHT);
-        stage.anchoredPosition = new Vector2(0f, HEIGHT);
+        area.rectTransform.anchoredPosition = new Vector2(0f, -HEIGHT);
+        stage.rectTransform.anchoredPosition = new Vector2(0f, HEIGHT);
         icon.alpha = 1f;
-        iconEmi.color = normalColor;
+        iconEmi.color = completeColor;
     }
 
 
-    public Sequence StartUp()
+    public Sequence ShowNameInfo(string areaName, string stageName)
     {
+        area.text = areaName;
+        stage.text = stageName;
+
         //    .SetUpdate() : trueを指定した場合、TimeScaleを無視して動作します(デフォルトはfalse)現在、trueにしている
         Sequence seq_start = DOTween.Sequence();//TimeScaleを無視している
 
+        seq_start.Append(check.DOFade(1f, 0f));
+        seq_start.AppendInterval(0.15f);
+        seq_start.Append(check.DOFade(0f, 0f));
+        seq_start.AppendInterval(0.125f);
+        seq_start.Append(check.DOFade(1f, 0f));
+        seq_start.AppendInterval(0.15f);
+        seq_start.Append(check.DOFade(0f, 0f));
+        seq_start.AppendInterval(0.2f);
+
         seq_start.Append(slider.DOSizeDelta(new Vector2(SLIDER, 2f), sliderDuration).SetEase(sliderType));
-        seq_start.AppendInterval(0.1f);
-        seq_start.Append(stage.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
-        seq_start.Join(course.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
-        seq_start.AppendInterval(0.25f);
-        seq_start.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
-        seq_start.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
+
+        seq_start.AppendInterval(0.15f);
+
+        seq_start.Append(stage.rectTransform.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
+        seq_start.Join(area.rectTransform.DOAnchorPosY(0f, nameDuration).SetEase(nameType));
+
         tweenList.Add(seq_start);
         return seq_start;
     }
@@ -86,8 +109,8 @@ public class CurtainManager : MonoBehaviour
         Sequence seq_hide = DOTween.Sequence();
 
         seq_hide.AppendInterval(1.5f);
-        seq_hide.Append(stage.DOAnchorPosY(HEIGHT, nameDuration).SetEase(nameType));
-        seq_hide.Join(course.DOAnchorPosY(-HEIGHT, nameDuration).SetEase(nameType));
+        seq_hide.Append(stage.rectTransform.DOAnchorPosY(HEIGHT, nameDuration).SetEase(nameType));
+        seq_hide.Join(area.rectTransform.DOAnchorPosY(-HEIGHT, nameDuration).SetEase(nameType));
         seq_hide.AppendInterval(0.1f);
         seq_hide.Append(slider.DOSizeDelta(new Vector2(0f, 2f), sliderDuration).SetEase(sliderType));
         seq_hide.AppendCallback(ResetStageInfo);
@@ -98,15 +121,26 @@ public class CurtainManager : MonoBehaviour
     public void ResetStageInfo()
     {
         slider.sizeDelta = new Vector2(SLIDER, 2f);
-        course.anchoredPosition = Vector2.zero;
-        stage.anchoredPosition = Vector2.zero;
+        area.rectTransform.anchoredPosition = Vector2.zero;
+        stage.rectTransform.anchoredPosition = Vector2.zero;
         stageInfo.SetActive(false);
+    }
+
+    public Sequence OpenCurtain()
+    {
+        Sequence s_openC = DOTween.Sequence();//TimeScaleを無視している
+
+        //        s_openC.AppendInterval(0.25f);
+        s_openC.Append(backPanel.DOFade(0f, fadeInDuration).SetEase(fadeInType));
+        s_openC.Join(icon.DOFade(0f, iconDuration).SetEase(iconType));
+
+        return s_openC;
     }
 
     public void CloseCurtain(string sceneName)//Scene移動処理
     {
         backPanel.raycastTarget = true;
-        iconEmi.color = loadColor;
+        iconEmi.color = loadingColor;
         ResetStageInfo();
 
         async = SceneManager.LoadSceneAsync(sceneName);

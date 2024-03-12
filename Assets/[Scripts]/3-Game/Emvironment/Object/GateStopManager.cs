@@ -25,12 +25,7 @@ public class GateStopManager : MonoBehaviour
     //GATE_KEY gateKey;//GATE_KEY—v‘f‚©‚ç‚P‚ÂŠi”[‚³‚ê‚Ä‚¢‚é
 
     GrypsController grypsCrl;
-    BoxCollider2D boxCol;
 
-    private void Start()
-    {
-        boxCol = GetComponent<BoxCollider2D>();
-    }
 
 
     /*
@@ -45,14 +40,11 @@ public class GateStopManager : MonoBehaviour
         if (collision.tag == "Player")
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
-
-            int gateKey = (int)Mathf.Sign(grypsCrl.rb.velocity.x);
-
-            Debug.Log("Enter");
-            //boxCol.enabled = false; //1‰ñ‚µ‚©ŒÄ‚Î‚ê‚È‚­‚È‚é E‚‘¬‚ÅN“ü‚·‚é‚Æ2‰ñˆÈãŒÄ‚Î‚ê‚ÄDOMoveX‚ª³‚Ì•ûŒü‚É‚µ‚©s‚©‚È‚­‚È‚é (Sign(0)‚Å1‚É‚È‚é‚½‚ß).
             grypsCrl.Stop();
-            //grypsCrl.transform.DOMoveX((gateKey * distance) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true);
 
+            //int gateKey = (int)Mathf.Sign(grypsCrl.rb.velocity.x);
+            //boxCol.enabled = false; //1‰ñ‚µ‚©ŒÄ‚Î‚ê‚È‚­‚È‚é E‚‘¬‚ÅN“ü‚·‚é‚Æ2‰ñˆÈãŒÄ‚Î‚ê‚ÄDOMoveX‚ª³‚Ì•ûŒü‚É‚µ‚©s‚©‚È‚­‚È‚é (Sign(0)‚Å1‚É‚È‚é‚½‚ß).
+            //grypsCrl.transform.DOMoveX((gateKey * distance) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true);
         }
     }
 
@@ -61,8 +53,6 @@ public class GateStopManager : MonoBehaviour
         if (collision.tag == "Player")
         {
             if (grypsCrl == null) grypsCrl = collision.gameObject.GetComponent<GrypsController>();
-            Debug.Log("Exit");
-            // boxCol.enabled = true;
         }
     }
 

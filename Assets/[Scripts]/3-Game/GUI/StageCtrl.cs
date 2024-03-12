@@ -28,10 +28,12 @@ public class StageCtrl : MonoBehaviour
     [Range(0, 5)] public int areaNum; //今のエリア番号
     [Range(0, 19)] public int stageNum; //今のステージ番号
 
-    [Header("このエリアの最終面か")]//リザルトの「次のステージ」ボタンを非表示にするため.
-    public bool isUpperLimit;
+    //[Header("このエリアの最終面か")]public bool isUpperLimit;リザルトの「次のステージ」ボタンを非表示にするため.
+
 
     [Header("分散ステージを開放させるか")]
+    public string stageName;
+    public string areaName;
     public bool isReleaseScatter; //リニアルート以外の分岐ステージを開放させるか
     public int releaseScatterNum; //開放するスキャッターステージ番号
 
@@ -128,16 +130,22 @@ public class StageCtrl : MonoBehaviour
     void Start()
     {
         state = State.Play;
-        startGateMg.SetStartPosition(grypsCrl.gameObject); //スタート位置に移動　
+        StartGame();
     }
 
-    public void EnterStageSequence() //タイムラインから呼ばれる
+    public void StartGame() //タイムラインから呼ばれる
     {
-        Sequence seq_start = DOTween.Sequence();
-        seq_start.Append(curtainMg.StartUp()); //FadeIn
-        seq_start.AppendInterval(0.25f);
-        seq_start.AppendCallback(() => startGateMg.RaiseFlag()); //StartFlag
-        tweenList.Add(seq_start);
+        Sequence s_start = DOTween.Sequence();
+
+        s_start.AppendInterval(0.25f);
+        s_start.Append(curtainMg.ShowNameInfo(areaName, stageName));
+        s_start.AppendCallback(() => startGateMg.SetStartPosition(grypsCrl.gameObject)); //スタート位置に移動.
+        s_start.AppendInterval(0.25f);
+        s_start.Append(curtainMg.OpenCurtain());
+        s_start.AppendInterval(0.25f);
+        s_start.AppendCallback(() => startGateMg.RaiseFlag()); //StartFlag().
+
+        tweenList.Add(s_start);
     }
 
     public void ChangeControlStatus(ControlStatus status)

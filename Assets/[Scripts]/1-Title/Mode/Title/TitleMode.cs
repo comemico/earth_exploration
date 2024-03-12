@@ -7,6 +7,8 @@ using DG.Tweening;
 public class TitleMode : MonoBehaviour
 {
     //タイトル画面の起動演出を制御するスクリプト.
+    [Header("タイトル演出完了")]
+    public bool isCompleteTitle;
 
     [Header("Title")]
     public CanvasGroup backPanel;
@@ -50,6 +52,7 @@ public class TitleMode : MonoBehaviour
     {
         GetComponent();
         Guide(false);
+        if (isCompleteTitle) PowerOn(true);
     }
 
     void GetComponent()
@@ -87,6 +90,7 @@ public class TitleMode : MonoBehaviour
         //ランプ点灯.
         s_powerOn.Append(lampImg.DOFade(1f, 0.35f).SetEase(Ease.OutSine));
         s_powerOn.Join(modeMg.gryps.WakeUp());
+
         //BGM再生.
         s_powerOn.AppendInterval(0.25f); //この間にグリプスの起動アニメを完了させる
         s_powerOn.AppendCallback(() => SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Title)); //selectSceneから移る場合、自動的に再生できるようにしたい.
@@ -101,10 +105,19 @@ public class TitleMode : MonoBehaviour
         s_powerOn.Append(modeMg.selectMenuMg.ShowSelectButton().SetDelay(0.5f));
         s_powerOn.Join(cinemachineMg.DOLensSize(8f, 1.5f, Ease.Linear));
 
+        s_powerOn.AppendCallback(() =>
+        {
+            //直近のtweenで最も遅いtweenの後に呼ばれる <= cinemachineMg.DOLensSize() 終了時に起動.
+            modeMg.selectMenuMg.launchButton.enabled = true;
+        });
+
         tweenList.Add(s_powerOn);
 
         if (isComplete)
         {
+            modeMg.selectMenuMg.launchButton.enabled = true;
+            L_check.Kill(true);
+            L_pressPower.Kill(true);
             s_powerOn.Kill(true);
         }
     }

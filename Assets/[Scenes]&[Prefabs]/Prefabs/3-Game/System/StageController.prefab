@@ -1741,7 +1741,7 @@ GameObject:
   - component: {fileID: 4765966800556665257}
   - component: {fileID: 6268611118678183079}
   m_Layer: 0
-  m_Name: SliderImg
+  m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1765,7 +1765,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 2}
+  m_SizeDelta: {x: 675, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4765966800556665257
 CanvasRenderer:
@@ -2564,7 +2564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.648, g: 0.25483146, b: 0.10921346, a: 0}
+  m_Color: {r: 0.84313726, g: 0.09411765, b: 0.12941177, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -8191,7 +8191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6410530261281922324}
   m_Layer: 5
-  m_Name: StageSelect
+  m_Name: StageMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8850,17 +8850,6 @@ MonoBehaviour:
   - {fileID: 8080706065947613704}
   - {fileID: 7652020034204005261}
   - {fileID: 5868919052792829117}
-  tipsEdge: {fileID: 3565777457238140232}
-  backPanel: {fileID: 1909355523871057298}
-  tipsText: {fileID: 5002005800301088468}
-  rankLamp: {fileID: 1013448887435715563}
-  perTextWide: 42
-  characterLimit: 17
-  scrollSpeed: 0.45
-  tipsOpenDuration: 0.2
-  tipsOpenType: 6
-  tipsFadeDuration: 0.15
-  tipsFadeType: 6
   lampDuration: 0.25
   lampType: 11
 --- !u!1 &3212252762465389982
@@ -9340,7 +9329,7 @@ GameObject:
   - component: {fileID: 811935821985055634}
   - component: {fileID: 6803862141093021579}
   m_Layer: 0
-  m_Name: Course
+  m_Name: AreaName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9407,7 +9396,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u65C5\u306E\u652F\u5EA6 \u7DE8"
+  m_Text: "\u65C5\u306E\u30AC\u30A4\u30C9\n"
 --- !u!1 &3475595839542545631
 GameObject:
   m_ObjectHideFlags: 0
@@ -11946,7 +11935,7 @@ GameObject:
   - component: {fileID: 3047317744005038051}
   - component: {fileID: 3256222827534206608}
   m_Layer: 0
-  m_Name: RectMask2-Course
+  m_Name: RectMask-Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11971,7 +11960,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 51}
-  m_SizeDelta: {x: 500, y: 100}
+  m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3256222827534206608
 MonoBehaviour:
@@ -14986,25 +14975,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d88b25e32d2c144800760bff9f17f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 5629321249789706714}
-  sliderDuration: 0.3
-  sliderType: 15
-  course: {fileID: 7668312929518491541}
-  stage: {fileID: 3470339967737968394}
-  nameDuration: 0.25
-  nameType: 9
   backPanel: {fileID: 5437450547957140991}
   fadeInDuration: 0.25
   fadeInType: 3
   fadeOutDuration: 0.2
   fadeOutType: 6
+  stageInfo: {fileID: 6510601937918477220}
+  check: {fileID: 8266427736631794601}
+  slider: {fileID: 5629321249789706714}
+  area: {fileID: 6803862141093021579}
+  stage: {fileID: 760594953503159070}
+  sliderDuration: 0.3
+  sliderType: 15
+  nameDuration: 0.25
+  nameType: 9
   icon: {fileID: 2437084132099609781}
   iconDuration: 0.15
   iconType: 15
   iconEmi: {fileID: 5858487918676307966}
-  loadColor: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 0.5019608}
-  normalColor: {r: 0.1254902, g: 0.8509804, b: 0.6666667, a: 1}
-  stageInfo: {fileID: 6510601937918477220}
+  loadingColor: {r: 0.9019608, g: 0.19607843, b: 0.09019608, a: 0.5019608}
+  completeColor: {r: 0.1254902, g: 0.8509804, b: 0.6666667, a: 1}
 --- !u!1 &5624461969314825680
 GameObject:
   m_ObjectHideFlags: 0
@@ -15543,7 +15533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.69803923, g: 0.27450982, b: 0.11764706, a: 1}
+  m_Color: {r: 0.84313726, g: 0.09411765, b: 0.12941177, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -16068,7 +16058,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -160}
+  m_AnchoredPosition: {x: -300, y: 100}
   m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1544152003594396837
@@ -16693,7 +16683,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 550, y: 32}
+  m_SizeDelta: {x: 700, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6956053786258572671
 CanvasRenderer:
@@ -17581,7 +17571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.06666667, g: 0.69411767, b: 0.6745098, a: 1}
+  m_Color: {r: 0.64705884, g: 0.25490198, b: 0.10980392, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -17635,7 +17625,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -100}
+  m_AnchoredPosition: {x: 120, y: -125}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &6524558783101992422
@@ -21126,7 +21116,8 @@ MonoBehaviour:
   stageMode: 0
   areaNum: 0
   stageNum: 0
-  isUpperLimit: 0
+  stageName: 
+  areaName: 
   isReleaseScatter: 0
   releaseScatterNum: 0
   tipsText: "\u5DE6\u53F3\u306B\u5F15\u3063\u5F35\u3063\u3066\u307F\u3088\u3046!"
@@ -21545,7 +21536,7 @@ GameObject:
   - component: {fileID: 6802992833737351288}
   - component: {fileID: 720493285559612816}
   m_Layer: 0
-  m_Name: RectMask2D-Stage
+  m_Name: RectMask-Stage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21570,7 +21561,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -51}
-  m_SizeDelta: {x: 500, y: 100}
+  m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &720493285559612816
 MonoBehaviour:
@@ -23390,7 +23381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
-  m_Color: {r: 0.05133332, g: 0.55, b: 0.53533334, a: 0}
+  m_Color: {r: 0.64705884, g: 0.25490198, b: 0.10980392, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -24051,7 +24042,7 @@ GameObject:
   - component: {fileID: 2233114152069695149}
   - component: {fileID: 760594953503159070}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: StageName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24075,7 +24066,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 100}
+  m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2233114152069695149
 CanvasRenderer:
@@ -24098,7 +24089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6688745, g: 0.70920205, b: 0.7490196, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -24118,7 +24109,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30D6\u30FC\u30B9\u30C8"
+  m_Text: "\u5176\u306E2 \u30BF\u30FC\u30DC & \u30B8\u30A7\u30C3\u30C8"
 --- !u!1 &8716009197809699724
 GameObject:
   m_ObjectHideFlags: 0

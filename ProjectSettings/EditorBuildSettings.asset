@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/[Scenes]&[Prefabs]/Scenes/1-Title/Title.unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/1-Title/GameTitle.unity
     guid: a61780043535069458d098dfcde9f5a2
+  - enabled: 1
+    path: Assets/[Scenes]&[Prefabs]/Scenes/1-Title/Home.unity
+    guid: b611acee4b601954791ab993a3fb262c
   - enabled: 1
     path: Assets/[Scenes]&[Prefabs]/Scenes/2-StageMap/StageSelect.unity
     guid: 567ae31a569176743811c63b56683093

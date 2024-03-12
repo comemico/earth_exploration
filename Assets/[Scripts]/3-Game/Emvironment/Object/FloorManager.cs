@@ -18,6 +18,7 @@ public class FloorManager : MonoBehaviour
 
     public void FalseCollider()
     {
+
         for (int x = 0; x < colBox.Length; x++)
         {
             for (int i = 0; i < colBox[x].childCount; i++)
@@ -29,10 +30,11 @@ public class FloorManager : MonoBehaviour
 
     public int ActiveFloor(Transform gateObject, int key)
     {
-        FalseCollider();
-        int floorNumber = Array.IndexOf(colBox, gateObject);
-
         cinemachineMg.ChangeDirection(key);
+
+        FalseCollider();
+
+        int floorNumber = Array.IndexOf(colBox, gateObject);
 
         for (int i = 0; i < colBox[floorNumber].childCount; i++)
         {

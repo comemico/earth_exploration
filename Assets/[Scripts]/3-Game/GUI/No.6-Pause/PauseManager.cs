@@ -88,22 +88,13 @@ public class PauseManager : MonoBehaviour
         isPause = true;
         panel.SetActive(true);
         stageInfo.SetActive(true);
+        tipsMg.ShowTips();
         stageCrl.saltoMg.saltoHudMg.gauge.DOPause();
         button.anchoredPosition = new Vector2(480, 0);
 
-        tweenList.KillAllAndClear();
         Sequence sequence = DOTween.Sequence();
         sequence.Append(button.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
-        sequence.AppendCallback(() => tipsMg.ShowTips());
-
-        //     tipsText.color = new Color(1, 1, 1, 0);
-        //     rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
-        /*
-        sequence.Append(OpenTips());
-        sequence.AppendCallback(() => ScrollText());
-         */
-
-        tweenList.Add(sequence);
+        // sequence.AppendCallback(() => tipsMg.ShowTips());
 
         savedTimeScale = Time.timeScale;
         Time.timeScale = 0f;

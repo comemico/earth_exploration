@@ -25,7 +25,12 @@ public class TipsManager : MonoBehaviour
 
     public float textWide;
     [Range(0f, 0.1f)] public float scrollSpeed;
+
+    Sequence s_TipsShow;
+    Sequence s_TipsClose;
     Sequence s_TipsScroll;
+
+    Sequence s_TipsOpen;
 
     private void Start()
     {
@@ -44,18 +49,18 @@ public class TipsManager : MonoBehaviour
 
     public void ShowTips()
     {
-        textWide = tipsText.rectTransform.sizeDelta.x;
+        CloseTips();
+        s_TipsClose.Kill(true);
 
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(OpenTips());
-        sequence.AppendCallback(() => ScrollTips());
+
+        s_TipsShow = DOTween.Sequence();
+        s_TipsShow.Append(OpenTips());
+        s_TipsShow.AppendCallback(() => ScrollTips());
     }
 
     public Sequence OpenTips()
     {
-        InitializedTips();
-
-        Sequence s_TipsOpen = DOTween.Sequence(); //Tips_Edge:alpha=1f => Tips_Edge:wide=1080f =ìØ> BackPanel:1f.
+        s_TipsOpen = DOTween.Sequence(); //Tips_Edge:alpha=1f => Tips_Edge:wide=1080f =ìØ> BackPanel:1f.
         s_TipsOpen.AppendInterval(0.1f);
         s_TipsOpen.Append(tipsEdge.DOFade(1f, edgeFadeTime).SetEase(edgeFadeType));
         s_TipsOpen.Append(tipsEdge.rectTransform.DOSizeDelta(new Vector2(1080f, 200f), edgeWideTime).SetEase(edgeWideType));
@@ -66,13 +71,15 @@ public class TipsManager : MonoBehaviour
 
     public Sequence CloseTips()
     {
-        s_TipsScroll.Kill(false);
+        s_TipsShow.Kill(true);
+        s_TipsScroll.Kill(true);
+
         tipsText.color = new Color(1, 1, 1, 0);
         tipsText.rectTransform.anchoredPosition = new Vector2(50f, 0f);
 
-        Sequence s_TipsClose = DOTween.Sequence();
+        s_TipsClose = DOTween.Sequence();
         s_TipsClose.Append(backPanel.DOFade(0f, panelFadeTime).SetEase(panelFadeType));
-        s_TipsClose.Join(tipsEdge.rectTransform.DOSizeDelta(new Vector2(200f, 200f), edgeWideTime).SetEase(edgeWideType));
+        s_TipsClose.Append(tipsEdge.rectTransform.DOSizeDelta(new Vector2(200f, 200f), edgeWideTime).SetEase(edgeWideType));
         s_TipsClose.Append(tipsEdge.DOFade(0f, edgeFadeTime).SetEase(edgeFadeType));
 
         return s_TipsClose;
@@ -81,6 +88,7 @@ public class TipsManager : MonoBehaviour
     public Sequence ScrollTips()
     {
         s_TipsScroll.Kill(false);
+        textWide = tipsText.rectTransform.sizeDelta.x;
 
         float fadeWide = textWide - 150;//150ïùï™ÅAëÅÇ≠ãNìÆÇ∑ÇÈ.
 

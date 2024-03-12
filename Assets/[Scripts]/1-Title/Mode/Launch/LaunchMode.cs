@@ -11,10 +11,12 @@ public class LaunchMode : MonoBehaviour
 
     CanvasGroup canvasGrp;
     ModeManager modeMg;
+    CinemachineManager cinemachineMg;
 
     private void Awake()
     {
         dataMg = GetComponentInParent<DataManager>();
+        cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
 
         modeMg = transform.parent.GetComponent<ModeManager>();
         canvasGrp = GetComponent<CanvasGroup>();
@@ -26,7 +28,7 @@ public class LaunchMode : MonoBehaviour
     {
         Sequence s_Launch = DOTween.Sequence();
 
-
+        cinemachineMg.cinemachineVirtualCamera.Follow = null;
         //セレクトボタン消失.
         s_Launch.AppendCallback(() => modeMg.gryps.animatorJet.SetBool("isDown", true));
         s_Launch.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.down));

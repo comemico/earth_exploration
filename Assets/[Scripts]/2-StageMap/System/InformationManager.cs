@@ -124,7 +124,7 @@ public class InformationManager : MonoBehaviour
 
     public void ToTitleScene()
     {
-        shutterMg.BackHome("Title");
+        shutterMg.BackHome("Home");
     }
 
 }

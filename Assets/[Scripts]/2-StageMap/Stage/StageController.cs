@@ -173,9 +173,10 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         nearStageInfo = stageInfo;
         stageAdress = stageInfoList.IndexOf(stageInfo);
         informationMg.UpdateStageInformation(stageInfo, stageAdress);
-        informationMg.stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
+
         informationMg.stageFrameMg.RectTransform.DOComplete();
         informationMg.stageFrameMg.RectTransform.anchoredPosition = stageInfo.RectTransform.anchoredPosition;
+        informationMg.stageFrameMg.ChangeTarget(stageInfo.stageLevel, stageInfo.tips);
         MagnetItems(stageInfo.RectTransform.anchoredPosition);
     }
 

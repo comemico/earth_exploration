@@ -155,7 +155,7 @@ public class ShutterManager : MonoBehaviour
         LoadIcon(0.85f);
 
         Sequence seq_close = DOTween.Sequence();
-        seq_close.Append(curtain.DOFade(1f, startGame_FadeOut_Time).SetEase(startGame_FadeOut_Type));
+        seq_close.Append(curtain.DOFade(1f, backHome_FadeOut_Time).SetEase(backHome_FadeOut_Type));
         seq_close.Join(icon.DOFade(1f, iconDuration).SetEase(iconType));
         seq_close.AppendCallback((TweenCallback)(() =>
         {

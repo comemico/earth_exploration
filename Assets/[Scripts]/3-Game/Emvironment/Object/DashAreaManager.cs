@@ -6,8 +6,8 @@ public class DashAreaManager : MonoBehaviour
     public enum KEY
     {
         [InspectorName("両方")] both = 0,
-        [InspectorName("右")] right = 1,
-        [InspectorName("左")] left = -1,
+        [InspectorName("右→")] right = 1,
+        [InspectorName("←左")] left = -1,
     }
 
     [Header("パワー")] public DashLevel dashPower;

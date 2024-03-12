@@ -27,11 +27,11 @@ public class SelectMenuManager : MonoBehaviour
     public RectTransform setting;
     public RectTransform credit;
     public RectTransform launch;
-    public RectTransform howto;
+
     Button exitButton;
     Button settingButton;
     Button creditButton;
-    Button launchButton;
+    [HideInInspector] public Button launchButton;
 
     [Space(10)]
 
@@ -43,8 +43,6 @@ public class SelectMenuManager : MonoBehaviour
     const int INIPOSY_TRAFFIC = 255;
     const int INIPOSX_LAUNCH = 250;
 
-    const int INIPOSX_HOW = 275;
-    const int INIPOSY_HOW = 125;
 
     ModeManager modeMg;
 
@@ -64,12 +62,13 @@ public class SelectMenuManager : MonoBehaviour
         setting.anchoredPosition = new Vector2(INIPOSX_TRAFFIC, INIPOSY_TRAFFIC);
         credit.anchoredPosition = new Vector2(INIPOSX_TRAFFIC, INIPOSY_TRAFFIC);
         launch.anchoredPosition = new Vector2(INIPOSX_LAUNCH, INIPOSY_TRAFFIC);
-        howto.anchoredPosition = new Vector2(INIPOSX_HOW, INIPOSY_HOW);
 
         exitButton.onClick.AddListener(() => modeMg.exitMode.StartUpExitMode());
         settingButton.onClick.AddListener(() => modeMg.settingMode.StartUpSettingMode());
         creditButton.onClick.AddListener(() => modeMg.creditMode.StartUpCreditMode());
         launchButton.onClick.AddListener(() => modeMg.launchMode.StartUpLaunchMode());
+
+        launchButton.enabled = false;
     }
 
     public Sequence ShowSelectButton() //Band.DOSize() => Button.DOMove().
@@ -84,7 +83,6 @@ public class SelectMenuManager : MonoBehaviour
         s_show.Join(setting.DOAnchorPosX(680, buttonTime).SetEase(buttonType));
         s_show.Join(credit.DOAnchorPosX(1080, buttonTime).SetEase(buttonType));
         s_show.Join(launch.DOAnchorPosX(-450, buttonTime).SetEase(buttonType));
-        s_show.Join(howto.DOAnchorPosY(-INIPOSY_HOW, buttonTime).SetEase(buttonType));
 
         return s_show;
     }
@@ -98,7 +96,6 @@ public class SelectMenuManager : MonoBehaviour
         s_hide.Join(setting.DOAnchorPosX(INIPOSX_TRAFFIC, buttonTime).SetEase(buttonType));
         s_hide.Join(credit.DOAnchorPosX(INIPOSX_TRAFFIC, buttonTime).SetEase(buttonType));
         s_hide.Join(launch.DOAnchorPosX(INIPOSX_LAUNCH, buttonTime).SetEase(buttonType));
-        s_hide.Join(howto.DOAnchorPosY(INIPOSY_HOW, buttonTime).SetEase(buttonType));
 
         //‘Ñ• => BAND.mode.
         s_hide.Append(band.DOSizeDelta(new Vector2(2160f, (int)mode), bandTime).SetEase(bandType));

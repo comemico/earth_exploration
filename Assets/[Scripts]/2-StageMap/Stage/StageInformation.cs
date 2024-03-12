@@ -26,7 +26,7 @@ public class StageInformation : MonoBehaviour
     public Image stageLamp;
     [Range(0, 10)]
     public int stageNum;
-    [Range(1, 37)]
+    [Range(1, 28)]
     public int stageLevel;
 
     public string tips;

@@ -26,7 +26,6 @@ public class GateStartManager : MonoBehaviour
     public float fadeDuration;
     public Ease fadeType;
 
-    CinemachineManager cinemachineMg;
     BoxCollider2D boxCol;
     FloorManager floorMg;
     GrypsController grypsCrl;
@@ -36,7 +35,6 @@ public class GateStartManager : MonoBehaviour
 
     private void Start()
     {
-        cinemachineMg = Camera.main.GetComponent<CinemachineManager>();
         floorMg = GetComponentInParent<FloorManager>();
         boxCol = GetComponent<BoxCollider2D>();
         FalseMask(gateKey);
@@ -44,10 +42,12 @@ public class GateStartManager : MonoBehaviour
 
     public void SetStartPosition(GameObject gryps) //StageCrlÇ©ÇÁç≈èâÇ…åƒÇŒÇÍÇÈÅEà íuÇ®Ç´
     {
-        grypsCrl = gryps.GetComponent<GrypsController>();
         floorMg.ActiveFloor(transform.parent.GetChild(0), -1 * (int)gateKey);
-        gryps.transform.localScale = new Vector3(-1 * (int)gateKey, transform.localScale.y, transform.localScale.z);
-        gryps.transform.position = new Vector3(transform.position.x + (DISTANCE_GATE * (int)gateKey), (transform.position.y - 5) + APPEARENCE_HEIGHT, transform.position.z);
+        // floorMg.TurnFloor(transform.parent.GetChild(0));
+
+        grypsCrl = gryps.GetComponent<GrypsController>();
+        grypsCrl.transform.localScale = new Vector3(-1 * (int)gateKey, transform.localScale.y, transform.localScale.z);
+        grypsCrl.transform.position = new Vector3(transform.position.x + (DISTANCE_GATE * (int)gateKey), (transform.position.y - 5) + APPEARENCE_HEIGHT, transform.position.z);
         grypsCrl.rb.constraints = RigidbodyConstraints2D.None;
     }
 
@@ -63,13 +63,11 @@ public class GateStartManager : MonoBehaviour
             case GATE_KEY.left:
                 left.enabled = false;
                 right.enabled = true;
-                // cinemachineCrl.StartDirection(0.75f);
                 break;
 
             case GATE_KEY.right:
                 left.enabled = true;
                 right.enabled = false;
-                // cinemachineCrl.StartDirection(0.1f);
                 break;
         }
     }

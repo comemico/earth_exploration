@@ -13,7 +13,7 @@ public class CinemachineManager : MonoBehaviour
     Tween t_lensSize;
     Tween t_timeScale;
 
-    CinemachineVirtualCamera cinemachineVirtualCamera; //m_Lens.～ の変更に使用する.
+    [HideInInspector] public CinemachineVirtualCamera cinemachineVirtualCamera; //m_Lens.～ の変更に使用する.
     CinemachineFramingTransposer framingTransposer; //Screen Xの変更に使用する.
 
 
