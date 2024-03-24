@@ -91,6 +91,7 @@ public class GateClearManager : MonoBehaviour
             boxCol.enabled = false; //1‰ñ‚µ‚©ŒÄ‚Î‚ê‚È‚­‚È‚é E‚‘¬‚ÅN“ü‚·‚é‚Æ2‰ñˆÈãŒÄ‚Î‚ê‚ÄDOMoveX‚ª³‚Ì•ûŒü‚É‚µ‚©s‚©‚È‚­‚È‚é (Sign(0)‚Å1‚É‚È‚é‚½‚ß).
             transform.GetComponentInParent<SortingGroup>().enabled = false; //SpriteMask‚ÌŒø‰Ê‚ğo‚·‚½‚ß.
 
+
             grypsCrl.stageCrl.StageClear();
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
             grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
@@ -103,6 +104,7 @@ public class GateClearManager : MonoBehaviour
             grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true)
                 .OnComplete(() =>
                 {
+                    cinemachineCrl.Foucus(mark.GetChild(1));
                     RaiseFlag();
                 });
         }

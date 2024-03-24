@@ -74,11 +74,14 @@ public class GuideManager : MonoBehaviour
         }
 
         content.text = guideOrder[guideNum].guidePage[currentPage];
+
         stageCrl.saltoMg.saltoHudMg.gauge.DOPause();
+        stageCrl.jetMg.isCoolDown = true;
         pop.OpenPanel();
 
         //時間を止める.
         savedTimeScale = Time.timeScale;
+        cinemachineCrl.DOPauseTimeScale();
         cinemachineCrl.DOTimeScale(0f, 0f, Ease.Linear);
     }
 
@@ -102,7 +105,11 @@ public class GuideManager : MonoBehaviour
     public void CloseGuide()
     {
         this.currentPage = 0;
+        stageCrl.jetMg.isCoolDown = false;
+        stageCrl.jetMg.OnButtonUp();
         stageCrl.saltoMg.saltoHudMg.gauge.DOPlay();
+        //cinemachineCrl.DOPlayTimeScale();
+
         pop.ClosePanel(false);
 
         //ガイド番号の照合でで矢印ガイドを開始&停止を行なう.

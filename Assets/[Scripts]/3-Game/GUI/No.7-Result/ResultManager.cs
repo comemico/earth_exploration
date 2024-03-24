@@ -43,10 +43,16 @@ public class ResultManager : MonoBehaviour
 
     [Header("Button")]
     public PATTERN pattern;
-    public RectTransform button;
-    public Button push_Retry;
-    public Button push_World;
-    public Button push_Next;
+    public RectTransform button_Right;
+    public RectTransform button_Left;
+
+    public Button r_Retry;
+    public Button r_World;
+    public Button r_Next;
+
+    public Button l_Retry;
+    public Button l_World;
+
     public Image[] emissionImg;
     public enum PATTERN
     {
@@ -93,9 +99,9 @@ public class ResultManager : MonoBehaviour
 
     private void AddListener()
     {
-        push_Retry.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain(SceneManager.GetActiveScene().name));
-        push_World.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
-        push_Next.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("Area[" + stageCrl.areaNum + "]" + stageCrl.stageType + "[" + (stageCrl.stageNum + 1) + "]"));
+        r_Retry.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain(SceneManager.GetActiveScene().name));
+        r_World.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
+        r_Next.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("Area[" + stageCrl.areaNum + "]" + stageCrl.stageType + "[" + (stageCrl.stageNum + 1) + "]"));
     }
 
     public void OpenClearPanel()
@@ -108,7 +114,7 @@ public class ResultManager : MonoBehaviour
         seq_clear.Join(pauseButton.DOAnchorPosY(160f, 0.35f));
         seq_clear.AppendCallback(() => stageCrl.JudgeStageData());
         seq_clear.AppendInterval(0.75f);
-        seq_clear.Append(button.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        seq_clear.Append(button_Right.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
 
         tweenList.Add(seq_clear);
     }
@@ -127,7 +133,7 @@ public class ResultManager : MonoBehaviour
         Sequence seq_miss = DOTween.Sequence();
         seq_miss.Append(missPanel.DOFade(1f, fadeDuration).SetEase(fadeType));
         seq_miss.Append(missText.rectTransform.DOAnchorPosY(-225f, fallDuration).SetEase(fallType));
-        seq_miss.Append(button.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        seq_miss.Append(button_Right.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
         seq_miss.AppendInterval(0.15f);
         seq_miss.Append(missText.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
         // seq_miss.Join(OpenTips());
@@ -147,28 +153,28 @@ public class ResultManager : MonoBehaviour
         {
             //通常ステージクリア時.
             case PATTERN.onlyMap:
-                push_World.transform.parent.gameObject.SetActive(true);
-                push_World.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160f, -60f);
+                r_World.transform.parent.gameObject.SetActive(true);
+                r_World.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160f, -60f);
 
-                push_Retry.transform.parent.gameObject.SetActive(false);
-                push_Next.transform.parent.gameObject.SetActive(false);
+                r_Retry.transform.parent.gameObject.SetActive(false);
+                r_Next.transform.parent.gameObject.SetActive(false);
                 break;
 
             //ステージ失敗時.
             case PATTERN.normal:
-                push_Retry.transform.parent.gameObject.SetActive(true);
-                push_World.transform.parent.gameObject.SetActive(true);
+                r_Retry.transform.parent.gameObject.SetActive(true);
+                r_World.transform.parent.gameObject.SetActive(true);
 
-                push_Next.transform.parent.gameObject.SetActive(false);
+                r_Next.transform.parent.gameObject.SetActive(false);
                 break;
 
             //ガイドステージクリア時.
             case PATTERN.onlyNext:
-                push_Next.transform.parent.gameObject.SetActive(true);
-                push_Next.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160f, -60f);
+                r_Next.transform.parent.gameObject.SetActive(true);
+                r_Next.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160f, -60f);
 
-                push_Retry.transform.parent.gameObject.SetActive(false);
-                push_World.transform.parent.gameObject.SetActive(false);
+                r_Retry.transform.parent.gameObject.SetActive(false);
+                r_World.transform.parent.gameObject.SetActive(false);
                 break;
         }
     }

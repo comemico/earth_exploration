@@ -26,21 +26,6 @@ public class PauseManager : MonoBehaviour
 
     StageCtrl stageCrl;
     public TipsManager tipsMg;
-    /*
-    [Header("Tips")]
-    public Image tipsEdge;
-    public CanvasGroup backPanel;
-    public Text tipsText;
-    public Image rankLamp;
-
-    public float perTextWide;
-    public int characterLimit = 10;
-    [Range(0.1f, 0.5f)] public float scrollSpeed;
-    [Range(0.1f, 0.5f)] public float tipsFadeDuration;
-    public Ease tipsFadeType;
-    [Range(0.1f, 0.5f)] public float tipsOpenDuration;
-    public Ease tipsOpenType;
-     */
 
     float savedTimeScale;
     List<Tween> tweenList = new List<Tween>();

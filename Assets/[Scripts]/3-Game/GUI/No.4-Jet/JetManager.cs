@@ -30,7 +30,7 @@ public class JetManager : MonoBehaviour
     public Image[] stock;
     public int stockNum;
     int oldStockNum;
-    int consumeNum;
+    public int consumeNum;
     const int MAX_STOCK = 3;
 
     [Header("TimeScale")]
@@ -126,6 +126,7 @@ public class JetManager : MonoBehaviour
 
     public void OnButtonDown()
     {
+        Debug.Log("OnButtonDown()");
         isPush = true;
         jetHudMg.JetButton(isPush);
 
@@ -158,7 +159,7 @@ public class JetManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     isCoolDown = false;
-                    if (isPush) OnButtonDown();
+                    if (isPush) OnButtonDown(); //クールダウン中、ボタン押しっぱなしで再度OnButtonDown()が起動する.
 
                     pointerLamp.enabled = false;
                     stageCrl.grypsCrl.effector.animatorJet.SetBool("isDown", false);

@@ -51810,12 +51810,20 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5069598918739840090, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5404283946676881460, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5819553867342490626, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668313816114542735, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6824858385074812038, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}

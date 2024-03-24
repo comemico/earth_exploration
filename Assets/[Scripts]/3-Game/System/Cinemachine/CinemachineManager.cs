@@ -28,6 +28,11 @@ public class CinemachineManager : MonoBehaviour
         DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f - (key * range), turnTime).SetEase(turnType);
     }
 
+    public void Foucus(Transform target)
+    {
+        cinemachineVirtualCamera.Follow = target;
+        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f, 1f).SetEase(Ease.Linear);
+    }
 
     public Tween DOLensSize(float endValue, float duration, Ease ease)
     {
@@ -40,6 +45,15 @@ public class CinemachineManager : MonoBehaviour
     {
         //t_timeScale.Kill(true); ジェットのHud挙動がおかしくなるため、完了できない（ゲージがすぐ満タンになり、溜めることができなくなる）.
         t_timeScale = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, endValue, duration).SetEase(ease);
+    }
+
+    public void DOPauseTimeScale()
+    {
+        t_timeScale.Pause();
+    }
+    public void DOPlayTimeScale()
+    {
+        t_timeScale.Pause();
     }
 
 }

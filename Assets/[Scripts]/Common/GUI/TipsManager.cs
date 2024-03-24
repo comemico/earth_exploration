@@ -52,10 +52,9 @@ public class TipsManager : MonoBehaviour
         CloseTips();
         s_TipsClose.Kill(true);
 
-
         s_TipsShow = DOTween.Sequence();
         s_TipsShow.Append(OpenTips());
-        s_TipsShow.AppendCallback(() => ScrollTips());
+        //s_TipsShow.AppendCallback(() => ScrollTips());
     }
 
     public Sequence OpenTips()
@@ -65,7 +64,7 @@ public class TipsManager : MonoBehaviour
         s_TipsOpen.Append(tipsEdge.DOFade(1f, edgeFadeTime).SetEase(edgeFadeType));
         s_TipsOpen.Append(tipsEdge.rectTransform.DOSizeDelta(new Vector2(1080f, 200f), edgeWideTime).SetEase(edgeWideType));
         s_TipsOpen.Append(backPanel.DOFade(1f, panelFadeTime).SetEase(panelFadeType));
-
+        s_TipsOpen.AppendCallback(() => ScrollTips());
         return s_TipsOpen;
     }
 
@@ -87,7 +86,7 @@ public class TipsManager : MonoBehaviour
 
     public Sequence ScrollTips()
     {
-        s_TipsScroll.Kill(false);
+        // s_TipsScroll.Kill(false);
         textWide = tipsText.rectTransform.sizeDelta.x;
 
         float fadeWide = textWide - 150;//150••ªA‘‚­‹N“®‚·‚é.

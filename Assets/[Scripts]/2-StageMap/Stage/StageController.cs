@@ -10,6 +10,8 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     public List<StageInformation> scatterList;
     public List<StageInformation> stageInfoList;
 
+    public RectTransform mapRect;
+
     InformationManager informationMg;
 
     [Header("エリア番号")]
@@ -40,7 +42,13 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public RectTransform RectTransform => this.transform as RectTransform;
     private List<Tween> tweenList = new List<Tween>();
-    private void OnDestroy() => tweenList.KillAllAndClear();
+
+    private void OnDestroy()
+    {
+        tweenList.KillAllAndClear();
+        linearList[0].DOKill(false); //Update().mapRectで位置情報更新時にTweenに干渉するので(エディタ終了時に警告)、止める.
+    }
+
 
     private void Awake()
     {
@@ -63,6 +71,8 @@ public class StageController : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     private void Update()
     {
         UpdateItemsScale();
+        mapRect.anchoredPosition = linearList[0].RectTransform.anchoredPosition;
+
         if (!isDragging)
         {
             return;

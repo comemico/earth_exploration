@@ -21,12 +21,12 @@ public class StageFrameManager : MonoBehaviour
 
     public void ChangeTarget(int levelNum, string tips)
     {
+        lvMg.OpenLvRing(levelNum);
+
         tipsMg.tipsText.text = tips;
         float value = levelNum / 8f;
         tipsMg.rankLamp.color = rankColor[(int)Mathf.Ceil(value) - 1];
         tipsMg.ShowTips();
-
-        lvMg.OpenLvRing(levelNum);
 
         S_ChangeTarget = DOTween.Sequence();
         S_ChangeTarget.AppendCallback(() =>
@@ -34,9 +34,6 @@ public class StageFrameManager : MonoBehaviour
             scopeMg.CompleteScope();
         });
         S_ChangeTarget.Append(scopeMg.TargetScope());
-
-
-
     }
 
 }

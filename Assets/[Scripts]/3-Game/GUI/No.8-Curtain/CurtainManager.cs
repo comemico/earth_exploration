@@ -43,7 +43,7 @@ public class CurtainManager : MonoBehaviour
 
 
 
-    const int SLIDER = 675;
+    const int SLIDER = 600;
     const int HEIGHT = 100;
 
     private List<Tween> tweenList = new List<Tween>();
