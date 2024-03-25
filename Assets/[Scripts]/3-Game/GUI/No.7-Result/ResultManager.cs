@@ -9,15 +9,25 @@ using UnityEngine.SceneManagement;
 public class ResultManager : MonoBehaviour
 {
     [Header("CLEAR")]
-    public CanvasGroup clearPanel;
-    public Text clearText;
-    public RectTransform pauseButton;
+    public RectTransform bandClear;
+    public Text textClear;
+    public Text textSecret;
+
+    [Header("parameter :OpenClearPanel()")]
+    [Range(0.15f, 0.5f)] public float bandTime = 0.35f;
+    public Ease bandType = Ease.OutSine;
+    [Range(0.1f, 1f)] public float textClearTime;
+    public Ease textClearType;
+
+    public PATTERN clearPattern;
+    public enum PATTERN
+    {
+        VER_Normal = 0,
+        VER_Miss = 1,
+        VER_Guide = 2
+    }
     [Space(10)]
 
-    [Range(0.1f, 1f)] public float appDuration;
-    public Ease appType;
-    [Range(0.1f, 1f)] public float slideDuration;
-    public Ease slideType;
 
 
     [Header("MISS")]
@@ -25,8 +35,8 @@ public class ResultManager : MonoBehaviour
     public CanvasGroup missPanel;
     public Text missText;
     public GameObject[] missIcon;
-    [Space(10)]
 
+    [Header("parameter :OpenMissPanel()")]
     [Range(0.1f, 0.5f)] public float fadeDuration;
     public Ease fadeType;
     [Range(0.1f, 0.5f)] public float fallDuration;
@@ -39,52 +49,37 @@ public class ResultManager : MonoBehaviour
         [InspectorName("爆発してしまった!")] 爆発してしまった = 1,
         [InspectorName("バッテリー切れ!?")] バッテリー切れ = 2
     }
+    [Space(10)]
 
 
-    [Header("Button")]
-    public PATTERN pattern;
+    [Header("Button : Common")]
     public RectTransform button_Right;
-    public RectTransform button_Left;
-
-    public Button r_Retry;
-    public Button r_World;
+    public Button r_Map;
     public Button r_Next;
+    public Button r_Retry;
+    public Text r_Text;
+    [Space(10)]
 
+    public RectTransform button_Left;
+    public Button l_Map;
     public Button l_Retry;
-    public Button l_World;
+    RectTransform button_Retry;
+    [Space(10)]
 
-    public Image[] emissionImg;
-    public enum PATTERN
-    {
-        onlyMap = 0,
-        normal = 1,
-        onlyNext = 2
-    }
+    [Range(0.1f, 0.5f)] public float buttonTime;
+    public Ease buttonType;
+    [Range(0.1f, 0.5f)] public float lampDuration;
+    public Ease lampType;
+    [Space(10)]
+
+    public Image[] bloomImg;
+    public Color[] bloomColor;
 
 
     StageCtrl stageCrl;
     TipsManager tipsMg;
-
-    /*
-    [Header("Tips")]
-    public Image tipsEdge;
-    public CanvasGroup backPanel;
-    public Text tipsText;
-    public Image rankLamp;
-    public float perTextWide;
-    public int characterLimit = 10;
-    [Range(0.1f, 0.5f)] public float scrollSpeed;
-
-    [Range(0.1f, 0.5f)] public float tipsOpenDuration;
-    public Ease tipsOpenType;
-    [Range(0.1f, 0.5f)] public float tipsFadeDuration;
-    public Ease tipsFadeType;
-     */
-
-    [Range(0.1f, 0.5f)] public float lampDuration;
-    public Ease lampType;
-
     List<Tween> tweenList = new List<Tween>();
+
 
     private void OnDestroy() => tweenList.KillAllAndClear();
 
@@ -92,6 +87,7 @@ public class ResultManager : MonoBehaviour
     {
         stageCrl = GetComponentInParent<StageCtrl>();
         tipsMg = GetComponentInChildren<TipsManager>();
+        button_Retry = l_Retry.transform.parent.GetComponent<RectTransform>();
 
         AddListener();
         tipsMg.rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
@@ -100,47 +96,52 @@ public class ResultManager : MonoBehaviour
     private void AddListener()
     {
         r_Retry.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain(SceneManager.GetActiveScene().name));
-        r_World.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
+        r_Map.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
         r_Next.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("Area[" + stageCrl.areaNum + "]" + stageCrl.stageType + "[" + (stageCrl.stageNum + 1) + "]"));
+
+        l_Retry.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain(SceneManager.GetActiveScene().name));
+        l_Map.onClick.AddListener(() => stageCrl.curtainMg.CloseCurtain("StageSelect"));
     }
 
     public void OpenClearPanel()
     {
-        ButtonPattern(pattern);
+        ButtonPattern(clearPattern);
 
-        Sequence seq_clear = DOTween.Sequence();
-        seq_clear.Append(clearText.rectTransform.DOAnchorPosX(0f, slideDuration).SetEase(slideType, 3));
-        seq_clear.Join(clearPanel.DOFade(1f, appDuration).SetEase(appType));
-        seq_clear.Join(pauseButton.DOAnchorPosY(160f, 0.35f));
-        seq_clear.AppendCallback(() => stageCrl.JudgeStageData());
-        seq_clear.AppendInterval(0.75f);
-        seq_clear.Append(button_Right.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        Sequence s_clear = DOTween.Sequence();
+        s_clear.Append(bandClear.DOSizeDelta(new Vector2(2160f, 300), bandTime).SetEase(bandType));
 
-        tweenList.Add(seq_clear);
+        s_clear.AppendInterval(0.25f);
+        s_clear.Append(textClear.rectTransform.DOAnchorPosY(0f, textClearTime).SetEase(textClearType));
+        s_clear.Join(textClear.DOFade(1f, textClearTime).SetEase(textClearType));
+
+        s_clear.AppendCallback(() => stageCrl.JudgeStageData());
+        s_clear.AppendInterval(0.5f);
+        s_clear.Append(button_Right.DOAnchorPosX(0f, buttonTime).SetEase(buttonType));
+        s_clear.Join(button_Retry.DOAnchorPosX(355, buttonTime).SetEase(buttonType).OnComplete(() => SwichBloom(true, lampDuration)));
+
+        tweenList.Add(s_clear);
     }
 
 
     public void OpenMissPanel(CAUSE setCause)
     {
-        ButtonPattern(PATTERN.normal);
+        ButtonPattern(PATTERN.VER_Miss);
 
         cause = setCause;
         missText.text = Enum.GetName(typeof(CAUSE), cause) + "!?";
         for (int i = 0; i < missIcon.Length; i++) missIcon[i].SetActive(false);
         missIcon[(int)cause].SetActive(true);
 
-
         Sequence seq_miss = DOTween.Sequence();
         seq_miss.Append(missPanel.DOFade(1f, fadeDuration).SetEase(fadeType));
         seq_miss.Append(missText.rectTransform.DOAnchorPosY(-225f, fallDuration).SetEase(fallType));
-        seq_miss.Append(button_Right.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        seq_miss.Append(button_Right.DOAnchorPosX(0f, buttonTime).SetEase(buttonType));
+        seq_miss.Join(button_Left.DOAnchorPosX(0f, buttonTime).SetEase(buttonType).OnComplete(() => SwichBloom(true, lampDuration)));
         seq_miss.AppendInterval(0.15f);
         seq_miss.Append(missText.transform.DOLocalRotate(new Vector3(0f, 0f, -7.5f), tumbleDuration).SetEase(tumbleType));
-        // seq_miss.Join(OpenTips());
         seq_miss.AppendCallback(() =>
         {
             tipsMg.ShowTips();
-            //ScrollText();
         });
 
         tweenList.Add(seq_miss);
@@ -152,29 +153,36 @@ public class ResultManager : MonoBehaviour
         switch (setPattern)
         {
             //通常ステージクリア時.
-            case PATTERN.onlyMap:
-                r_World.transform.parent.gameObject.SetActive(true);
-                r_World.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160f, -60f);
+            case PATTERN.VER_Normal:
+                bloomImg[0].color = bloomColor[0];
+                r_Text.text = "マップへ";
+                r_Map.transform.gameObject.SetActive(true);
+                r_Retry.transform.gameObject.SetActive(false);
+                r_Next.transform.gameObject.SetActive(false);
 
-                r_Retry.transform.parent.gameObject.SetActive(false);
-                r_Next.transform.parent.gameObject.SetActive(false);
-                break;
-
-            //ステージ失敗時.
-            case PATTERN.normal:
-                r_Retry.transform.parent.gameObject.SetActive(true);
-                r_World.transform.parent.gameObject.SetActive(true);
-
-                r_Next.transform.parent.gameObject.SetActive(false);
+                button_Left.gameObject.SetActive(false);
                 break;
 
             //ガイドステージクリア時.
-            case PATTERN.onlyNext:
-                r_Next.transform.parent.gameObject.SetActive(true);
-                r_Next.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-160f, -60f);
+            case PATTERN.VER_Guide:
+                bloomImg[0].color = bloomColor[1];
+                r_Text.text = "次へ";
+                r_Next.transform.gameObject.SetActive(true);
+                r_Retry.transform.gameObject.SetActive(false);
+                r_Map.transform.gameObject.SetActive(false);
 
-                r_Retry.transform.parent.gameObject.SetActive(false);
-                r_World.transform.parent.gameObject.SetActive(false);
+                button_Left.gameObject.SetActive(false);
+                break;
+
+            //ステージ失敗時.
+            case PATTERN.VER_Miss:
+                bloomImg[0].color = bloomColor[2];
+                r_Text.text = "リトライ";
+                r_Retry.transform.gameObject.SetActive(true);
+                r_Map.transform.gameObject.SetActive(false);
+                r_Next.transform.gameObject.SetActive(false);
+
+                button_Left.gameObject.SetActive(true);
                 break;
         }
     }
@@ -182,7 +190,7 @@ public class ResultManager : MonoBehaviour
 
     public void SwichBloom(bool isEnabled, float fadeTime) //FadeInする場合、PanelAnimeで光源が見えるのを防ぐ目的
     {
-        foreach (Image img in emissionImg)
+        foreach (Image img in bloomImg)
         {
             img.enabled = isEnabled;
             img.DOKill(true);

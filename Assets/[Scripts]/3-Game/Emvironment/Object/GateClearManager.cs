@@ -94,7 +94,7 @@ public class GateClearManager : MonoBehaviour
 
             grypsCrl.stageCrl.StageClear();
             grypsCrl.stageCrl.ChangeControlStatus(StageCtrl.ControlStatus.unControl);
-            grypsCrl.stageCrl.pauseMg.push_Pause.interactable = false;
+            grypsCrl.stageCrl.pauseMg.HidePauseButton();
             grypsCrl.stageCrl.jetMg.jetHudMg.ShutDownJetHud();
             grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(grypsCrl.stageCrl.data.maxLifeNum);
 

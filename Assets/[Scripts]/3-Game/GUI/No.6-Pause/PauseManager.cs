@@ -17,7 +17,8 @@ public class PauseManager : MonoBehaviour
     public Button push_World;
 
     [Header("Button")]
-    public RectTransform button;
+    public RectTransform buttonPause;
+    public RectTransform buttonPanel;
     public Image[] emissionImg;
     public float lampDuration;
     public Ease lampType;
@@ -75,10 +76,10 @@ public class PauseManager : MonoBehaviour
         stageInfo.SetActive(true);
         tipsMg.ShowTips();
         stageCrl.saltoMg.saltoHudMg.gauge.DOPause();
-        button.anchoredPosition = new Vector2(480, 0);
+        buttonPanel.anchoredPosition = new Vector2(480, 0);
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(button.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
+        sequence.Append(buttonPanel.DOAnchorPosX(0f, 0.15f).OnComplete(() => SwichBloom(true, lampDuration)));
         // sequence.AppendCallback(() => tipsMg.ShowTips());
 
         savedTimeScale = Time.timeScale;
@@ -114,6 +115,12 @@ public class PauseManager : MonoBehaviour
             img.DOKill(true);
             img.DOFade(Convert.ToInt32(isEnabled), fadeTime).SetEase(lampType);
         }
+    }
+
+    public void HidePauseButton()
+    {
+        push_Pause.interactable = false;
+        buttonPause.DOAnchorPosY(160f, 0.35f);
     }
 
     /*

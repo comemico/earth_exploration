@@ -31,7 +31,7 @@ public class CinemachineManager : MonoBehaviour
     public void Foucus(Transform target)
     {
         cinemachineVirtualCamera.Follow = target;
-        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f, 1f).SetEase(Ease.Linear);
+        DOTween.To(() => framingTransposer.m_ScreenX, x => framingTransposer.m_ScreenX = x, 0.5f, 1.5f).SetEase(Ease.InQuart);
     }
 
     public Tween DOLensSize(float endValue, float duration, Ease ease)
