@@ -111,7 +111,7 @@ public class TitleMode : MonoBehaviour
             modeMg.selectMenuMg.launchButton.enabled = true;
         });
 
-        tweenList.Add(s_powerOn);
+        //tweenList.Add(s_powerOn);
 
         if (isComplete)
         {

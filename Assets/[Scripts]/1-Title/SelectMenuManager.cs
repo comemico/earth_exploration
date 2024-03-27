@@ -10,15 +10,26 @@ public class SelectMenuManager : MonoBehaviour
 
     [Header("Band")]
     public RectTransform band;
+    public Image bandLine;
     [Space(10)]
 
     [Range(0.15f, 0.5f)] public float bandTime = 0.35f;
     public Ease bandType = Ease.OutSine;
+    public Color[] bandColor;
     public enum BAND
     {
         down = 0,
         normal = 260,
         up = 905
+    }
+
+    public enum COLOR
+    {
+        normal = 0,
+        exit = 1,
+        setting = 2,
+        credit = 3,
+        launch = 4
     }
 
 
@@ -46,7 +57,7 @@ public class SelectMenuManager : MonoBehaviour
 
     ModeManager modeMg;
 
-    private void Start()
+    private void Awake()
     {
         modeMg = transform.root.GetComponentInChildren<ModeManager>();
         exitButton = exit.transform.GetChild(1).GetComponent<Button>();
@@ -77,6 +88,7 @@ public class SelectMenuManager : MonoBehaviour
 
         //帯幅 => normal.
         s_show.Append(band.DOSizeDelta(new Vector2(2160f, (int)BAND.normal), bandTime).SetEase(bandType));
+        s_show.Join(bandLine.DOColor(bandColor[(int)COLOR.normal], bandTime).SetEase(Ease.InQuad));
 
         //ボタン出現.
         s_show.Append(exit.DOAnchorPosX(280, buttonTime).SetEase(buttonType));
@@ -87,7 +99,7 @@ public class SelectMenuManager : MonoBehaviour
         return s_show;
     }
 
-    public Sequence HideSelectButton(BAND mode) //Button.DOMove() => Band.DOSize().
+    public Sequence HideSelectButton(BAND height, COLOR mode) //Button.DOMove() => Band.DOSize().
     {
         Sequence s_hide = DOTween.Sequence();
 
@@ -98,8 +110,9 @@ public class SelectMenuManager : MonoBehaviour
         s_hide.Join(launch.DOAnchorPosX(INIPOSX_LAUNCH, buttonTime).SetEase(buttonType));
 
         //帯幅 => BAND.mode.
-        s_hide.Append(band.DOSizeDelta(new Vector2(2160f, (int)mode), bandTime).SetEase(bandType));
-
+        s_hide.Append(band.DOSizeDelta(new Vector2(2160f, (int)height), bandTime).SetEase(bandType));
+        //帯色 => bandColor[].
+        s_hide.Join(bandLine.DOColor(bandColor[(int)mode], bandTime).SetEase(Ease.OutQuad));
         return s_hide;
     }
 

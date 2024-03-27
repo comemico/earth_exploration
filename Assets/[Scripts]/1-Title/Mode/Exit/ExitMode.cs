@@ -48,7 +48,7 @@ public class ExitMode : MonoBehaviour
         Sequence s_startupExit = DOTween.Sequence();
 
         //セレクトボタン消失.
-        s_startupExit.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.normal));
+        s_startupExit.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.normal, SelectMenuManager.COLOR.exit));
 
         //終了確認ボタン出現.
         s_startupExit.Append(yesRect.DOAnchorPosX(buttonShowValue, buttonTime).SetEase(buttonType));

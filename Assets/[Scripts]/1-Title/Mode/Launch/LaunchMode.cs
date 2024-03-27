@@ -31,9 +31,11 @@ public class LaunchMode : MonoBehaviour
         cinemachineMg.cinemachineVirtualCamera.Follow = null;
         //セレクトボタン消失.
         s_Launch.AppendCallback(() => modeMg.gryps.animatorJet.SetBool("isDown", true));
-        s_Launch.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.down));
+        s_Launch.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.normal, SelectMenuManager.COLOR.launch));
 
-        s_Launch.AppendInterval(0.15f);
+        //ジェットの前にパネルを降ろす.
+        s_Launch.AppendInterval(0.25f);
+        s_Launch.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.down, SelectMenuManager.COLOR.launch));
         s_Launch.AppendCallback(() => modeMg.gryps.ForceJet(0));
         s_Launch.AppendInterval(1f);
         s_Launch.AppendCallback(() =>
@@ -46,6 +48,7 @@ public class LaunchMode : MonoBehaviour
             {
                 dataMg.data.isGuide = true;
                 modeMg.curtainMg.CloseCurtain("Area[0]Linear[0]");
+                //stageMap : recentStageをArea[1]Linear[0]にする.
             }
         }
         );

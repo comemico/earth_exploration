@@ -47,7 +47,7 @@ public class SettingMode : MonoBehaviour
         Sequence s_startupSetting = DOTween.Sequence();
 
         //セレクトボタン消失.
-        s_startupSetting.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.up));
+        s_startupSetting.Append(modeMg.selectMenuMg.HideSelectButton(SelectMenuManager.BAND.up, SelectMenuManager.COLOR.setting));
 
         //設定画面出現.
         s_startupSetting.Append(canvasGrp.DOFade(1f, fadeTime).SetEase(fadeType));

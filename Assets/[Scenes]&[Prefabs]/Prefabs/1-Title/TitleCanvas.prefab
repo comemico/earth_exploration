@@ -4151,7 +4151,7 @@ RectTransform:
   - {fileID: 8487725036607504669}
   - {fileID: 1843054417813908190}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4703,7 +4703,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ab4e5b79d1d56fb4a9ede06dfb599df5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a14e9a871618ad142bb46c2b2ab20b5e, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5430,7 +5430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4b4dc73cd9dfd284eba15a3b71eacfa8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 68c3238151466f74e80a6827245edef7, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7728,8 +7728,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: {fileID: 8768945645454002923}
+  bandLine: {fileID: 244964069796935517}
   bandTime: 0.35
   bandType: 3
+  bandColor:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0.050980393, b: 0.09803922, a: 1}
+  - {r: 0.69803923, g: 0.5019608, b: 0.07450981, a: 1}
+  - {r: 0.078431375, g: 0.6509804, b: 0.15686275, a: 1}
+  - {r: 0.0627451, g: 0.9372549, b: 1, a: 1}
   exit: {fileID: 5670946751274231573}
   setting: {fileID: 3501507092711767040}
   credit: {fileID: 85167484240284787}
@@ -12282,7 +12289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4b4dc73cd9dfd284eba15a3b71eacfa8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 68c3238151466f74e80a6827245edef7, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16651,7 +16658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 25d09186a648dd443beb225941e8ba95, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -16697,8 +16704,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4540226919087725606}
   - {fileID: 8543408302350707826}
+  - {fileID: 4540226919087725606}
   m_Father: {fileID: 3166380410759590302}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
