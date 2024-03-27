@@ -10,7 +10,10 @@ public class TipsManager : MonoBehaviour
     public Image tipsEdge;
     public CanvasGroup backPanel;
     public Text tipsText;
-    public Image rankLamp;
+
+    public Image rankLamp_L;
+    public Image rankLamp_R;
+    public Color[] rankColor;
     [Space(10)]
 
     [Range(0.1f, 0.5f)] public float edgeFadeTime = 0.15f;
@@ -106,5 +109,10 @@ public class TipsManager : MonoBehaviour
         return s_TipsScroll;
     }
 
+    public void SetRankColor(Color setColor)
+    {
+        rankLamp_L.color = setColor;
+        rankLamp_R.color = setColor;
+    }
 
 }

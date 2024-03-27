@@ -45,6 +45,7 @@ public class PauseManager : MonoBehaviour
         tipsMg = GetComponentInChildren<TipsManager>();
 
         tipsMg.tipsText.text = stageCrl.tipsText;
+        tipsMg.SetRankColor(tipsMg.rankColor[stageCrl.stageRank - 1]);
 
         panel.SetActive(false);
         SwichBloom(false, 0f);

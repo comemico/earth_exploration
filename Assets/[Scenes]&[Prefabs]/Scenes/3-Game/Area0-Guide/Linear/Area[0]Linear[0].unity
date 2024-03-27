@@ -50383,6 +50383,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StageController
       objectReference: {fileID: 0}
+    - target: {fileID: 8092854458707907716, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8164673762893159076, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -50465,6 +50469,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164673762893159076, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179464072825423673, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8911422101574004504, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}

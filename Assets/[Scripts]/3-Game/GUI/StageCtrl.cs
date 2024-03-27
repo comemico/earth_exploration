@@ -40,7 +40,6 @@ public class StageCtrl : MonoBehaviour
     [Header("ステージ情報 -表示-")]
     public string tipsText;
     [Range(1, 5)] public int stageRank;
-    public Color[] rankColor;
 
     public enum ControlStatus
     {

@@ -90,7 +90,7 @@ public class ResultManager : MonoBehaviour
         button_Retry = l_Retry.transform.parent.GetComponent<RectTransform>();
 
         AddListener();
-        tipsMg.rankLamp.color = stageCrl.rankColor[stageCrl.stageRank - 1];
+        tipsMg.SetRankColor(tipsMg.rankColor[stageCrl.stageRank - 1]);
     }
 
     private void AddListener()

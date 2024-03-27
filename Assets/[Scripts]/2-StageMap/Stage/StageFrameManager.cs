@@ -24,8 +24,9 @@ public class StageFrameManager : MonoBehaviour
         lvMg.OpenLvRing(levelNum);
 
         tipsMg.tipsText.text = tips;
-        float value = levelNum / 8f;
-        tipsMg.rankLamp.color = rankColor[(int)Mathf.Ceil(value) - 1];
+        // float value = levelNum / 8f;
+        // tipsMg.rankLamp.color = rankColor[(int)Mathf.Ceil(value) - 1];
+        tipsMg.SetRankColor(lvMg.lvLamp[levelNum - 1].color);
         tipsMg.ShowTips();
 
         S_ChangeTarget = DOTween.Sequence();
