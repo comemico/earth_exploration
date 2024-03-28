@@ -96880,6 +96880,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 563547272914115717, guid: 39c603798276a9348a6e29c60c5d7bdc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 710346333340434056, guid: 39c603798276a9348a6e29c60c5d7bdc, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.0002838678
@@ -96914,7 +96918,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2983848052939375113, guid: 39c603798276a9348a6e29c60c5d7bdc, type: 3}
       propertyPath: isCompleteTitle
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3208331028329962142, guid: 39c603798276a9348a6e29c60c5d7bdc, type: 3}
       propertyPath: gryps

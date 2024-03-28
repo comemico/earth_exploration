@@ -110,12 +110,13 @@ public class ResultManager : MonoBehaviour
         Sequence s_clear = DOTween.Sequence();
         s_clear.Append(bandClear.DOSizeDelta(new Vector2(2160f, 300), bandTime).SetEase(bandType));
 
-        s_clear.AppendInterval(0.25f);
+        s_clear.AppendInterval(0.5f);
         s_clear.Append(textClear.rectTransform.DOAnchorPosY(0f, textClearTime).SetEase(textClearType));
         s_clear.Join(textClear.DOFade(1f, textClearTime).SetEase(textClearType));
+        s_clear.Join(textClear.transform.DOScale(1.5f, textClearTime).SetEase(textClearType));
 
         s_clear.AppendCallback(() => stageCrl.JudgeStageData());
-        s_clear.AppendInterval(0.5f);
+        s_clear.AppendInterval(1.5f);
         s_clear.Append(button_Right.DOAnchorPosX(0f, buttonTime).SetEase(buttonType));
         s_clear.Join(button_Retry.DOAnchorPosX(355, buttonTime).SetEase(buttonType).OnComplete(() => SwichBloom(true, lampDuration)));
 

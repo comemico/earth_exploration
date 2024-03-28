@@ -97,6 +97,7 @@ public class GateClearManager : MonoBehaviour
             grypsCrl.stageCrl.pauseMg.HidePauseButton();
             grypsCrl.stageCrl.jetMg.jetHudMg.ShutDownJetHud();
             grypsCrl.stageCrl.memoryGageMg.DisplayMemoryGage(grypsCrl.stageCrl.data.maxLifeNum);
+            cinemachineCrl.Foucus(mark.GetChild(1));
 
             grypsCrl.effector.underLamp.intensity = 0f;
             grypsCrl.rb.velocity = Vector2.zero;
@@ -104,8 +105,8 @@ public class GateClearManager : MonoBehaviour
             grypsCrl.transform.DOMoveX((gateKey * DISTANCE_SUCKEDIN) + this.transform.position.x, grypsCrl.parameter.suctionPower[(int)suctionPow]).SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    cinemachineCrl.Foucus(mark.GetChild(1));
                     RaiseFlag();
+                    grypsCrl.stageCrl.resultMg.OpenClearPanel();
                 });
         }
     }
@@ -118,8 +119,7 @@ public class GateClearManager : MonoBehaviour
         seq_raise.Append(mark.DOLocalRotate(Vector3.zero, raiseDuration, RotateMode.Fast).SetEase(raiseType));
         seq_raise.AppendCallback(() =>
         {
-            grypsCrl.stageCrl.resultMg.OpenClearPanel();
-            //            grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
+            //grypsCrl.stageCrl.resultMg.Result(ResultManager.CAUSE.clear);
         });
     }
 
