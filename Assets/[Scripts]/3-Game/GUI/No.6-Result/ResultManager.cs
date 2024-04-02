@@ -9,11 +9,13 @@ using UnityEngine.SceneManagement;
 public class ResultManager : MonoBehaviour
 {
     [Header("CLEAR")]
+    public Image blockImg;
     public RectTransform bandClear;
     public Text textClear;
     public Text textSecret;
 
     [Header("parameter :OpenClearPanel()")]
+
     [Range(0.15f, 0.5f)] public float bandTime = 0.35f;
     public Ease bandType = Ease.OutSine;
     [Range(0.1f, 1f)] public float textClearTime;
@@ -106,6 +108,7 @@ public class ResultManager : MonoBehaviour
     public void OpenClearPanel()
     {
         ButtonPattern(clearPattern);
+        blockImg.raycastTarget = true;
 
         Sequence s_clear = DOTween.Sequence();
         s_clear.Append(bandClear.DOSizeDelta(new Vector2(2160f, 300), bandTime).SetEase(bandType));
@@ -127,6 +130,7 @@ public class ResultManager : MonoBehaviour
     public void OpenMissPanel(CAUSE setCause)
     {
         ButtonPattern(PATTERN.VER_Miss);
+        missPanel.blocksRaycasts = true;
 
         cause = setCause;
         missText.text = Enum.GetName(typeof(CAUSE), cause) + "!?";
