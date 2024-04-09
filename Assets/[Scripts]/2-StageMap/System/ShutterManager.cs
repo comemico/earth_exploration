@@ -64,8 +64,8 @@ public class ShutterManager : MonoBehaviour
 
     public RectTransform home;
     public RectTransform start;
-    const float INI_HOME = 220;
-    const float INI_START = -110;
+    const float INI_HOME = 150;
+    const float INI_START = -150;
 
     public CanvasGroup icon;
     public Image iconEmi;
@@ -119,7 +119,7 @@ public class ShutterManager : MonoBehaviour
 
         s_startUp.AppendInterval(0.5f);
         s_startUp.Append(home.DOAnchorPosY(0f, startUp_Button_Time).SetEase(startUp_Button_Type));
-        s_startUp.Join(start.DOAnchorPosY(-INI_START, startUp_Button_Time).SetEase(startUp_Button_Type));
+        s_startUp.Join(start.DOAnchorPosY(0f, startUp_Button_Time).SetEase(startUp_Button_Type));
 
         tweenList.Add(s_startUp);
     }

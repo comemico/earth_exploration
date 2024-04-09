@@ -99,7 +99,7 @@ public class TitleMode : MonoBehaviour
         s_powerOn.Append(backPanel.DOFade(0f, tipsTime).SetEase(tipsType));
         s_powerOn.Append(tipsEdge.rectTransform.DOSizeDelta(new Vector2(235, 235), tipsTime).SetEase(tipsType));
         s_powerOn.Append(tipsEdge.DOFade(0f, tipsTime).SetEase(tipsType));
-        s_powerOn.Join(panel.DOAnchorPosY(-350, moveTime).SetEase(moveType));
+        s_powerOn.Join(panel.DOAnchorPosY(-450, moveTime).SetEase(moveType));
 
         // ÉpÉlÉãè¡é∏.
         s_powerOn.Append(modeMg.selectMenuMg.ShowSelectButton().SetDelay(0.5f));
