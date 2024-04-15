@@ -146,7 +146,7 @@ public class CurtainManager : MonoBehaviour
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
 
-        Tween emi = iconEmi.DOFade(1f, 0.25f).SetEase(Ease.InOutQuad)
+        Tween emi = iconEmi.DOFade(1f, 0.2f).SetEase(Ease.InOutQuad) //‰‰ñ‚Ì“_“”Ý’è.
         .OnComplete(() =>
         {
             Tween emi = iconEmi.DOFade(0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutFlash, 2)

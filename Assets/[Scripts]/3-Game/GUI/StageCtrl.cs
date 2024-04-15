@@ -136,7 +136,7 @@ public class StageCtrl : MonoBehaviour
     {
         Sequence s_start = DOTween.Sequence();
 
-        s_start.AppendInterval(0.25f);
+        s_start.AppendInterval(0.65f);
         s_start.Append(curtainMg.ShowNameInfo(areaName, stageName));
         s_start.AppendCallback(() => startGateMg.SetStartPosition(grypsCrl.gameObject)); //スタート位置に移動.
         s_start.AppendInterval(0.25f);

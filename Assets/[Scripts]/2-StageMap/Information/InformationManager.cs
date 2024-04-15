@@ -29,7 +29,7 @@ public class InformationManager : MonoBehaviour
 
 
     [HideInInspector] public StageFrameManager stageFrameMg;
-    ShutterManager shutterMg;
+    InformationHudManager informationHudMg;
     MemoryGageManager memoryGageMg;
 
     private void Awake()
@@ -61,7 +61,7 @@ public class InformationManager : MonoBehaviour
 
     void GetComponent()
     {
-        shutterMg = GetComponent<ShutterManager>();
+        informationHudMg = GetComponent<InformationHudManager>();
         stageFrameMg = GetComponentInChildren<StageFrameManager>();
         memoryGageMg = GetComponentInChildren<MemoryGageManager>();
     }
@@ -100,7 +100,7 @@ public class InformationManager : MonoBehaviour
     public void StartGame()
     {
         var sceneName = "Area[" + courseNum + "]" + stageType + "[" + stageNum + "]";
-        shutterMg.StartGame(sceneName);
+        informationHudMg.StartGame(sceneName);
 
         data.recentCourseAdress = courseNum;
         data.recentStageAdress = stageAdress;
@@ -124,7 +124,7 @@ public class InformationManager : MonoBehaviour
 
     public void ToTitleScene()
     {
-        shutterMg.BackHome("Home");
+        informationHudMg.BackHome("Home");
     }
 
 }
