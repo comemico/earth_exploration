@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3345040450403865321
+--- !u!114 &-7258781925736470653
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,13 +20,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Portal_002
-  m_Shader: {fileID: -6465566751694194690, guid: 532ac93a794e6164597dd9ac62537fef, type: 3}
+  m_Name: Mat_Planet_001
+  m_Shader: {fileID: -6465566751694194690, guid: 1b143506d6fe27047b3b87c0aa178264, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - ETC1_EXTERNAL_ALPHA
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -37,20 +36,36 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cloud:
+        m_Texture: {fileID: 2800000, guid: 71876756dbcb2134fbe3a7396ed046f4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 883696355711475842, guid: 2211b44bd604bbd4caf7f6b6a16363fe, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_04aec7fcabb34f9b92519338430a2449_Texture_1:
-        m_Texture: {fileID: 8210798772010303835, guid: 2211b44bd604bbd4caf7f6b6a16363fe, type: 3}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_e7a8598c89544652888bb172e484aebf_Texture_1:
-        m_Texture: {fileID: 8210798772010303835, guid: 2211b44bd604bbd4caf7f6b6a16363fe, type: 3}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _portalTexture:
-        m_Texture: {fileID: 8210798772010303835, guid: 2211b44bd604bbd4caf7f6b6a16363fe, type: 3}
+    - _SampleTexture2D_49bf4d3c2c67407cab41a91c24fdfee8_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b7d39675cc07814458ad6e818c22c7a4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8764e9ef2fb040bf8ae6f1de7a530616_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b7d39675cc07814458ad6e818c22c7a4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_f4cbf8092a684769881c40d34f3cfe83_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b7d39675cc07814458ad6e818c22c7a4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -67,21 +82,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_1cfecb0fdf5f4ea7ac62b65d752c9711: 0.25
-    - Vector1_210657aafdd94cc18f7e6f5b732add33: 6
-    - Vector1_231253f8113e4e8b86d06ac1235da9b7: 0.3
-    - Vector1_58f73d8bb3fc460f868aa5e731646700: 0.1
-    - _lineNoise: 0
-    - _portalColorPower: 4.46
-    - _portalScrew: 0
-    - _portalSilhoetteNoise: 0
-    - _portalSilhouette: 0
-    - _portalSpeed: 0.386
+    - _EnableExternalAlpha: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - Color_219fbf5a4a3f4cb49e8f27158565b645: {r: 0.6588235, g: 1.913725, b: 5.992157, a: 0}
-    - Color_e614679bc10443338e5108a182926cab: {r: 23.96863, g: 23.96863, b: 16.18824, a: 0}
-    - _Color: {r: 23.96863, g: 23.96863, b: 16.18824, a: 0}
-    - _Color_1: {r: 0.6588235, g: 1.913725, b: 5.992157, a: 0}
-    - _portalColor: {r: 0.45490196, g: 0.89411676, b: 2.9960785, a: 1}
-    - _starColor: {r: 8.47419, g: 8.47419, b: 5.7234073, a: 0}
+    - _Color: {r: 0, g: 6.7321415, b: 77.071396, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

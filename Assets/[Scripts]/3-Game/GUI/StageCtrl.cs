@@ -192,6 +192,7 @@ public class StageCtrl : MonoBehaviour
 
     }
 
+
     public void Ready()
     {
         state = State.Ready;

@@ -32,7 +32,7 @@ public class ZoomManager : MonoBehaviour
             if (cinemachineMg == null)
             {
                 Debug.Log("cinemachineMgÇ™nullÇ≈Ç∑ÅB");
-                cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
+                //cinemachineMg = Camera.main.transform.GetChild(0).GetComponent<CinemachineManager>();
             }
             cinemachineMg.DOLensSize(exitValue, exitTime, lensType);
         }
