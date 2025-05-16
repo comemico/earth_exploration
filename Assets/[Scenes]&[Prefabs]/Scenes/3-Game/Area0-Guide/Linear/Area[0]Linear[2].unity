@@ -2180,6 +2180,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 181713502276865768, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 181713502276865768, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 181713502276865768, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 471580064409231477, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -2235,6 +2247,22 @@ PrefabInstance:
     - target: {fileID: 4830133421337068363, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
       propertyPath: m_Creator
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6123423594033526956, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_Size.x
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6123423594033526956, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_Size.y
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6123423594033526956, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8f4997512fbbeb14da4b23f2acafe967, type: 3}
+    - target: {fileID: 6123423594033526956, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8622855807983924259, guid: 5d5de7fc9660b1241b924941505184b0, type: 3}
       propertyPath: m_BoundingShape2D
@@ -12061,13 +12089,21 @@ PrefabInstance:
       propertyPath: guideNumber
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4781999417159242518, guid: 0725cb3295b1ce74587e6afda8bf0984, type: 3}
+      propertyPath: m_SortingOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5828336307726869731, guid: 0725cb3295b1ce74587e6afda8bf0984, type: 3}
+      propertyPath: m_SortingOrder
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6569322419437210775, guid: 0725cb3295b1ce74587e6afda8bf0984, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6569322419437210775, guid: 0725cb3295b1ce74587e6afda8bf0984, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 507
+      value: 505
       objectReference: {fileID: 0}
     - target: {fileID: 6569322419437210775, guid: 0725cb3295b1ce74587e6afda8bf0984, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12755,7 +12791,7 @@ MonoBehaviour:
       corner: 1
       m_CornerMode: 2
   m_SpriteShape: {fileID: 11400000, guid: 6ba9f5c87be7f9640ae12bac841b207e, type: 2}
-  m_FillPixelPerUnit: 50
+  m_FillPixelPerUnit: 128
   m_StretchTiling: 1
   m_SplineDetail: 16
   m_AdaptiveUV: 0
@@ -12831,10 +12867,10 @@ SpriteShapeRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 644151655
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: efeb3b6865867464a8b071b90be4ab42, type: 3}
+  m_ShapeTexture: {fileID: 2800000, guid: 9483820a49055564cb4e1ed536b9c711, type: 3}
   m_Sprites:
   - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
@@ -13655,6 +13691,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 8092854458707907716, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8164673762893159076, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -13737,6 +13777,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164673762893159076, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179464072825423673, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8266427736631794601, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
@@ -14602,7 +14646,7 @@ MonoBehaviour:
       corner: 1
       m_CornerMode: 2
   m_SpriteShape: {fileID: 11400000, guid: 6ba9f5c87be7f9640ae12bac841b207e, type: 2}
-  m_FillPixelPerUnit: 50
+  m_FillPixelPerUnit: 128
   m_StretchTiling: 1
   m_SplineDetail: 16
   m_AdaptiveUV: 0
@@ -14677,10 +14721,10 @@ SpriteShapeRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 644151655
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: efeb3b6865867464a8b071b90be4ab42, type: 3}
+  m_ShapeTexture: {fileID: 2800000, guid: 9483820a49055564cb4e1ed536b9c711, type: 3}
   m_Sprites:
   - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
@@ -39733,7 +39777,7 @@ SpriteShapeRenderer:
   m_SortingOrder: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: efeb3b6865867464a8b071b90be4ab42, type: 3}
+  m_ShapeTexture: {fileID: 2800000, guid: 9483820a49055564cb4e1ed536b9c711, type: 3}
   m_Sprites:
   - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
@@ -45423,7 +45467,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.2}
+  m_Size: {x: 4, y: 0.2}
   m_EdgeRadius: 0
 --- !u!61 &4072344424308612396
 BoxCollider2D:
@@ -85823,7 +85867,7 @@ MonoBehaviour:
       corner: 1
       m_CornerMode: 2
   m_SpriteShape: {fileID: 11400000, guid: 6ba9f5c87be7f9640ae12bac841b207e, type: 2}
-  m_FillPixelPerUnit: 50
+  m_FillPixelPerUnit: 128
   m_StretchTiling: 1
   m_SplineDetail: 16
   m_AdaptiveUV: 0

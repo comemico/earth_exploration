@@ -42,6 +42,7 @@ public class TitleGryps : MonoBehaviour
         factorRear = 1 / radiusRear;
     }
 
+
     private void Update()
     {
         if (Mathf.Abs(rb.velocity.x) >= 0.5f)

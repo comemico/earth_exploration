@@ -8,6 +8,8 @@ using DG.Tweening;
 
 public class ButtonHud_1 : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    Button button;
+
     public RectTransform RectTransform => this.transform as RectTransform;
 
     [Header("StartUp")]
@@ -33,6 +35,14 @@ public class ButtonHud_1 : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         RectTransform.anchoredPosition = new Vector2(0f, -height);
         lamp_L.color = lampOff;
         lamp_R.color = lampOff;
+
+        button = GetComponent<Button>();
+        button.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySE(SESoundData.SE.Button_Choice);
+            SoundManager.Instance.seAudioSource.pitch = 1f;
+        });
+
     }
 
     public void StartUp()
