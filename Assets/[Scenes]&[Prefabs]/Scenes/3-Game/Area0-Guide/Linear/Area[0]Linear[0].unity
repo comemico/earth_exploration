@@ -1861,7 +1861,9 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
   - {fileID: 21300000, guid: fd294e0024b9c95438403f5480807dae, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   m_LocalAABB:
     m_Center: {x: 158.75, y: 18.94504, z: 0}
     m_Extent: {x: 49.390003, y: 31.695042, z: 0}
@@ -13998,7 +14000,9 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
   - {fileID: 21300000, guid: fd294e0024b9c95438403f5480807dae, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   m_LocalAABB:
     m_Center: {x: 16.249996, y: -0.4300213, z: 0}
     m_Extent: {x: 41.89, y: 11.070022, z: 0}
@@ -14530,7 +14534,9 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
   - {fileID: 21300000, guid: fd294e0024b9c95438403f5480807dae, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   m_LocalAABB:
     m_Center: {x: 90, y: 6.4449835, z: 0}
     m_Extent: {x: 115.64, y: 19.195017, z: 0}
@@ -39777,7 +39783,9 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 6c08bc2d681ada54aa5ca8beff2e69a5, type: 3}
   - {fileID: 21300000, guid: fd294e0024b9c95438403f5480807dae, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   - {fileID: 21300000, guid: 005542e219b84804a8a9553facabead9, type: 3}
+  - {fileID: 21300000, guid: 18594cc7853dee148bf4f3530c02ceee, type: 3}
   m_LocalAABB:
     m_Center: {x: 15.000381, y: 0.31996822, z: 0}
     m_Extent: {x: 40.640385, y: 10.320032, z: 0}
@@ -45444,6 +45452,10 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5138123925474641184, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 97240aa10b0b6b849b2c8737a79def33, type: 3}
     - target: {fileID: 5404283946676881460, guid: 16a22aad029f7a84e80f033e71d4df6a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0

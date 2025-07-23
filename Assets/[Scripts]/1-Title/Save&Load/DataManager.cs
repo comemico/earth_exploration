@@ -16,6 +16,7 @@ public class DataManager : MonoBehaviour
         Debug.Log("UniryAndroid‚©‚ç‹N“®");
         filepath = Application.persistentDataPath + "/" + fileName;
 #endif
+        Application.targetFrameRate = 50;
 
         if (!File.Exists(filepath))
         {

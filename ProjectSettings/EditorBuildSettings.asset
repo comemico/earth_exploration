@@ -30,6 +30,6 @@ EditorBuildSettings:
     path: Assets/[Scenes]&[Prefabs]/Scenes/3-Game/Area0-Guide/Linear/Area[1]Linear[1].unity
     guid: 8f55806c5c1be554783bef840974f555
   - enabled: 1
-    path: Assets/[Scenes]&[Prefabs]/Scenes/3-Game/Area0-Guide/Linear/Area[2]Linear[0].unity
+    path: Assets/[Scenes]&[Prefabs]/Scenes/3-Game/Area0-Guide/Linear/Area[1]Linear[2].unity
     guid: 821c20b71bb4ae4438e9bfc2780a3cf3
   m_configObjects: {}

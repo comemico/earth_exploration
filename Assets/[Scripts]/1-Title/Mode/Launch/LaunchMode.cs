@@ -40,6 +40,9 @@ public class LaunchMode : MonoBehaviour
         s_Launch.AppendInterval(1f);
         s_Launch.AppendCallback(() =>
         {
+            /*
+            modeMg.curtainMg.CloseCurtain("StageSelect");
+             */
             if (dataMg.data.isGuide)
             {
                 modeMg.curtainMg.CloseCurtain("StageSelect");

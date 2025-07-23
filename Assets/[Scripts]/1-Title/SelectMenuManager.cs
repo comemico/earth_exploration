@@ -94,7 +94,7 @@ public class SelectMenuManager : MonoBehaviour
         s_show.Append(exit.DOAnchorPosX(280, buttonTime).SetEase(buttonType));
         s_show.Join(setting.DOAnchorPosX(680, buttonTime).SetEase(buttonType));
         s_show.Join(credit.DOAnchorPosX(1080, buttonTime).SetEase(buttonType));
-        s_show.Join(launch.DOAnchorPosX(-450, buttonTime).SetEase(buttonType));
+        s_show.Join(launch.DOAnchorPosX(-300, buttonTime).SetEase(buttonType));
 
         return s_show;
     }
